@@ -38,7 +38,7 @@ namespace LiveCharts.Definitions.Charts
         /// <value>
         /// The model.
         /// </value>
-        AxisCore Model { get; }
+        AxisCore Core { get; }
         /// <summary>
         /// Gets or sets a value indicating whether [disable animations].
         /// </summary>

@@ -28,7 +28,7 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -38,7 +38,7 @@ namespace LiveCharts.SeriesAlgorithms
     public class HeatCore : SeriesCore, ICartesianSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.HeatCore"/> class.
+        /// Initializes a new instance of the <see cref="HeatCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public HeatCore(ISeriesView view) : base(view)
@@ -72,7 +72,9 @@ namespace LiveCharts.SeriesAlgorithms
             //lets force the gradients to always have an 'interpol-able' model
 
             if (!heatSeries.Stops.Any())
-                throw new LiveChartsException("There is no a valid gradient to create a heat series.");
+            {
+                throw new LiveChartsException(ExceptionReason.HeatGradientRequired);
+            }
 
             var correctedGradients = heatSeries.Stops.Select(x => new CoreGradientStop
             {

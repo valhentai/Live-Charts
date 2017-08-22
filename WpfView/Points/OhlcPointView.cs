@@ -76,15 +76,6 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
 
-            if (HoverShape != null)
-            {
-                var h = Math.Abs(High - Low);
-                HoverShape.Width = Width;
-                HoverShape.Height = h > 10 ? h : 10;
-                Canvas.SetLeft(HoverShape, Left);
-                Canvas.SetTop(HoverShape, High);
-            }
-
             if (chart.View.DisableAnimations)
             {
                 HighToLowLine.Y1 = High;
@@ -146,7 +137,6 @@ namespace LiveCharts.Wpf.Points
 
         public override void RemoveFromView(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(OpenLine);
             chart.View.RemoveFromDrawMargin(CloseLine);
             chart.View.RemoveFromDrawMargin(HighToLowLine);

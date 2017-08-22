@@ -25,7 +25,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -35,7 +35,7 @@ namespace LiveCharts.SeriesAlgorithms
     public class CandleCore : SeriesCore, ICartesianSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.CandleCore"/> class.
+        /// Initializes a new instance of the <see cref="CandleCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public CandleCore(ISeriesView view) : base(view)

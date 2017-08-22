@@ -27,11 +27,12 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
-using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Series;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
@@ -40,11 +41,31 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The line series displays trends between points, you must add this series to a cartesian chart. 
     /// </summary>
-    public class LineSeries : Series, ILineSeriesView, IAreaPoint, IFondeable
+    public class LineSeries : Series, ILineSeriesView, IAreaPointView, IFondeable
     {
+        public Path Path { get; set; }
+        public PathFigure Figure { get; set; }
+        public bool IsNew { get; set; }
+        public bool IsPathInitialized  { get; set; }
+        public virtual void StartSegment(int atIndex, CorePoint location)
+        {
+        }
+        public virtual void EndSegment(int atIndex, CorePoint location)
+        {
+        }
+        //ToDo: Remove all these ^^
+
+        #region Fields
+
+        private int _activeSplitters;
+        private int _splittersCollector;
+
+        #endregion
+
         #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of LineSeries class
+        /// Initializes a new instance of the LineSeries class
         /// </summary>
         public LineSeries() 
         {
@@ -53,7 +74,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of LineSeries class with a given mapper
+        /// Initializes a new instance of the LineSeries class with a given mapper
         /// </summary>
         /// <param name="configuration"></param>
         public LineSeries(object configuration)
@@ -65,56 +86,28 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Private Properties
-
-        protected PathFigure Figure { get; set; }
-        internal Path Path { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is path initialized.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is path initialized; otherwise, <c>false</c>.
-        /// </value>
-        protected bool IsPathInitialized { get; set; }
-        internal List<LineSeriesPathHelper> Splitters { get; set; }
-        /// <summary>
-        /// Gets or sets the active splitters.
-        /// </summary>
-        /// <value>
-        /// The active splitters.
-        /// </value>
-        protected int ActiveSplitters { get; set; }
-        /// <summary>
-        /// Gets or sets the splitters collector.
-        /// </summary>
-        /// <value>
-        /// The splitters collector.
-        /// </value>
-        protected int SplittersCollector { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is new.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
-        /// </value>
-        protected bool IsNew { get; set; }
-
-        #endregion
-
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the path collection.
+        /// </summary>
+        /// <value>
+        /// The path collection.
+        /// </value>
+        public List<LineSeriesPathHelper> PathCollection { get; protected set; }
 
         /// <summary>
         /// The point geometry size property
         /// </summary>
         public static readonly DependencyProperty PointGeometrySizeProperty = DependencyProperty.Register(
-            "PointGeometrySize", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), EnqueueUpdateCallback));
+            "PointGeometrySize", typeof(double), typeof(LineSeries),
+            new PropertyMetadata(8d, EnqueueUpdateCallback));
         /// <summary>
         /// Gets or sets the point geometry size, increasing this property will make the series points bigger
         /// </summary>
         public double PointGeometrySize
         {
-            get { return (double) GetValue(PointGeometrySizeProperty); }
+            get { return (double)GetValue(PointGeometrySizeProperty); }
             set { SetValue(PointGeometrySizeProperty, value); }
         }
 
@@ -123,7 +116,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty PointForegroundProperty = DependencyProperty.Register(
             "PointForeground", typeof (Brush), typeof (LineSeries), 
-            new PropertyMetadata(default(Brush)));
+            new PropertyMetadata(Brushes.White));
         /// <summary>
         /// Gets or sets the point shape foreground.
         /// </summary>
@@ -138,7 +131,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty LineSmoothnessProperty = DependencyProperty.Register(
             "LineSmoothness", typeof (double), typeof (LineSeries), 
-            new PropertyMetadata(default(double), EnqueueUpdateCallback));
+            new PropertyMetadata(0.7d, EnqueueUpdateCallback));
         /// <summary>
         /// Gets or sets line smoothness, this property goes from 0 to 1, use 0 to draw straight lines, 1 really curved lines.
         /// </summary>
@@ -164,74 +157,155 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Overridden Methods
+        #region Series View Implementation
 
-        /// <summary>
-        /// This method runs when the update starts
-        /// </summary>
-        protected override void OnSeriesUpdateStart()
+        double ILineSeriesView.LineSmoothness { get { return LineSmoothness; } }
+
+        double ILineSeriesView.AreaLimit { get { return AreaLimit; } }
+
+        double IAreaPointView.PointMaxRadius { get { return (PointGeometry == null ? 0 : PointGeometrySize) / 2; } }
+
+        void ILineSeriesView.StartSegment(CorePoint location, double areaLimit, TimeSpan animationsSpeed)
         {
-            ActiveSplitters = 0;
+            InitializeNewPath(location, areaLimit);
 
-            if (SplittersCollector == int.MaxValue - 1)
+            var splitter = PathCollection[_activeSplitters];
+            splitter.SplitterCollectorIndex = _splittersCollector;
+
+            if (animationsSpeed == TimeSpan.Zero)
             {
-                //just in case!
-                Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
-                SplittersCollector = 0;
+                PathCollection[_activeSplitters].LineFigure.StartPoint = new Point(location.X, location.Y);
+                PathCollection[_activeSplitters].ShadowFigure.StartPoint = new Point(location.X, areaLimit);
+
+                //if (splitter.IsNew)
+                //{
+                //    splitter.Bottom.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
+                //    splitter.Left.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
+                //}
+
+                splitter.Bottom.Point = new Point(location.X, areaLimit);
+                splitter.Left.Point = location.AsPoint();
+            }
+            else
+            {
+                PathCollection[_activeSplitters]
+                    .LineFigure.BeginAnimation(
+                        PathFigure.StartPointProperty,
+                        new PointAnimation(new Point(location.X, location.Y), animationsSpeed));
+
+                PathCollection[_activeSplitters]
+                    .ShadowFigure.BeginAnimation(
+                        PathFigure.StartPointProperty,
+                        new PointAnimation(new Point(location.X, areaLimit), animationsSpeed));
+
+                splitter.Bottom.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(new Point(location.X, areaLimit), animationsSpeed));
+
+                splitter.Left.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(location.AsPoint(), animationsSpeed));
             }
         }
 
-        /// <summary>
-        /// Gets the view of a given point
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
+        void ILineSeriesView.EndSegment(int atIndex, CorePoint location)
+        {
+            var splitter = PathCollection[_activeSplitters];
+
+            var animSpeed = Core.Chart.View.AnimationsSpeed;
+            var noAnim = Core.Chart.View.DisableAnimations;
+
+            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
+                ? Core.Chart.View.AxisY[ScalesYAt].Core.FirstSeparator
+                : AreaLimit, AxisOrientation.Y, Core.Chart, ScalesYAt);
+
+            var uw = Core.Chart.View.AxisX[ScalesXAt].Core.EvaluatesUnitWidth
+                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Core.Chart, ScalesXAt) / 2
+                : 0;
+            location.X -= uw;
+
+            //if (splitter.IsNew)
+            //{
+            //    splitter.Right.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
+            //}
+
+            PathCollection[_activeSplitters].ShadowFigure.Segments.Remove(splitter.Right);
+            if (noAnim)
+                splitter.Right.Point = new Point(location.X, areaLimit);
+            else
+                splitter.Right.BeginAnimation(LineSegment.PointProperty,
+                    new PointAnimation(new Point(location.X, areaLimit), animSpeed));
+            PathCollection[_activeSplitters].ShadowFigure.Segments.Insert(atIndex, splitter.Right);
+
+            _activeSplitters++;
+        }
+
+        #endregion
+
+        #region Overridden Methods
+
+        /// <inheritdoc cref="Series.OnSeriesUpdateStart" />
+        protected override void OnSeriesUpdateStart()
+        {
+            _activeSplitters = 0;
+            if (_splittersCollector != int.MaxValue - 1) return;
+            PathCollection.ForEach(s => s.SplitterCollectorIndex = 0);
+            _splittersCollector = 0;
+        }
+
+        /// <inheritdoc cref="Series.OnSeriesUpdateFinish" />
+        protected override void OnSeriesUpdateFinish()
+        {
+            base.OnSeriesUpdateFinish();
+
+            for (var i = _activeSplitters; i < PathCollection.Count; i++)
+            {
+                var s = PathCollection[i - 1];
+                Core.Chart.View.RemoveFromView(s);
+                PathCollection.Remove(s);
+            }
+        }
+
+        /// <inheritdoc cref="Series.InitializePointView"/>
+        protected override IChartPointView InitializePointView(IChartView chartView)
+        {
+            var pointView = new HorizontalBezierPointView
+            {
+                Segment = new BezierSegment(),
+                ShadowContainer = PathCollection[_activeSplitters].ShadowFigure,
+                LineContainer = PathCollection[_activeSplitters].LineFigure,
+                IsNew = true
+            };
+
+            chartView.AddToDrawMargin(pointView.Shape);
+            chartView.AddToDrawMargin(pointView.DataLabel);
+
+            return pointView;
+        }
+
+        /// <inheritdoc cref="Series.GetPointView" />
         protected override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
 
             var pbv = (HorizontalBezierPointView) point.View;
 
-            if (pbv == null)
-            {
-                pbv = new HorizontalBezierPointView
-                {
-                    Segment = new BezierSegment(),
-                    ShadowContainer = Splitters[ActiveSplitters].ShadowFigure,
-                    LineContainer = Splitters[ActiveSplitters].LineFigure,
-                    IsNew = true
-                };
-            }
-            else
-            {
-                pbv.IsNew = false;
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
-            }
+            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
+            //{
+            //    pbv.HoverShape = new Rectangle
+            //    {
+            //        Fill = Brushes.Transparent,
+            //        StrokeThickness = 0,
+            //        Width = mhr,
+            //        Height = mhr
+            //    };
 
-            if (Core.Chart.RequiresHoverShape && pbv.HoverShape == null)
-            {
-                pbv.HoverShape = new Rectangle
-                {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0,
-                    Width = mhr,
-                    Height = mhr
-                };
+            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
+            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
+            //}
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-                Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            }
+            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
-            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
-
-            if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
+            if (PointGeometry != null && pbv.Shape == null)
             {
                 if (PointGeometry != null)
                 {
@@ -256,8 +330,8 @@ namespace LiveCharts.Wpf
                 pbv.Shape.Visibility = Visibility;
                 Panel.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
 
-                if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
-                if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
+                if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
+                if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
             }
 
             if (DataLabels)
@@ -278,226 +352,24 @@ namespace LiveCharts.Wpf
             return pbv;
         }
 
-        /// <summary>
-        /// This method runs when the update finishes
-        /// </summary>
-        protected override void OnSeriesUpdatedFinish()
-        {
-            base.OnSeriesUpdatedFinish();
-
-            //foreach (var inactive in Splitters
-            //    .Where(s => s.SplitterCollectorIndex < SplittersCollector).ToList())
-            //{
-            //    ((PathGeometry)Path.Data).Figures[0].Segments.Remove(inactive.Left);
-            //    ((PathGeometry)Path.Data).Figures[0].Segments.Remove(inactive.Bottom);
-            //    ((PathGeometry)Path.Data).Figures[0].Segments.Remove(inactive.Right);
-            //    Splitters.Remove(inactive);
-            //}
-        }
-
-        /// <summary>
-        /// Erases series
-        /// </summary>
-        /// <param name="removeFromView"></param>
+        /// <inheritdoc cref="Erase" />
         protected override void Erase(bool removeFromView = true)
         {
-            ((ISeriesView) this).ActualValues.GetPoints(this).ForEach(p =>
+            ((ISeriesView)this).ActualValues.GetPoints(this).ForEach(p =>
             {
                 if (p.View != null)
                     p.View.RemoveFromView(Core.Chart);
             });
+
             if (removeFromView)
             {
-                Core.Chart.View.RemoveFromDrawMargin(Path);
+                PathCollection.ForEach(s =>
+                {
+                    Core.Chart.View.RemoveFromDrawMargin(s.LinePath);
+                    Core.Chart.View.RemoveFromDrawMargin(s.ShadowPath);
+                });
                 Core.Chart.View.RemoveFromView(this);
             }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Starts the segment.
-        /// </summary>
-        /// <param name="atIndex">At index.</param>
-        /// <param name="location">The location.</param>
-        public virtual void StartSegment(int atIndex, CorePoint location)
-        {
-            InitializeNewPath(location, 0);
-
-            var splitter = Splitters[ActiveSplitters];
-            splitter.SplitterCollectorIndex = SplittersCollector;
-
-            var animSpeed = Core.Chart.View.AnimationsSpeed;
-            var noAnim = Core.Chart.View.DisableAnimations;
-
-            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                ? Core.Chart.View.AxisY[ScalesYAt].Model.FirstSeparator
-                : AreaLimit, AxisOrientation.Y, Core.Chart, ScalesYAt);
-
-            Splitters[ActiveSplitters].LineFigure.BeginAnimation(PathFigure.StartPointProperty,
-                new PointAnimation(new Point(location.X, location.Y), animSpeed));
-
-            if (Core.Chart.View.DisableAnimations || IsNew)
-            {
-                Splitters[ActiveSplitters].ShadowFigure.StartPoint = new Point(location.X, areaLimit);
-            }
-            else
-            {
-                Splitters[ActiveSplitters].ShadowFigure.BeginAnimation(PathFigure.StartPointProperty,
-                    new PointAnimation(new Point(location.X, areaLimit), animSpeed));
-            }
-
-            atIndex = 0; //ToDo: Verify it!
-
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Remove(splitter.Bottom);
-
-            if (splitter.IsNew)
-            {
-                splitter.Bottom.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-                splitter.Left.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-            }
-
-            if (noAnim)
-                splitter.Bottom.Point = new Point(location.X, areaLimit);
-            else
-                splitter.Bottom.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(location.X, areaLimit), animSpeed));
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Insert(atIndex, splitter.Bottom);
-
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Remove(splitter.Left);
-            if (noAnim)
-                splitter.Left.Point = location.AsPoint();
-            else
-                splitter.Left.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(location.AsPoint(), animSpeed));
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Insert(atIndex + 1, splitter.Left);
-
-        }
-
-        /// <summary>
-        /// Ends the segment.
-        /// </summary>
-        /// <param name="atIndex">At index.</param>
-        /// <param name="location">The location.</param>
-        public virtual void EndSegment(int atIndex, CorePoint location)
-        {
-             var splitter = Splitters[ActiveSplitters];
-
-            var animSpeed = Core.Chart.View.AnimationsSpeed;
-            var noAnim = Core.Chart.View.DisableAnimations;
-
-            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                 ? Core.Chart.View.AxisY[ScalesYAt].Model.FirstSeparator
-                 : AreaLimit, AxisOrientation.Y, Core.Chart, ScalesYAt);
-
-            var uw = Core.Chart.View.AxisX[ScalesXAt].Model.EvaluatesUnitWidth
-                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Core.Chart, ScalesXAt)/2
-                : 0;
-            location.X -= uw;
-
-            if (splitter.IsNew)
-            {
-                splitter.Right.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-            }
-
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Remove(splitter.Right);
-            if (noAnim)
-                splitter.Right.Point = new Point(location.X, areaLimit);
-            else
-                splitter.Right.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(location.X, areaLimit), animSpeed));
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Insert(atIndex, splitter.Right);
-
-            splitter.IsNew = false;
-            ActiveSplitters++;
-        }
-        #endregion
-
-        #region Series View Implementation
-
-        double ILineSeriesView.LineSmoothness { get { return LineSmoothness; } }
-
-        double ILineSeriesView.AreaLimit { get { return AreaLimit; } }
-
-        double IAreaPoint.PointDiameter { get { return (PointGeometry == null ? 0 : PointGeometrySize) / 2; } }
-
-        void ILineSeriesView.StartSegment(CorePoint location, double areaLimit)
-        {
-            InitializeNewPath(location, areaLimit);
-
-            var splitter = Splitters[ActiveSplitters];
-            splitter.SplitterCollectorIndex = SplittersCollector;
-
-            Splitters[ActiveSplitters].LineFigure.StartPoint = new Point(location.X, location.Y);
-            Splitters[ActiveSplitters].ShadowFigure.StartPoint = new Point(location.X, areaLimit);
-
-            if (splitter.IsNew)
-            {
-                splitter.Bottom.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-                splitter.Left.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-            }
-
-            splitter.Bottom.Point = new Point(location.X, areaLimit);
-            splitter.Left.Point = location.AsPoint();
-        }
-
-        void ILineSeriesView.StartAnimatedSegment(CorePoint location, double areaLimit, TimeSpan animationsSpeed)
-        {
-            InitializeNewPath(location, areaLimit);
-
-            var splitter = Splitters[ActiveSplitters];
-            splitter.SplitterCollectorIndex = SplittersCollector;
-
-            Splitters[ActiveSplitters]
-                .LineFigure.BeginAnimation(
-                    PathFigure.StartPointProperty,
-                    new PointAnimation(new Point(location.X, location.Y), animationsSpeed));
-
-            Splitters[ActiveSplitters]
-                .ShadowFigure.BeginAnimation(
-                    PathFigure.StartPointProperty,
-                    new PointAnimation(new Point(location.X, areaLimit), animationsSpeed));
-
-            splitter.Bottom.BeginAnimation(LineSegment.PointProperty,
-                new PointAnimation(new Point(location.X, areaLimit), animationsSpeed));
-
-            splitter.Left.BeginAnimation(LineSegment.PointProperty,
-                new PointAnimation(location.AsPoint(), animationsSpeed));
-        }
-
-        void ILineSeriesView.EndSegment(int atIndex, CorePoint location)
-        {
-            var splitter = Splitters[ActiveSplitters];
-
-            var animSpeed = Core.Chart.View.AnimationsSpeed;
-            var noAnim = Core.Chart.View.DisableAnimations;
-
-            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                ? Core.Chart.View.AxisY[ScalesYAt].Model.FirstSeparator
-                : AreaLimit, AxisOrientation.Y, Core.Chart, ScalesYAt);
-
-            var uw = Core.Chart.View.AxisX[ScalesXAt].Model.EvaluatesUnitWidth
-                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Core.Chart, ScalesXAt) / 2
-                : 0;
-            location.X -= uw;
-
-            if (splitter.IsNew)
-            {
-                splitter.Right.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-            }
-
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Remove(splitter.Right);
-            if (noAnim)
-                splitter.Right.Point = new Point(location.X, areaLimit);
-            else
-                splitter.Right.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(location.X, areaLimit), animSpeed));
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Insert(atIndex, splitter.Right);
-
-            splitter.IsNew = false;
-            ActiveSplitters++;
         }
 
         #endregion
@@ -506,7 +378,7 @@ namespace LiveCharts.Wpf
 
         private void InitializeNewPath(CorePoint location, double areaLimit)
         {
-            if (Splitters.Count > ActiveSplitters) return;
+            if (PathCollection.Count > _activeSplitters) return;
 
             var shadow = new Path
             {
@@ -523,7 +395,7 @@ namespace LiveCharts.Wpf
                         }
                     }
                 },
-                
+
             };
 
             Panel.SetZIndex(shadow, Panel.GetZIndex(this));
@@ -552,45 +424,38 @@ namespace LiveCharts.Wpf
             Panel.SetZIndex(line, Panel.GetZIndex(this));
             Core.Chart.View.EnsureElementBelongsToCurrentDrawMargin(line);
 
-            Splitters.Add(new LineSeriesPathHelper(location, areaLimit)
+            PathCollection.Add(new LineSeriesPathHelper(location, areaLimit)
             {
-                IsNew = true,
                 ShadowFigure = ((PathGeometry)shadow.Data).Figures[0],
-                LineFigure = ((PathGeometry)line.Data).Figures[0]
+                LineFigure = ((PathGeometry)line.Data).Figures[0],
+                LinePath = line,
+                ShadowPath = shadow
             });
 
-            SplittersCollector++;
+            _splittersCollector++;
 
-            var splitter = Splitters[ActiveSplitters];
-            splitter.SplitterCollectorIndex = SplittersCollector;
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Remove(splitter.Bottom);
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Remove(splitter.Left);
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Insert(0, splitter.Bottom);
-            Splitters[ActiveSplitters].ShadowFigure.Segments.Insert(1, splitter.Left);
+            var splitter = PathCollection[_activeSplitters];
+            splitter.SplitterCollectorIndex = _splittersCollector;
+            PathCollection[_activeSplitters].ShadowFigure.Segments.Remove(splitter.Bottom);
+            PathCollection[_activeSplitters].ShadowFigure.Segments.Remove(splitter.Left);
+            PathCollection[_activeSplitters].ShadowFigure.Segments.Insert(0, splitter.Bottom);
+            PathCollection[_activeSplitters].ShadowFigure.Segments.Insert(1, splitter.Left);
         }
 
         private void InitializeDefuaults()
         {
-            Path = new Path();
-
-            //var geometry = new PathGeometry();
-            //geometry.Figures.Add(new PathFigure());
-            //Path.Data = geometry;
-
-            SetCurrentValue(LineSmoothnessProperty, .7d);
-            SetCurrentValue(PointGeometrySizeProperty, 8d);
-            SetCurrentValue(PointForegroundProperty, Brushes.White);
-            SetCurrentValue(StrokeThicknessProperty, 2d);
+            // ToDo: verify if EnqueueUpdateCallback method is attached to property change
+            StrokeThicknessProperty.OverrideMetadata(typeof(LineSeries), new PropertyMetadata(2d));
 
             Func<ChartPoint, string> defaultLabel = x => Core.CurrentYAxis.GetFormatter()(x.Y);
+
             SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.15;
-            Splitters = new List<LineSeriesPathHelper>();
-
-            IsNew = true;
+            PathCollection = new List<LineSeriesPathHelper>();
         }
 
         #endregion
+
     }
 }

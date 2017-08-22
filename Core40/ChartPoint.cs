@@ -28,13 +28,10 @@ using LiveCharts.Dtos;
 namespace LiveCharts
 {
     /// <summary>
-    /// Defines a point in the chart
+    /// Defines a point in the chart.
     /// </summary>
     public class ChartPoint
     {
-
-        #region Cartesian 
-
         /// <summary>
         /// Gets the X point value
         /// </summary>
@@ -45,101 +42,6 @@ namespace LiveCharts
         /// </summary>
         public double Y { get; internal set; }
 
-        #endregion
-
-        /// <summary>
-        /// Gets the Gantt x start value
-        /// </summary>
-        public double XStart { get; set; }
-
-        /// <summary>
-        /// Gets the Gantt y start value
-        /// </summary>
-        public double YStart { get; set; }
-
-        internal bool EvaluatesGantt { get; set; }
-
-        #region Gantt
-
-        #endregion
-
-        #region Weighted
-
-        /// <summary>
-        /// Gets the Weight of the point
-        /// </summary>
-        public double Weight { get; internal set; }
-
-        #endregion
-
-        #region stacked
-
-        /// <summary>
-        /// Gets where the stacked value started from
-        /// </summary>
-        public double From { get; internal set; }
-
-        /// <summary>
-        /// Gets where the stacked value finishes
-        /// </summary>
-        public double To { get; internal set; }
-
-        /// <summary>
-        /// Get the total sum of the stacked elements
-        /// </summary>
-        public double Sum { get; internal set; }
-
-        /// <summary>
-        /// Get the participation of the point in the stacked elements
-        /// </summary>
-        public double Participation { get; internal set; }
-
-        /// <summary>
-        /// gets the stacked participation of a point
-        /// </summary>
-        public double StackedParticipation { get; internal set; }
-
-        #endregion
-
-        #region Financial
-
-        /// <summary>
-        /// Gets the Open value of the point
-        /// </summary>
-        public double Open { get; internal set; }
-
-        /// <summary>
-        /// Gets the High value of the point
-        /// </summary>
-        public double High { get; internal set; }
-
-        /// <summary>
-        /// Gets the Low value of the point
-        /// </summary>
-        public double Low { get; internal set; }
-
-        /// <summary>
-        /// Gets the Close value of the point
-        /// </summary>
-        public double Close { get; internal set; }
-
-        #endregion
-
-        #region Polar
-
-        /// <summary>
-        /// Gets the Radius of a point
-        /// </summary>
-        public double Radius { get; internal set; }
-
-        /// <summary>
-        /// Gets the angle of a point
-        /// </summary>
-        public double Angle { get; internal set; }
-
-        #endregion
-
-        #region Appearance
         /// <summary>
         /// Gets the Fill brush of this point, this property overrides series Fill property 
         /// </summary>
@@ -148,12 +50,19 @@ namespace LiveCharts
         /// Gets the Stroke brush of this point, this property overrides series Stroke property
         /// </summary>
         public object Stroke { get; internal set; }
-        #endregion
 
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
         public CorePoint ChartLocation { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the area where the point is in the UI.
+        /// </summary>
+        /// <value>
+        /// The visual area.
+        /// </value>
+        public CoreRectangle VisualArea { get; set; }
 
         /// <summary>
         /// Gets the index of this point in the chart
@@ -184,5 +93,106 @@ namespace LiveCharts
         public IChartView ChartView { get { return SeriesView.Core.Chart.View; } }
 
         internal double Gci { get; set; }
+
+        /// <summary>
+        /// Gets the Weight of the point
+        /// </summary>
+        public double Weight { get; internal set; }
+
+        /// <summary>
+        /// Gets where the stacked value started from
+        /// </summary>
+        public double From { get; internal set; }
+
+        /// <summary>
+        /// Gets where the stacked value finishes
+        /// </summary>
+        public double To { get; internal set; }
+
+        /// <summary>
+        /// Get the total sum of the stacked elements
+        /// </summary>
+        public double Sum { get; internal set; }
+
+        /// <summary>
+        /// Get the participation of the point in the stacked elements
+        /// </summary>
+        public double Participation { get; internal set; }
+
+        /// <summary>
+        /// gets the stacked participation of a point
+        /// </summary>
+        public double StackedParticipation { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the x start.
+        /// </summary>
+        /// <value>
+        /// The x start.
+        /// </value>
+        public double XStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the y start.
+        /// </summary>
+        /// <value>
+        /// The y start.
+        /// </value>
+        public double YStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the x edn.
+        /// </summary>
+        /// <value>
+        /// The x edn.
+        /// </value>
+        public double XFinish { get; set; }
+
+        /// <summary>
+        /// Gets or sets the y end.
+        /// </summary>
+        /// <value>
+        /// The y end.
+        /// </value>
+        public double YFinish { get; set; }
+
+        /// <summary>
+        /// Gets the Open value of the point
+        /// </summary>
+        public double Open { get; internal set; }
+
+        /// <summary>
+        /// Gets the High value of the point
+        /// </summary>
+        public double High { get; internal set; }
+
+        /// <summary>
+        /// Gets the Low value of the point
+        /// </summary>
+        public double Low { get; internal set; }
+
+        /// <summary>
+        /// Gets the Close value of the point
+        /// </summary>
+        public double Close { get; internal set; }
+
+        /// <summary>
+        /// Gets the Radius of a point
+        /// </summary>
+        public double Radius { get; internal set; }
+
+        /// <summary>
+        /// Gets the angle of a point
+        /// </summary>
+        public double Angle { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [evaluates gantt point].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [evaluates gantt point]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EvaluatesGantt { get; internal set; }
     }
+
 }

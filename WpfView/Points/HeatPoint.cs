@@ -50,14 +50,6 @@ namespace LiveCharts.Wpf.Points
                 Rectangle.Fill = new SolidColorBrush(Colors.Transparent);
             }
 
-            if (HoverShape != null)
-            {
-                HoverShape.Width = Width;
-                HoverShape.Height = Height;
-                Canvas.SetLeft(HoverShape, current.ChartLocation.X);
-                Canvas.SetTop(HoverShape, current.ChartLocation.Y);
-            }
-
             if (DataLabel != null)
             {
                 DataLabel.UpdateLayout();
@@ -87,7 +79,6 @@ namespace LiveCharts.Wpf.Points
 
         public override void RemoveFromView(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Rectangle);
             chart.View.RemoveFromDrawMargin(DataLabel);
         }

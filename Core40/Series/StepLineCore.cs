@@ -25,7 +25,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -35,7 +35,7 @@ namespace LiveCharts.SeriesAlgorithms
     public class StepLineCore : SeriesCore, ICartesianSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.StepLineCore"/> class.
+        /// Initializes a new instance of the <see cref="StepLineCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public StepLineCore(ISeriesView view) : base(view)

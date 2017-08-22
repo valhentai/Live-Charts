@@ -29,7 +29,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Dtos;
-using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Series;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf
@@ -39,6 +39,13 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class VerticalLineSeries : LineSeries
     {
+        #region Fields
+
+        private int _activeSplitters;
+        private int _splittersCollector;
+
+        #endregion
+
         #region Constructors
         /// <summary>
         /// Initializes an new instance of VerticalLineSeries class
@@ -68,16 +75,16 @@ namespace LiveCharts.Wpf
         /// </summary>
         protected override void OnSeriesUpdateStart()
         {
-            ActiveSplitters = 0;
+            _activeSplitters = 0;
 
-            if (SplittersCollector == int.MaxValue - 1)
+            if (_splittersCollector == int.MaxValue - 1)
             {
                 //just in case!
-                Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
-                SplittersCollector = 0;
+                PathCollection.ForEach(s => s.SplitterCollectorIndex = 0);
+                _splittersCollector = 0;
             }
 
-            SplittersCollector++;
+            _splittersCollector++;
 
             if (IsPathInitialized)
             {
@@ -139,27 +146,25 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
-                point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
-            if (Core.Chart.RequiresHoverShape && pbv.HoverShape == null)
-            {
-                pbv.HoverShape = new Rectangle
-                {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0,
-                    Width = mhr,
-                    Height = mhr
-                };
+            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
+            //{
+            //    pbv.HoverShape = new Rectangle
+            //    {
+            //        Fill = Brushes.Transparent,
+            //        StrokeThickness = 0,
+            //        Width = mhr,
+            //        Height = mhr
+            //    };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-                Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            }
+            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
+            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
+            //}
 
-            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
+            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
             {
@@ -218,18 +223,18 @@ namespace LiveCharts.Wpf
         /// <param name="location">The location.</param>
         public override void StartSegment(int atIndex, CorePoint location)
         {
-            if (Splitters.Count <= ActiveSplitters)
-                Splitters.Add(new LineSeriesPathHelper(location,  0) { IsNew = true });
+            if (PathCollection.Count <= _activeSplitters)
+                PathCollection.Add(new LineSeriesPathHelper(location,  0) { IsNew = true });
 
-            var splitter = Splitters[ActiveSplitters];
-            splitter.SplitterCollectorIndex = SplittersCollector;
+            var splitter = PathCollection[_activeSplitters];
+            splitter.SplitterCollectorIndex = _splittersCollector;
 
-            ActiveSplitters++;
+            _activeSplitters++;
             var animSpeed = Core.Chart.View.AnimationsSpeed;
             var noAnim = Core.Chart.View.DisableAnimations;
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                ? Core.Chart.View.AxisX[ScalesXAt].Model.FirstSeparator
+                ? Core.Chart.View.AxisX[ScalesXAt].Core.FirstSeparator
                 : AreaLimit, AxisOrientation.X, Core.Chart, ScalesXAt);
 
             if (Values != null && atIndex == 0)
@@ -293,16 +298,16 @@ namespace LiveCharts.Wpf
         /// <param name="location">The location.</param>
         public override void EndSegment(int atIndex, CorePoint location)
         {
-            var splitter = Splitters[ActiveSplitters - 1];
+            var splitter = PathCollection[_activeSplitters - 1];
 
             var animSpeed = Core.Chart.View.AnimationsSpeed;
             var noAnim = Core.Chart.View.DisableAnimations;
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                 ? Core.Chart.View.AxisX[ScalesXAt].Model.FirstSeparator
+                 ? Core.Chart.View.AxisX[ScalesXAt].Core.FirstSeparator
                  : AreaLimit, AxisOrientation.X, Core.Chart, ScalesXAt);
 
-            var uw = Core.Chart.View.AxisY[ScalesYAt].Model.EvaluatesUnitWidth
+            var uw = Core.Chart.View.AxisY[ScalesYAt].Core.EvaluatesUnitWidth
                 ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Core.Chart, ScalesYAt) / 2
                 : 0;
             location.Y += uw;
@@ -338,7 +343,7 @@ namespace LiveCharts.Wpf
             SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 0.15;
-            Splitters = new List<LineSeriesPathHelper>();
+            PathCollection = new List<LineSeriesPathHelper>();
         }
 
         #endregion

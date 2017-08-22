@@ -104,10 +104,10 @@ namespace LiveCharts.Wpf
             var wpfChart = (CartesianChart) chart.View;
 
             var uw = new CorePoint(
-                wpfChart.AxisX[AxisX].Model.EvaluatesUnitWidth
+                wpfChart.AxisX[AxisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart, AxisX)/2
                     : 0,
-                wpfChart.AxisY[AxisY].Model.EvaluatesUnitWidth
+                wpfChart.AxisY[AxisY].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, chart, AxisY)/2
                     : 0);
 

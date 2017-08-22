@@ -56,7 +56,6 @@ namespace LiveCharts.Wpf.Charts.Base
         private readonly Canvas _visualCanvas;
         private readonly Canvas _visualDrawMargin;
         private Popup _tooltipContainer;
-        private readonly ChartCore _chartCoreModel;
         private readonly DispatcherTimer _tooltipTimeoutTimer;
 
         #endregion
@@ -72,10 +71,8 @@ namespace LiveCharts.Wpf.Charts.Base
             var updater = new Components.ChartUpdater(freq);
             updater.Tick += () =>
             {
-                if (UpdaterTick != null)
-                {
-                    UpdaterTick.Invoke(this);
-                }
+                UpdaterTick?.Invoke(this);
+
                 if (UpdaterTickCommand != null && UpdaterTickCommand.CanExecute(this))
                 {
                     UpdaterTickCommand.Execute(this);
@@ -84,11 +81,11 @@ namespace LiveCharts.Wpf.Charts.Base
 
             if (this is ICartesianChart)
             {
-                _chartCoreModel = new CartesianChartCore(this, updater);
+                Core = new CartesianChartCore(this, updater);
             }
             else if (this is IPieChart)
             {
-                _chartCoreModel = new PieChartCore(this, updater);
+                Core = new PieChartCore(this, updater);
             }
             else
             {
@@ -135,6 +132,9 @@ namespace LiveCharts.Wpf.Charts.Base
                 Core.Updater.EnqueueUpdate();
             };
             MouseWheel += MouseWheelOnRoll;
+            MouseDown += DataMouseDown;
+            MouseMove += DataMouseEnter;
+
             _tooltipTimeoutTimer.Tick += TooltipTimeoutTimerOnTick;
 
             _visualDrawMargin.Background = Brushes.Transparent;
@@ -563,7 +563,7 @@ namespace LiveCharts.Wpf.Charts.Base
                     return pointView != null && Equals(pointView.HoverShape, sender);
                 });
 
-            if (DataClick != null) DataClick.Invoke(sender, result);
+            DataClick?.Invoke(sender, result);
             if (DataClickCommand != null && DataClickCommand.CanExecute(result)) DataClickCommand.Execute(result);
         }
 
@@ -594,8 +594,9 @@ namespace LiveCharts.Wpf.Charts.Base
 
                 var lcTooltip = DataTooltip as IChartTooltip;
                 if (lcTooltip == null)
-                    throw new LiveChartsException(
-                        "The current tooltip is not valid, ensure it implements IChartsTooltip");
+                {
+                    throw new LiveChartsException(ExceptionReason.InvalidTooltipException);
+                }
 
                 if (lcTooltip.SelectionMode == null)
                     lcTooltip.SelectionMode = senderPoint.SeriesView.Core.PreferredSelectionMode;
@@ -654,7 +655,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         internal void OnDataHover(object sender, ChartPoint point)
         {
-            if (DataHover != null) DataHover.Invoke(sender, point);
+            DataHover?.Invoke(sender, point);
             if (DataHoverCommand != null && DataHoverCommand.CanExecute(point)) DataHoverCommand.Execute(point);
         }
 
@@ -995,9 +996,7 @@ namespace LiveCharts.Wpf.Charts.Base
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var wpfChart = dependencyObject as Chart;
-            if (wpfChart == null) return;
-            if (wpfChart.Core != null) wpfChart.Core.Updater.EnqueueUpdate();
-
+            wpfChart?.Core?.Updater.EnqueueUpdate();
         }
 
         private static void OnSeriesChanged(DependencyObject dependencyObject,
@@ -1014,10 +1013,7 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             var chart = (Chart) dependencyObject;
 
-            if (chart.Core != null)
-            {
-                chart.Core.NotifyUpdaterFrequencyChanged();
-            }
+            chart.Core?.NotifyUpdaterFrequencyChanged();
         }
 
         private static PropertyChangedCallback OnAxisInstanceChanged(AxisOrientation orientation)
@@ -1026,10 +1022,7 @@ namespace LiveCharts.Wpf.Charts.Base
             {
                 var chart = (Chart) dependencyObject;
 
-                if (chart.Core != null)
-                {
-                    chart.Core.NotifyAxisInstanceChanged(orientation);
-                }
+                chart.Core?.NotifyAxisInstanceChanged(orientation);
             };
         }
 
@@ -1044,10 +1037,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <param name="force">Force the updater to run when called, without waiting for the next updater step.</param>
         public void Update(bool restartView = false, bool force = false)
         {
-            if (Core != null)
-            {
-                Core.Updater.EnqueueUpdate(restartView, force);
-            }
+            Core?.Updater.EnqueueUpdate(restartView, force);
         }
 
         #endregion
@@ -1069,15 +1059,9 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <value>
         /// The model.
         /// </value>
-        public ChartCore Core
-        {
-            get { return _chartCoreModel; }
-        }
+        public ChartCore Core { get; }
 
-        CoreSize IChartView.ControlSize
-        {
-            get { return new CoreSize(ActualWidth, ActualHeight); }
-        }
+        CoreSize IChartView.ControlSize => new CoreSize(ActualWidth, ActualHeight);
 
         double IChartView.DrawMarginTop
         {
@@ -1111,7 +1095,7 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        SeriesCollection IChartView.Series { get { return Series; } }
+        SeriesCollection IChartView.Series => Series;
 
         IEnumerable<ISeriesView> IChartView.ActualSeries
         {
@@ -1125,59 +1109,40 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        IList IChartView.Colors { get { return Colors; } }
+        IList IChartView.Colors => Colors;
 
-        IList IChartView.SeriesColors { get { return SeriesColors; } }
+        IList IChartView.SeriesColors => SeriesColors;
 
-        bool IChartView.RandomizeStartingColor { get { return RandomizeStartingColor; } }
+        bool IChartView.RandomizeStartingColor => RandomizeStartingColor;
 
-        TimeSpan IChartView.TooltipTimeout { get { return TooltipTimeout; } }
+        TimeSpan IChartView.TooltipTimeout => TooltipTimeout;
 
-        ZoomingOptions IChartView.Zoom { get { return Zoom; } }
+        ZoomingOptions IChartView.Zoom => Zoom;
 
-        PanningOptions IChartView.Pan { get { return Pan; } }
+        PanningOptions IChartView.Pan => Pan;
 
-        double IChartView.ZoomingSpeed { get { return ZoomingSpeed; } }
+        double IChartView.ZoomingSpeed => ZoomingSpeed;
 
-        LegendLocation IChartView.LegendLocation { get { return LegendLocation; } }
+        LegendLocation IChartView.LegendLocation => LegendLocation;
 
-        bool IChartView.DisableAnimations { get { return DisableAnimations; } }
+        bool IChartView.DisableAnimations => DisableAnimations;
 
-        TimeSpan IChartView.AnimationsSpeed { get { return AnimationsSpeed; } }
+        TimeSpan IChartView.AnimationsSpeed => AnimationsSpeed;
 
-        UpdaterState IChartView.UpdaterState { get { return UpdaterState; } }
+        UpdaterState IChartView.UpdaterState => UpdaterState;
 
-        AxesCollection IChartView.AxisX
-        {
-            get { return AxisX; }
-        }
+        AxesCollection IChartView.AxisX => AxisX;
 
-        AxesCollection IChartView.AxisY
-        {
-            get { return AxisY; }
-        }
+        AxesCollection IChartView.AxisY => AxisY;
 
-        bool IChartView.HasTooltip
-        {
-            get { return DataTooltip != null; }
-        }
+        bool IChartView.RequiresHoverShape => DataTooltip != null ||
+                                              DataHover != null ||
+                                              DataClick != null ||
+                                              DataClickCommand != null ||
+                                              DataHoverCommand != null ||
+                                              Hoverable;
 
-        bool IChartView.HasDataClickEventAttached
-        {
-            get { return DataClick != null; }
-        }
-
-        bool IChartView.HasDataHoverEventAttached
-        {
-            get { return DataHover != null; }
-        }
-
-        bool IChartView.IsLoaded { get { return IsLoaded; } }
-
-        bool IChartView.IsInDesignMode
-        {
-            get { return DesignerProperties.GetIsInDesignMode(this); }
-        }
+        bool IChartView.IsInDesignMode => DesignerProperties.GetIsInDesignMode(this);
 
         /// <summary>
         /// The DataClick event is fired when a user click any data point
@@ -1235,21 +1200,8 @@ namespace LiveCharts.Wpf.Charts.Base
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             var p = (Canvas) wpfElement.Parent;
-            if (p != null) p.Children.Remove(wpfElement);
+            p?.Children.Remove(wpfElement);
             ((IChartView) this).AddToDrawMargin(wpfElement);
-        }
-
-        void IChartView.EnableHoveringFor(object target)
-        {
-            var frameworkElement = (FrameworkElement) target;
-
-            frameworkElement.MouseDown -= DataMouseDown;
-            frameworkElement.MouseEnter -= DataMouseEnter;
-            frameworkElement.MouseLeave -= DataMouseLeave;
-
-            frameworkElement.MouseDown += DataMouseDown;
-            frameworkElement.MouseEnter += DataMouseEnter;
-            frameworkElement.MouseLeave += DataMouseLeave;
         }
 
         void IChartView.SetParentsTree()
@@ -1257,8 +1209,8 @@ namespace LiveCharts.Wpf.Charts.Base
             AxisX.Chart = Core;
             AxisY.Chart = Core;
 
-            foreach (var ax in AxisX) ax.Model.Chart = Core;
-            foreach (var ay in AxisY) ay.Model.Chart = Core;
+            foreach (var ax in AxisX) ax.Core.Chart = Core;
+            foreach (var ay in AxisY) ay.Core.Chart = Core;
         }
 
         void IChartView.HideTooltip()
@@ -1322,7 +1274,9 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var iChartLegend = ChartLegend as IChartLegend;
             if (iChartLegend == null)
-                throw new LiveChartsException("The current legend is not valid, ensure it implements IChartLegend");
+            {
+                throw new LiveChartsException(ExceptionReason.InvalidLegend);
+            }
 
             iChartLegend.Series = l;
 

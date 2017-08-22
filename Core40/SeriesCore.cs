@@ -100,7 +100,7 @@ namespace LiveCharts
         /// </value>
         public AxisCore CurrentXAxis
         {
-            get { return Chart.View.AxisX[View.ScalesXAt].Model; }
+            get { return Chart.View.AxisX[View.ScalesXAt].Core; }
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace LiveCharts
         /// </value>
         public AxisCore CurrentYAxis
         {
-            get { return Chart.View.AxisY[View.ScalesYAt].Model; }
+            get { return Chart.View.AxisY[View.ScalesYAt].Core; }
         }
 
         /// <summary>
@@ -138,7 +138,10 @@ namespace LiveCharts
                 _lastKnownValues.GetPoints(View)
                     .ForEach(x =>
                     {
-                        if (x.View != null) x.View.RemoveFromView(Chart);
+                        if (x.View != null)
+                        {
+                            x.View.RemoveFromView(Chart);
+                        }
                     });
             }
             Chart.Updater.EnqueueUpdate();

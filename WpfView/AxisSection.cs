@@ -301,7 +301,7 @@ namespace LiveCharts.Wpf
                 new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
             var ax = source == AxisOrientation.X ? Model.Chart.View.AxisX[axis] : Model.Chart.View.AxisY[axis];
-            var uw = ax.Model.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
+            var uw = ax.Core.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
 
             if (Parent == null)
             {
@@ -341,7 +341,7 @@ namespace LiveCharts.Wpf
                 if (DataLabelForeground != null) _label.Foreground = DataLabelForeground;
                 _label.UpdateLayout();
                 _label.Background = Stroke ?? Fill;
-                PlaceLabel(ax.Model.GetFormatter()(Value), ax.Model, source);
+                PlaceLabel(ax.Core.GetFormatter()(Value), ax.Core, source);
             }
 
             if (source == AxisOrientation.X)

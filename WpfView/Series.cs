@@ -27,6 +27,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
@@ -77,15 +78,9 @@ namespace LiveCharts.Wpf
 
         #region Protected Properties
 
-        /// <summary>
-        /// The default fill opacity
-        /// </summary>
-        protected double DefaultFillOpacity { get; set; }
+        internal double DefaultFillOpacity { get; set; }
 
-        /// <summary>
-        /// The core
-        /// </summary>
-        protected SeriesCore Core { get; set; }
+        internal SeriesCore Core { get; set; }
 
         #endregion
 
@@ -151,7 +146,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness", typeof (double), typeof (Series), 
-            new PropertyMetadata(default(double), EnqueueUpdateCallback));
+            new PropertyMetadata(1d, EnqueueUpdateCallback));
         /// <summary>
         /// Gets or sets the series stroke thickness.
         /// </summary>
@@ -397,24 +392,29 @@ namespace LiveCharts.Wpf
         protected static void EnqueueUpdateCallback(DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var wpfSeries = dependencyObject as Series;
+            var series = dependencyObject as Series;
 
-            if (wpfSeries == null) return;
-            if (wpfSeries.Core == null) return;
+            if (series == null || series.Core == null)
+            {
+                return;
+            }
 
-            if (wpfSeries.Core.Chart != null) wpfSeries.Core.Chart.Updater.EnqueueUpdate();
+            if (series.Core.Chart != null)
+            {
+                series.Core.Chart.Updater.EnqueueUpdate();
+            }
         }
 
         private static void OnValuesInstanceChanged(DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var series = (Series)dependencyObject;
+            var series = (Series) dependencyObject;
             series.Core.NotifyChartValuesInstanceChanged();
         }
 
         private static void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var series = (Series)sender;
+            var series = (Series) sender;
             series.Core.NotifySeriesVisibilityChanged();
         }
 
@@ -452,47 +452,48 @@ namespace LiveCharts.Wpf
 
         #region Protected Methods
 
-        /// <summary>
-        /// Gets the view of a given point
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
+        /// <inheritdoc cref="ISeriesView.GetPointView"/>
         protected virtual IChartPointView GetPointView(ChartPoint point, string label)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// This method runs when the update starts
-        /// </summary>
+        /// <inheritdoc cref="ISeriesView.InitializePointView"/>
+        protected virtual IChartPointView InitializePointView(IChartView chartView)
+        {
+            throw new NotImplementedException(
+                "The series has not a a InitializePointView method defined, consider overriding Series.InitializePointView() method.");
+        }
+
+        /// <inheritdoc cref="ISeriesView.OnSeriesUpdateStart"/>
         protected virtual void OnSeriesUpdateStart()
         {
         }
 
-        /// <summary>
-        /// Erases series
-        /// </summary>
+        /// <inheritdoc cref="ISeriesView.OnSeriesUpdateFinish"/>
+        protected virtual void OnSeriesUpdateFinish()
+        {
+        }
+
+        /// <inheritdoc cref="ISeriesView.InitializePointView"/>
         protected virtual void Erase(bool removeFromView = true)
         {
-            Values.GetPoints(this).ForEach(p =>
+            Values.GetPoints(this)
+                .ForEach(p =>
+                {
+                    if (p.View != null)
+                    {
+                        p.View.RemoveFromView(Core.Chart);
+                    }
+                });
+
+            if (removeFromView)
             {
-                if (p.View != null)
-                    p.View.RemoveFromView(Core.Chart);
-            });
-            if (removeFromView) Core.Chart.View.RemoveFromView(this);
+                Core.Chart.View.RemoveFromView(this);
+            }
         }
 
-        /// <summary>
-        /// This method runs when the update finishes
-        /// </summary>
-        protected virtual void OnSeriesUpdatedFinish()
-        {
-        }
-
-        /// <summary>
-        /// Initializes the series colors if they are not set
-        /// </summary>
+        /// <inheritdoc cref="ISeriesView.InitializeColors"/>
         protected virtual void InitializeColors()
         {
             if (Stroke != null && Fill != null) return;
@@ -512,29 +513,21 @@ namespace LiveCharts.Wpf
                 fillBursh.Freeze();
                 SetValue(FillProperty, fillBursh);
             }
-
         }
 
-        /// <summary>
-        /// Defines special elements to draw according to the series type
-        /// </summary>
+        /// <inheritdoc cref="ISeriesView.DrawSpecializedElements"/>
         protected virtual void DrawSpecializedElements()
         {
 
         }
 
-        /// <summary>
-        /// Places specializes items
-        /// </summary>
+        /// <inheritdoc cref="ISeriesView.PlaceSpecializedElements"/>
         protected virtual void PlaceSpecializedElements()
         {
 
         }
 
-        /// <summary>
-        /// Gets the label point formatter.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc cref="ISeriesView.GetLabelPointFormatter"/>
         protected Func<ChartPoint, string> GetLabelPointFormatter()
         {
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -576,9 +569,16 @@ namespace LiveCharts.Wpf
 
         string ISeriesView.Title { get { return Title; } }
 
+        double ISeriesView.DefaultFillOpacity { get { return .35d; }}
+
         IChartPointView ISeriesView.GetPointView(ChartPoint point, string label)
         {
             return GetPointView(point, label);
+        }
+
+        IChartPointView ISeriesView.InitializePointView(IChartView view)
+        {
+            return InitializePointView(view);
         }
 
         void ISeriesView.OnSeriesUpdateStart()
@@ -591,9 +591,9 @@ namespace LiveCharts.Wpf
             Erase();
         }
 
-        void ISeriesView.OnSeriesUpdatedFinish()
+        void ISeriesView.OnSeriesUpdateFinish()
         {
-            OnSeriesUpdatedFinish();
+            OnSeriesUpdateFinish();
         }
 
         void ISeriesView.InitializeColors()

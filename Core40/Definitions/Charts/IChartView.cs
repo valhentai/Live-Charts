@@ -42,6 +42,7 @@ namespace LiveCharts.Definitions.Charts
         /// The model.
         /// </value>
         ChartCore Core { get; }
+
         /// <summary>
         /// Gets or sets the size of the control.
         /// </summary>
@@ -49,6 +50,7 @@ namespace LiveCharts.Definitions.Charts
         /// The size of the control.
         /// </value>
         CoreSize ControlSize { get; }
+
         /// <summary>
         /// Gets or sets the height of the draw margin.
         /// </summary>
@@ -56,6 +58,7 @@ namespace LiveCharts.Definitions.Charts
         /// The height of the draw margin.
         /// </value>
         double DrawMarginHeight { get; set; }
+
         /// <summary>
         /// Gets or sets the draw margin width.
         /// </summary>
@@ -63,6 +66,7 @@ namespace LiveCharts.Definitions.Charts
         /// The draw margin width.
         /// </value>
         double DrawMarginWidth { get; set; }
+
         /// <summary>
         /// Gets or sets the draw margin top.
         /// </summary>
@@ -70,6 +74,7 @@ namespace LiveCharts.Definitions.Charts
         /// The draw margin top.
         /// </value>
         double DrawMarginTop { get; set; }
+
         /// <summary>
         /// Gets or sets the draw margin left.
         /// </summary>
@@ -77,6 +82,7 @@ namespace LiveCharts.Definitions.Charts
         /// The draw margin left.
         /// </value>
         double DrawMarginLeft { get; set; }
+
         /// <summary>
         /// Gets or sets the series.
         /// </summary>
@@ -84,6 +90,7 @@ namespace LiveCharts.Definitions.Charts
         /// The series.
         /// </value>
         SeriesCollection Series { get; }
+
         /// <summary>
         /// Gets the actual series.
         /// </summary>
@@ -91,6 +98,7 @@ namespace LiveCharts.Definitions.Charts
         /// The actual series.
         /// </value>
         IEnumerable<ISeriesView> ActualSeries { get; }
+
         /// <summary>
         /// Gets the colors.
         /// </summary>
@@ -98,6 +106,7 @@ namespace LiveCharts.Definitions.Charts
         /// The colors.
         /// </value>
         IList Colors { get; }
+
         /// <summary>
         /// Gets the series colors.
         /// </summary>
@@ -105,6 +114,7 @@ namespace LiveCharts.Definitions.Charts
         /// The series colors.
         /// </value>
         IList SeriesColors { get; }
+
         /// <summary>
         /// Gets a value indicating whether [randomize starting color].
         /// </summary>
@@ -112,6 +122,7 @@ namespace LiveCharts.Definitions.Charts
         ///   <c>true</c> if [randomize starting color]; otherwise, <c>false</c>.
         /// </value>
         bool RandomizeStartingColor { get; }
+
             /// <summary>
         /// Gets or sets the tooltip timeout.
         /// </summary>
@@ -119,6 +130,7 @@ namespace LiveCharts.Definitions.Charts
         /// The tooltip timeout.
         /// </value>
         TimeSpan TooltipTimeout { get; }
+
         /// <summary>
         /// Gets or sets the zoom.
         /// </summary>
@@ -126,6 +138,7 @@ namespace LiveCharts.Definitions.Charts
         /// The zoom.
         /// </value>
         ZoomingOptions Zoom { get; }
+
         /// <summary>
         /// Gets or sets the zoom.
         /// </summary>
@@ -133,6 +146,7 @@ namespace LiveCharts.Definitions.Charts
         /// The zoom.
         /// </value>
         PanningOptions Pan { get; }
+
         /// <summary>
         /// Gets or sets the zooming speed.
         /// </summary>
@@ -140,6 +154,7 @@ namespace LiveCharts.Definitions.Charts
         /// The zooming speed.
         /// </value>
         double ZoomingSpeed { get; }
+
         /// <summary>
         /// Gets or sets the legend location.
         /// </summary>
@@ -147,6 +162,7 @@ namespace LiveCharts.Definitions.Charts
         /// The legend location.
         /// </value>
         LegendLocation LegendLocation { get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether [disable animations].
         /// </summary>
@@ -154,6 +170,7 @@ namespace LiveCharts.Definitions.Charts
         ///   <c>true</c> if [disable animations]; otherwise, <c>false</c>.
         /// </value>
         bool DisableAnimations { get; }
+
         /// <summary>
         /// Gets or sets the animations speed.
         /// </summary>
@@ -161,6 +178,7 @@ namespace LiveCharts.Definitions.Charts
         /// The animations speed.
         /// </value>
         TimeSpan AnimationsSpeed { get; }
+
         /// <summary>
         /// Gets or sets the state of the updater.
         /// </summary>
@@ -168,6 +186,7 @@ namespace LiveCharts.Definitions.Charts
         /// The state of the updater.
         /// </value>
         UpdaterState UpdaterState { get; }
+
         /// <summary>
         /// Gets or sets the axis x.
         /// </summary>
@@ -175,6 +194,7 @@ namespace LiveCharts.Definitions.Charts
         /// The axis x.
         /// </value>
         AxesCollection AxisX { get; }
+
         /// <summary>
         /// Gets or sets the axis y.
         /// </summary>
@@ -182,27 +202,15 @@ namespace LiveCharts.Definitions.Charts
         /// The axis y.
         /// </value>
         AxesCollection AxisY { get; }
+
         /// <summary>
-        /// Gets a value indicating whether this instance has tooltip.
+        /// Gets a value indicating whether [requires hover shape].
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance has tooltip; otherwise, <c>false</c>.
+        ///   <c>true</c> if [requires hover shape]; otherwise, <c>false</c>.
         /// </value>
-        bool HasTooltip { get; }
-        /// <summary>
-        /// Gets a value indicating whether this instance has data click event attached.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance has data click event attached; otherwise, <c>false</c>.
-        /// </value>
-        bool HasDataClickEventAttached { get; }
-        /// <summary>
-        /// Gets a value indicating whether this instance has data hover event attached.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance has data hover event attached; otherwise, <c>false</c>.
-        /// </value>
-        bool HasDataHoverEventAttached { get; }
+        bool RequiresHoverShape { get; }
+
         /// <summary>
         /// Gets a value indicating whether this <see cref="IChartView"/> is hoverable.
         /// </summary>
@@ -210,6 +218,7 @@ namespace LiveCharts.Definitions.Charts
         ///   <c>true</c> if hoverable; otherwise, <c>false</c>.
         /// </value>
         bool Hoverable { get; }
+
         /// <summary>
         /// Gets a value indicating whether this instance is control loaded.
         /// </summary>
@@ -217,6 +226,7 @@ namespace LiveCharts.Definitions.Charts
         /// <c>true</c> if this instance is control loaded; otherwise, <c>false</c>.
         /// </value>
         bool IsLoaded { get; }
+
         /// <summary>
         /// Gets a value indicating whether this instance is in design mode.
         /// </summary>
@@ -224,66 +234,74 @@ namespace LiveCharts.Definitions.Charts
         /// <c>true</c> if this instance is in design mode; otherwise, <c>false</c>.
         /// </value>
         bool IsInDesignMode { get; }
+
         /// <summary>
         /// Occurs when [data click].
         /// </summary>
         event DataClickHandler DataClick;
+
         /// <summary>
         /// Occurs when [data hover]
         /// </summary>
         event DataHoverHandler DataHover;
+
         /// <summary>
         /// Adds to view.
         /// </summary>
         /// <param name="element">The element.</param>
         void AddToView(object element);
+
         /// <summary>
         /// Adds to draw margin.
         /// </summary>
         /// <param name="element">The element.</param>
         void AddToDrawMargin(object element);
+
         /// <summary>
         /// Removes from view.
         /// </summary>
         /// <param name="element">The element.</param>
         void RemoveFromView(object element);
+
         /// <summary>
         /// Removes from draw margin.
         /// </summary>
         /// <param name="element">The element.</param>
         void RemoveFromDrawMargin(object element);
+
         /// <summary>
         /// Ensures the element belongs to current view.
         /// </summary>
         /// <param name="element">The element.</param>
         void EnsureElementBelongsToCurrentView(object element);
+
         /// <summary>
         /// Ensures the element belongs to current draw margin.
         /// </summary>
         /// <param name="element">The element.</param>
         void EnsureElementBelongsToCurrentDrawMargin(object element);
-        /// <summary>
-        /// Enables the hovering for.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        void EnableHoveringFor(object target);
+
         /// <summary>
         /// Sets the parents.
         /// </summary>
         void SetParentsTree();
+
         /// <summary>
         /// Hides the tooltip.
         /// </summary>
         void HideTooltip();
+
         /// <summary>
         /// Shows the legend.
         /// </summary>
         /// <param name="at">At.</param>
         void ShowLegend(CorePoint at);
+
         /// <summary>
         /// Hides the legend.
         /// </summary>
         void HideLegend();
+
         /// <summary>
         /// Loads the legend.
         /// </summary>

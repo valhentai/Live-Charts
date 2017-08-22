@@ -28,7 +28,7 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -38,7 +38,7 @@ namespace LiveCharts.SeriesAlgorithms
     public class LineCore : SeriesCore, ICartesianSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.LineCore"/> class.
+        /// Initializes a new instance of the <see cref="LineCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public LineCore(ISeriesView view) : base(view)
@@ -57,12 +57,13 @@ namespace LiveCharts.SeriesAlgorithms
             var segmentPosition = 0;
 
             var lineView = (ILineSeriesView) View;
+            var areaPointView = (IAreaPointView) View;
 
             var smoothness = lineView.LineSmoothness;
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(lineView.AreaLimit)
-                ? Chart.View.AxisY[View.ScalesYAt].Model.FirstSeparator
+                ? Chart.View.AxisY[View.ScalesYAt].Core.FirstSeparator
                 : lineView.AreaLimit, AxisOrientation.Y, Chart, View.ScalesYAt);
 
             foreach (var segment in points.SplitEachNaN())
@@ -110,8 +111,7 @@ namespace LiveCharts.SeriesAlgorithms
                 {
                     if (!isOpen)
                     {
-                        if (Chart.View.DisableAnimations) lineView.StartSegment(p1, areaLimit);
-                        else lineView.StartAnimatedSegment(p1, areaLimit, Chart.View.AnimationsSpeed);
+                        lineView.StartSegment(p1, areaLimit, Chart.AnimationsSpeed);
                         segmentPosition = 2;
                     }
 
@@ -148,11 +148,22 @@ namespace LiveCharts.SeriesAlgorithms
                     var c2X = xm2 + (xc2 - xm2)*smoothness + p2.X - xm2;
                     var c2Y = ym2 + (yc2 - ym2)*smoothness + p2.Y - ym2;
 
-                    chartPoint.View = View.GetPointView(chartPoint,
-                        View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
+                    if (chartPoint.View == null)
+                    {
+                        chartPoint.View = View.InitializePointView(View.Core.Chart.View);
+                    }
+
+                    //chartPoint.View = View.GetPointView(chartPoint,
+                    //    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
 
                     var bezierView = chartPoint.View as IBezierPointView;
-                    if (bezierView == null) continue;
+
+                    if (bezierView == null)
+                    {
+                        throw new LiveChartsException(ExceptionReason.BezierViewRequired);
+                    }
+
+                    var mhr = areaPointView.PointMaxRadius < 10 ? 10 : areaPointView.PointMaxRadius;
 
                     bezierView.Data = index == segment.Count - 1
                         ? new BezierData(new CorePoint(p1.X, p1.Y))

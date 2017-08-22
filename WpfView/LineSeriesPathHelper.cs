@@ -27,8 +27,16 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf
 {
-    internal class LineSeriesPathHelper
+    /// <summary>
+    /// 
+    /// </summary>
+    public class LineSeriesPathHelper
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineSeriesPathHelper"/> class.
+        /// </summary>
+        /// <param name="location">The location.</param>
+        /// <param name="startsY">The starts y.</param>
         public LineSeriesPathHelper(CorePoint location, double startsY)
         {
             var p = new Point(location.X, startsY);
@@ -37,12 +45,71 @@ namespace LiveCharts.Wpf
             Right = new LineSegment {Point = p};
         }
 
-        public PathFigure LineFigure { get; set; }
-        public PathFigure ShadowFigure { get; set; }
-        public LineSegment Bottom { get; private set; }
-        public LineSegment Left { get; private set; }
-        public LineSegment Right { get; private set; }
-        public int SplitterCollectorIndex { get; set; }
+        //ToDo: Delete!
         public bool IsNew { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line path.
+        /// </summary>
+        /// <value>
+        /// The line path.
+        /// </value>
+        public Path LinePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shadow path.
+        /// </summary>
+        /// <value>
+        /// The shadow path.
+        /// </value>
+        public Path ShadowPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line figure.
+        /// </summary>
+        /// <value>
+        /// The line figure.
+        /// </value>
+        public PathFigure LineFigure { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shadow figure.
+        /// </summary>
+        /// <value>
+        /// The shadow figure.
+        /// </value>
+        public PathFigure ShadowFigure { get; set; }
+
+        /// <summary>
+        /// Gets the bottom.
+        /// </summary>
+        /// <value>
+        /// The bottom.
+        /// </value>
+        public LineSegment Bottom { get; private set; }
+
+        /// <summary>
+        /// Gets the left.
+        /// </summary>
+        /// <value>
+        /// The left.
+        /// </value>
+        public LineSegment Left { get; private set; }
+
+        /// <summary>
+        /// Gets the right.
+        /// </summary>
+        /// <value>
+        /// The right.
+        /// </value>
+        public LineSegment Right { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the index of the splitter collector.
+        /// </summary>
+        /// <value>
+        /// The index of the splitter collector.
+        /// </value>
+        public int SplitterCollectorIndex { get; set; }
     }
 }

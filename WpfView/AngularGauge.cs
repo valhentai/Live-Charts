@@ -406,8 +406,9 @@ namespace LiveCharts.Wpf
 
             var ts = double.IsNaN(TicksStep) ? DecideInterval((ToValue - FromValue)/5) : TicksStep;
             if (ts / (FromValue - ToValue) > 300)
-                throw new LiveChartsException("TicksStep property is too small compared with the range in " +
-                                              "the gauge, to avoid performance issues, please increase it.");
+            {
+                throw new LiveChartsException(ExceptionReason.InvalidGaugeTicks);
+            }
 
             for (var i = FromValue; i <= ToValue; i += ts)
             {
@@ -429,8 +430,9 @@ namespace LiveCharts.Wpf
 
             var ls = double.IsNaN(LabelsStep) ? DecideInterval((ToValue - FromValue) / 5) : LabelsStep;
             if (ls / (FromValue - ToValue) > 300)
-                throw new LiveChartsException("LabelsStep property is too small compared with the range in " +
-                                              "the gauge, to avoid performance issues, please increase it.");
+            {
+                throw new LiveChartsException(ExceptionReason.InvalidGaugeLabelStep);
+            }
 
             for (var i = FromValue; i <= ToValue; i += ls)
             {

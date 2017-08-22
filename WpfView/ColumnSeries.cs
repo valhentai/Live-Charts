@@ -28,8 +28,7 @@ using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
-using LiveCharts.SeriesAlgorithms;
-using LiveCharts.Wpf.Charts.Base;
+using LiveCharts.Series;
 using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf
@@ -64,6 +63,7 @@ namespace LiveCharts.Wpf
         #region Private Properties
 
         #endregion
+
 
         #region Properties
 
@@ -128,12 +128,7 @@ namespace LiveCharts.Wpf
 
         #region Overridden Methods
 
-        /// <summary>
-        /// Gets the view of a given point
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
+        /// <inheritdoc cref="ISeriesView.GetPointView"/>
         protected override IChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (ColumnPointView) point.View;
@@ -155,8 +150,6 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
-                point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
@@ -168,20 +161,20 @@ namespace LiveCharts.Wpf
             pbv.Rectangle.Visibility = Visibility;
             Panel.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
 
-            if (Core.Chart.RequiresHoverShape && pbv.HoverShape == null)
-            {
-                pbv.HoverShape = new Rectangle
-                {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0
-                };
+            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
+            //{
+            //    pbv.HoverShape = new Rectangle
+            //    {
+            //        Fill = Brushes.Transparent,
+            //        StrokeThickness = 0
+            //    };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-                Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            }
+            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
+            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
+            //}
 
-            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
+            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels)
             {

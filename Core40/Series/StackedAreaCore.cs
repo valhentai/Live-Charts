@@ -28,7 +28,7 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -40,7 +40,7 @@ namespace LiveCharts.SeriesAlgorithms
         private readonly IStackModelableSeriesView _stackModelable;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.StackedAreaCore"/> class.
+        /// Initializes a new instance of the <see cref="StackedAreaCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public StackedAreaCore(ISeriesView view) : base(view)
@@ -66,7 +66,7 @@ namespace LiveCharts.SeriesAlgorithms
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(lineView.AreaLimit)
-                ? Chart.View.AxisY[View.ScalesYAt].Model.FirstSeparator
+                ? Chart.View.AxisY[View.ScalesYAt].Core.FirstSeparator
                 : lineView.AreaLimit, AxisOrientation.Y, Chart, View.ScalesYAt);
 
             foreach (var segment in points.SplitEachNaN())
@@ -97,7 +97,7 @@ namespace LiveCharts.SeriesAlgorithms
                 p2 += uw;
                 p3 += uw;
 
-                lineView.StartSegment(p1, areaLimit);
+                lineView.StartSegment(p1, areaLimit, Chart.AnimationsSpeed);
                 segmentPosition += segmentPosition == 0 ? 1 : 2;
 
                 ChartPoint previousDrawn = null;

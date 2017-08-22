@@ -27,7 +27,7 @@ namespace LiveCharts.Definitions.Points
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
+    /// <seealso cref="IChartPointView" />
     public interface IBezierPointView : IChartPointView
     {
         /// <summary>

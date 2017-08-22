@@ -23,18 +23,18 @@
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.SeriesAlgorithms.StackedAreaCore" />
+    /// <seealso cref="StackedAreaCore" />
     public class VerticalStackedAreaCore : StackedAreaCore
     {
         private readonly IStackModelableSeriesView _stackModelable;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.VerticalStackedAreaCore"/> class.
+        /// Initializes a new instance of the <see cref="VerticalStackedAreaCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public VerticalStackedAreaCore(ISeriesView view) : base(view)

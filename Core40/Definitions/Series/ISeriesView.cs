@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 
 namespace LiveCharts.Definitions.Series
@@ -87,6 +88,14 @@ namespace LiveCharts.Definitions.Series
         bool IsSeriesVisible { get; }
 
         /// <summary>
+        /// Gets the default fill opacity.
+        /// </summary>
+        /// <value>
+        /// The default fill opacity.
+        /// </value>
+        double DefaultFillOpacity { get; }
+
+        /// <summary>
         /// Gets or sets the label point.
         /// </summary>
         /// <value>
@@ -119,14 +128,20 @@ namespace LiveCharts.Definitions.Series
         IChartPointView GetPointView(ChartPoint point, string label);
 
         /// <summary>
-        /// Called when [series update start].
+        /// Initializes the view.
+        /// </summary>
+        /// <returns></returns>
+        IChartPointView InitializePointView(IChartView chartView);
+
+        /// <summary>
+        /// Called when the series update starts.
         /// </summary>
         void OnSeriesUpdateStart();
 
         /// <summary>
-        /// Called when [series updated finish].
+        /// Called when the series update finishes.
         /// </summary>
-        void OnSeriesUpdatedFinish();
+        void OnSeriesUpdateFinish();
 
         /// <summary>
         /// Erases the specified remove from view.

@@ -26,7 +26,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Series;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
@@ -127,8 +127,6 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Slice);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
-                point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
@@ -140,20 +138,20 @@ namespace LiveCharts.Wpf
             pbv.Slice.Visibility = Visibility;
             Panel.SetZIndex(pbv.Slice, Panel.GetZIndex(this));
             
-            if (Core.Chart.RequiresHoverShape && pbv.HoverShape == null)
-            {
-                pbv.HoverShape = new PieSlice
-                {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0
-                };
+            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
+            //{
+            //    pbv.HoverShape = new PieSlice
+            //    {
+            //        Fill = Brushes.Transparent,
+            //        StrokeThickness = 0
+            //    };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-                Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            }
+            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
+            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
+            //}
 
-            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
+            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels)
             {

@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public Axis()
         {
-            Model = new AxisCore(this);
+            Core = new AxisCore(this);
             TitleBlock = BindATextBlock();
             SetCurrentValue(SeparatorProperty, new Separator());
             SetCurrentValue(ShowLabelsProperty, true);
@@ -115,7 +115,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Gets the Model of the axis, the model is used a DTO to communicate with the core of the library.
         /// </summary>
-        public AxisCore Model { get; set; }
+        public AxisCore Core { get; set; }
         /// <summary>
         /// Gets previous Min Value
         /// </summary>
@@ -243,7 +243,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public double ActualMinValue
         {
-            get { return Model.BotLimit; }
+            get { return Core.BotLimit; }
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public double ActualMaxValue
         {
-            get { return Model.TopLimit; }
+            get { return Core.TopLimit; }
         }
 
         /// <summary>
@@ -505,9 +505,9 @@ namespace LiveCharts.Wpf
         /// </summary>
         public void Clean()
         {
-            if (Model == null) return;
-            Model.ClearSeparators();
-            Model.Chart.View.RemoveFromView(TitleBlock);
+            if (Core == null) return;
+            Core.ClearSeparators();
+            Core.Chart.View.RemoveFromView(TitleBlock);
             Sections.Clear();
             TitleBlock = null;
         }
@@ -623,11 +623,11 @@ namespace LiveCharts.Wpf
         /// <param name="max">The maximum.</param>
         public void SetRange(double min, double max)
         {
-            var bMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
-            var bMin = double.IsNaN(MinValue) ? Model.BotLimit : MinValue;
+            var bMax = double.IsNaN(MaxValue) ? Core.TopLimit : MaxValue;
+            var bMin = double.IsNaN(MinValue) ? Core.BotLimit : MinValue;
 
-            var nMax = double.IsNaN(MaxValue) ? Model.TopLimit : MaxValue;
-            var nMin = double.IsNaN(MinValue) ? Model.BotLimit : MinValue;
+            var nMax = double.IsNaN(MaxValue) ? Core.TopLimit : MaxValue;
+            var nMin = double.IsNaN(MinValue) ? Core.BotLimit : MinValue;
 
             var e = new RangeChangedEventArgs
             {
@@ -649,7 +649,7 @@ namespace LiveCharts.Wpf
             MaxValue = max;
             MinValue = min;
 
-            Model.Chart.Updater.EnqueueUpdate();
+            Core.Chart.Updater.EnqueueUpdate();
 
             OnRangeChanged(e);
         }
@@ -708,17 +708,17 @@ namespace LiveCharts.Wpf
                 var wpfAxis = o as Axis;
                 if (wpfAxis == null) return;
 
-                if (wpfAxis.Model != null && wpfAxis.Model.Chart != null)
-                    wpfAxis.Model.Chart.Updater.EnqueueUpdate(animate, updateNow);
+                if (wpfAxis.Core != null && wpfAxis.Core.Chart != null)
+                    wpfAxis.Core.Chart.Updater.EnqueueUpdate(animate, updateNow);
             };
         }
 
         private static void LabelsVisibilityChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var axis = (Axis) dependencyObject;
-            if (axis.Model == null) return;
+            if (axis.Core == null) return;
             
-            foreach (var separator in axis.Model.CurrentSeparators)
+            foreach (var separator in axis.Core.CurrentSeparators)
             {
                 var s = (AxisSeparatorElement) separator.View;
                 s.TextBlock.Visibility = axis.ShowLabels

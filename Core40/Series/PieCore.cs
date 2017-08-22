@@ -25,7 +25,7 @@ using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -35,7 +35,7 @@ namespace LiveCharts.SeriesAlgorithms
     public class PieCore : SeriesCore, IPieSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.PieCore"/> class.
+        /// Initializes a new instance of the <see cref="PieCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public PieCore(ISeriesView view) : base(view)

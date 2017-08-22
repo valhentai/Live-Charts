@@ -59,17 +59,17 @@ namespace LiveCharts.Charts
             base.PrepareAxes();
 
             if (View.ActualSeries.Any(x => !(x.Core is ICartesianSeries)))
-                throw new LiveChartsException(
-                    "There is a invalid series in the series collection, " +
-                    "verify that all the series implement ICartesianSeries.");
-
+            {
+                throw new LiveChartsException(ExceptionReason.NotACartesianSeries);
+            }
+            
             var cartesianSeries = View.ActualSeries.Select(x => x.Core).Cast<ICartesianSeries>().ToArray();
 
             var xAxis = View.AxisX;
 
             for (var index = 0; index < xAxis.Count; index++)
             {
-                var xi = xAxis[index].Model;
+                var xi = xAxis[index].Core;
 
                 xi.CalculateSeparator(this, AxisOrientation.X);
 
@@ -87,9 +87,9 @@ namespace LiveCharts.Charts
                         else xi.TopLimit = xi.View.MaxValue;
 
                         if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01 && !View.IsInDesignMode)
-                            throw new LiveChartsException("One axis has an invalid range, it is or it is " +
-                                                          "tends to zero, please ensure your axis has a valid " +
-                                                          "range");
+                        {
+                            throw new LiveChartsException(ExceptionReason.InvalidAxisRange);
+                        }
                     }
                     else
                     {
@@ -105,7 +105,7 @@ namespace LiveCharts.Charts
 
             for (var index = 0; index < yAxis.Count; index++)
             {
-                var yi = yAxis[index].Model;
+                var yi = yAxis[index].Core;
 
                 yi.CalculateSeparator(this, AxisOrientation.Y);
 
@@ -123,9 +123,9 @@ namespace LiveCharts.Charts
                         else yi.TopLimit = yi.View.MaxValue;
 
                         if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
-                            throw new LiveChartsException("One axis has an invalid range, it is or it " +
-                                                          "tends to zero, please ensure your axis has a valid " +
-                                                          "range");
+                        {
+                            throw new LiveChartsException(ExceptionReason.InvalidAxisRange);
+                        }
                     }
                     else
                     {
@@ -164,7 +164,7 @@ namespace LiveCharts.Charts
 
             for (var index = 0; index < xAxis.Count; index++)
             {
-                var xi = xAxis[index].Model;
+                var xi = xAxis[index].Core;
                 if (xi.Sections == null) continue;
                 foreach (var section in xi.Sections)
                 {
@@ -178,7 +178,7 @@ namespace LiveCharts.Charts
 
             for (var index = 0; index < yAxis.Count; index++)
             {
-                var yi = yAxis[index].Model;
+                var yi = yAxis[index].Core;
                 if (yi.Sections == null) continue;
                 foreach (var section in yi.Sections)
                 {
@@ -204,8 +204,8 @@ namespace LiveCharts.Charts
                 first = orientation == AxisOrientation.X
                     ? new CoreLimit(series[0].GetMinX(ax), series[0].GetMaxX(ax))
                     : new CoreLimit(series[0].GetMinY(ax), series[0].GetMaxY(ax));
-                var view = series[0].View as IAreaPoint;
-                firstR = view != null ? view.PointDiameter : 0;
+                var view = series[0].View as IAreaPointView;
+                firstR = view != null ? view.PointMaxRadius : 0;
             }
 
             //                     [ max, min, pointRadius ]
@@ -217,8 +217,8 @@ namespace LiveCharts.Charts
                 var limit = orientation == AxisOrientation.X
                     ? new CoreLimit(cartesianSeries.GetMinX(ax), cartesianSeries.GetMaxX(ax))
                     : new CoreLimit(cartesianSeries.GetMinY(ax), cartesianSeries.GetMaxY(ax));
-                var view = cartesianSeries.View as IAreaPoint;
-                var radius = view != null ? view.PointDiameter : 0;
+                var view = cartesianSeries.View as IAreaPointView;
+                var radius = view != null ? view.PointMaxRadius : 0;
 
                 if (limit.Max > boundries[0]) boundries[0] = limit.Max;
                 if (limit.Min < boundries[1]) boundries[1] = limit.Min;
@@ -262,11 +262,11 @@ namespace LiveCharts.Charts
                 if (series is IStackedColumnSeriesView || series is IColumnSeriesView || 
                     series is IFinancialSeriesView || series is IHeatSeriesView)
                 {
-                    View.AxisX[series.ScalesXAt].Model.EvaluatesUnitWidth = true;
+                    View.AxisX[series.ScalesXAt].Core.EvaluatesUnitWidth = true;
                 }
                 if (series is IStackedRowSeriesView || series is IRowSeriesView || series is IHeatSeriesView)
                 {
-                    View.AxisY[series.ScalesYAt].Model.EvaluatesUnitWidth = true;
+                    View.AxisY[series.ScalesYAt].Core.EvaluatesUnitWidth = true;
                 }
             }
         }

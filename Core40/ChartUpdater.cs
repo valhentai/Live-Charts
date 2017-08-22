@@ -117,7 +117,7 @@ namespace LiveCharts
                 series.ActualValues.InitializeStep(series);
                 series.Core.Update();
                 series.ActualValues.CollectGarbage(series);
-                series.OnSeriesUpdatedFinish();
+                series.OnSeriesUpdateFinish();
                 series.PlaceSpecializedElements();
             }
         }

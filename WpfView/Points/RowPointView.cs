@@ -125,14 +125,6 @@ namespace LiveCharts.Wpf.Points
                     Canvas.SetLeft(DataLabel, getX());
                 }
 
-                if (HoverShape != null)
-                {
-                    Canvas.SetTop(HoverShape, Data.Top);
-                    Canvas.SetLeft(HoverShape, Data.Left);
-                    HoverShape.Height = Data.Height;
-                    HoverShape.Width = Data.Width;
-                }
-
                 return;
             }
 
@@ -155,19 +147,10 @@ namespace LiveCharts.Wpf.Points
                 new DoubleAnimation(Data.Height, animSpeed));
             Rectangle.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Data.Width, animSpeed));
-
-            if (HoverShape != null)
-            {
-                Canvas.SetTop(HoverShape, Data.Top);
-                Canvas.SetLeft(HoverShape, Data.Left);
-                HoverShape.Height = Data.Height;
-                HoverShape.Width = Data.Width;
-            }
         }
 
         public override void RemoveFromView(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Rectangle);
             chart.View.RemoveFromDrawMargin(DataLabel);
         }

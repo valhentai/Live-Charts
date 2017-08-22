@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //Copyright(c) 2016 Alberto Rodriguez & LiveCharts Contributors
 
@@ -20,17 +20,46 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Definitions.Series
+using LiveCharts.Defaults;
+using LiveCharts.Definitions.Series;
+
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IAreaPoint
+    /// <seealso cref="ICartesianSeries" />
+    /// <seealso cref="LiveCharts.Definitions.Series" />
+    public class VerticalLineCore : LineCore, ICartesianSeries
     {
         /// <summary>
-        /// Gets the point diameter.
+        /// Initializes a new instance of the <see cref="VerticalLineCore"/> class.
         /// </summary>
-        /// <returns></returns>
-        double PointDiameter { get; }
+        /// <param name="view">The view.</param>
+        public VerticalLineCore(ISeriesView view) : base(view)
+        {
+            SeriesOrientation = SeriesOrientation.Vertical;
+            PreferredSelectionMode = TooltipSelectionMode.SharedYValues;
+        }
+
+        double ICartesianSeries.GetMinX(AxisCore axis)
+        {
+            return AxisLimits.SeparatorMin(axis);
+        }
+
+        double ICartesianSeries.GetMaxX(AxisCore axis)
+        {
+            return AxisLimits.SeparatorMaxRounded(axis);
+        }
+
+        double ICartesianSeries.GetMinY(AxisCore axis)
+        {
+            return AxisLimits.StretchMin(axis);
+        }
+
+        double ICartesianSeries.GetMaxY(AxisCore axis)
+        {
+            return AxisLimits.StretchMax(axis);
+        }
     }
 }

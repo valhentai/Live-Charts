@@ -28,7 +28,7 @@ using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
-using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Series;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
@@ -159,8 +159,6 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
-                point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
@@ -171,20 +169,20 @@ namespace LiveCharts.Wpf
             pbv.Rectangle.Visibility = Visibility;
             Panel.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
 
-            if (Core.Chart.RequiresHoverShape && pbv.HoverShape == null)
-            {
-                pbv.HoverShape = new Rectangle
-                {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0
-                };
+            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
+            //{
+            //    pbv.HoverShape = new Rectangle
+            //    {
+            //        Fill = Brushes.Transparent,
+            //        StrokeThickness = 0
+            //    };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-                Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            }
+            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
+            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
+            //}
 
-            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
+            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels)
             {
@@ -221,8 +219,7 @@ namespace LiveCharts.Wpf
             SetCurrentValue(LabelsPositionProperty, BarLabelPosition.Top);
 
             Func<ChartPoint, string> defaultLabel = x => x.EvaluatesGantt
-                ? string.Format("starts {0}, ends {1}", Core.CurrentXAxis.GetFormatter()(x.XStart),
-                    Core.CurrentXAxis.GetFormatter()(x.X))
+                ? $"starts {Core.CurrentXAxis.GetFormatter()(x.XStart)}, ends {Core.CurrentXAxis.GetFormatter()(x.XFinish)}"
                 : Core.CurrentXAxis.GetFormatter()(x.X);
             SetCurrentValue(LabelPointProperty, defaultLabel);
 

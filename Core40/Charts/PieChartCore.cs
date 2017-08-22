@@ -55,13 +55,13 @@ namespace LiveCharts.Charts
         public override void PrepareAxes()
         {
             if (View.ActualSeries.Any(x => !(x.Core is IPieSeries)))
-                throw new LiveChartsException(
-                    "There is a invalid series in the series collection, " +
-                    "verify that all the series implement IPieSeries.");
+            {
+                throw new LiveChartsException(ExceptionReason.NotAPieSeries);
+            }
 
             foreach (var xAxis in View.AxisX)
             {
-                var xi = xAxis.Model;
+                var xi = xAxis.Core;
 
                 xi.S = 1;
                 xi.BotLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).XLimit.Min)
@@ -78,7 +78,7 @@ namespace LiveCharts.Charts
 
             foreach (var yAxis in View.AxisY)
             {
-                var yi = yAxis.Model;
+                var yi = yAxis.Core;
 
                 //yi.CalculateSeparator(this, AxisTags.X);
                 yi.BotLimit = View.ActualSeries.Select(x => x.Values.GetTracker(x).YLimit.Min)

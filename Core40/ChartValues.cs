@@ -99,6 +99,7 @@ namespace LiveCharts
             var isHorizontal = seriesView.Core.SeriesOrientation == SeriesOrientation.Horizontal;
 
             var index = 0;
+
             foreach(var item in this)
             {
                 config.Evaluate(index, item, cp);

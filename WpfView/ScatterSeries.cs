@@ -24,10 +24,11 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Series;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 
@@ -36,7 +37,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Bubble series, draws scatter series, only using X and Y properties or bubble series, if you also use the weight property, this series should be used in a cartesian chart.
     /// </summary>
-    public class ScatterSeries : Series, IScatterSeriesView, IAreaPoint
+    public class ScatterSeries : Series, IScatterSeriesView, IAreaPointView
     {
         #region Constructors
         /// <summary>
@@ -99,7 +100,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        double IAreaPoint.PointDiameter { get{ return MaxPointShapeDiameter / 2; } }
+        double IAreaPointView.PointMaxRadius { get{ return MaxPointShapeDiameter / 2; } }
 
         #region Overridden Methods
 
@@ -133,8 +134,6 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
-                point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
             }
 
@@ -147,20 +146,20 @@ namespace LiveCharts.Wpf
             Panel.SetZIndex(p, Panel.GetZIndex(this));
             p.StrokeDashArray = StrokeDashArray;
 
-            if (Core.Chart.RequiresHoverShape && pbv.HoverShape == null)
-            {
-                pbv.HoverShape = new Rectangle
-                {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0
-                };
+            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
+            //{
+            //    pbv.HoverShape = new Rectangle
+            //    {
+            //        Fill = Brushes.Transparent,
+            //        StrokeThickness = 0
+            //    };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-                Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            }
+            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
+            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
+            //}
 
-            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
+            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels)
             {

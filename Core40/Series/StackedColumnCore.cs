@@ -26,7 +26,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -37,7 +37,7 @@ namespace LiveCharts.SeriesAlgorithms
     {
         private readonly IStackModelableSeriesView _stackModelable;
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.StackedColumnCore"/> class.
+        /// Initializes a new instance of the <see cref="StackedColumnCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public StackedColumnCore(ISeriesView view) : base(view)

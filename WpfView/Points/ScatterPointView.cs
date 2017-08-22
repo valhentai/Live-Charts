@@ -52,14 +52,6 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
 
-            if (HoverShape != null)
-            {
-                HoverShape.Width = Diameter;
-                HoverShape.Height = Diameter;
-                Canvas.SetLeft(HoverShape, current.ChartLocation.X - Diameter / 2);
-                Canvas.SetTop(HoverShape, current.ChartLocation.Y - Diameter / 2);
-            }
-
             if (chart.View.DisableAnimations)
             {
                 Shape.Width = Diameter;
@@ -108,7 +100,6 @@ namespace LiveCharts.Wpf.Points
 
         public override void RemoveFromView(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Shape);
             chart.View.RemoveFromDrawMargin(DataLabel);
         }

@@ -21,12 +21,14 @@
 //SOFTWARE.
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Helpers;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -66,14 +68,14 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
 
-            if (HoverShape != null)
-            {
-                var h = Math.Abs(High - Low);
-                HoverShape.Width = Width;
-                HoverShape.Height = h > 10 ? h : 10;
-                Canvas.SetLeft(HoverShape, Left);
-                Canvas.SetTop(HoverShape, High);
-            }
+            //if (HoverShape != null)
+            //{
+            //    var h = Math.Abs(High - Low);
+            //    HoverShape.Width = Width;
+            //    HoverShape.Height = h > 10 ? h : 10;
+            //    Canvas.SetLeft(HoverShape, Left);
+            //    Canvas.SetTop(HoverShape, High);
+            //}
 
             if (chart.View.DisableAnimations)
             {
@@ -165,7 +167,6 @@ namespace LiveCharts.Wpf.Points
 
         public override void RemoveFromView(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(OpenToCloseRectangle);
             chart.View.RemoveFromDrawMargin(HighToLowLine);
             chart.View.RemoveFromDrawMargin(DataLabel);

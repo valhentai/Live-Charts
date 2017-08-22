@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Definitions.Charts;
@@ -36,6 +35,7 @@ namespace LiveCharts.Charts
     public abstract class ChartCore
     {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartCore"/> class.
         /// </summary>

@@ -27,7 +27,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Series
 {
     /// <summary>
     /// 
@@ -37,7 +37,7 @@ namespace LiveCharts.SeriesAlgorithms
     public class RowCore : SeriesCore, ICartesianSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.RowCore"/> class.
+        /// Initializes a new instance of the <see cref="RowCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         public RowCore(ISeriesView view) : base(view)

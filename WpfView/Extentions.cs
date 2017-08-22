@@ -22,13 +22,13 @@ namespace LiveCharts.Wpf
         /// <returns></returns>
         public static Point ConvertToChartValues(this Chart chart, Point screenPoint, int axisX = 0, int axisY = 0)
         {
-            if (chart.Core == null || chart.AxisX == null || chart.AxisX.Any(x => x.Model == null)) return new Point();
+            if (chart.Core == null || chart.AxisX == null || chart.AxisX.Any(x => x.Core == null)) return new Point();
 
             var uw = new CorePoint(
-                chart.AxisX[axisX].Model.EvaluatesUnitWidth
+                chart.AxisX[axisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart.Core, axisX) / 2
                     : 0,
-                chart.AxisY[axisY].Model.EvaluatesUnitWidth
+                chart.AxisY[axisY].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, chart.Core, axisY) / 2
                     : 0);
 
@@ -47,13 +47,13 @@ namespace LiveCharts.Wpf
         /// <returns></returns>
         public static Point ConvertToPixels(this Chart chart, Point chartPoint, int axisX = 0, int axisY = 0)
         {
-            if (chart.Core == null || chart.AxisX.Any(x => x.Model == null)) return new Point();
+            if (chart.Core == null || chart.AxisX.Any(x => x.Core == null)) return new Point();
 
             var uw = new CorePoint(
-                chart.AxisX[axisX].Model.EvaluatesUnitWidth
+                chart.AxisX[axisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart.Core, axisX) / 2
                     : 0,
-                chart.AxisY[axisY].Model.EvaluatesUnitWidth
+                chart.AxisY[axisY].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, chart.Core, axisY) / 2
                     : 0);
 

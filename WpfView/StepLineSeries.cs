@@ -27,7 +27,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Series;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 
@@ -36,7 +36,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Step line series.
     /// </summary>
-    public class StepLineSeries : Series, IFondeable, IAreaPoint
+    public class StepLineSeries : Series, IFondeable, IAreaPointView
     {
         #region Constructors
 
@@ -162,8 +162,6 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HoverShape);
-                point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Line2);
@@ -212,20 +210,20 @@ namespace LiveCharts.Wpf
                 if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
             }
 
-            if (Core.Chart.RequiresHoverShape && pbv.HoverShape == null)
-            {
-                pbv.HoverShape = new Rectangle
-                {
-                    Fill = Brushes.Transparent,
-                    StrokeThickness = 0
-                };
+            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
+            //{
+            //    pbv.HoverShape = new Rectangle
+            //    {
+            //        Fill = Brushes.Transparent,
+            //        StrokeThickness = 0
+            //    };
 
-                Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-                Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-                Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            }
+            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
+            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
+            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
+            //}
 
-            if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
+            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
 
             if (DataLabels)
             {
@@ -262,7 +260,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        double IAreaPoint.PointDiameter { get { return PointGeometrySize / 2; } }
+        double IAreaPointView.PointMaxRadius { get { return PointGeometrySize / 2; } }
 
         #region Private Methods
 

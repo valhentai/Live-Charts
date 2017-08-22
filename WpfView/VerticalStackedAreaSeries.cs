@@ -28,7 +28,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Definitions.Series;
-using LiveCharts.SeriesAlgorithms;
+using LiveCharts.Series;
 
 namespace LiveCharts.Wpf
 {
@@ -37,6 +37,13 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class VerticalStackedAreaSeries : VerticalLineSeries, IVerticalStackedAreaSeriesView
     {
+        #region Fields
+
+        private int _activeSplitters;
+        private int _splittersCollector;
+
+        #endregion
+
         #region Constructors
         /// <summary>
         /// Initializes a new instance of VerticalStackedAreaSeries class
@@ -83,16 +90,16 @@ namespace LiveCharts.Wpf
         /// </summary>
         protected override void OnSeriesUpdateStart()
         {
-            ActiveSplitters = 0;
+            _activeSplitters = 0;
 
-            if (SplittersCollector == int.MaxValue - 1)
+            if (_splittersCollector == int.MaxValue - 1)
             {
                 //just in case!
-                Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
-                SplittersCollector = 0;
+                PathCollection.ForEach(s => s.SplitterCollectorIndex = 0);
+                _splittersCollector = 0;
             }
 
-            SplittersCollector++;
+            _splittersCollector++;
 
             if (Figure != null && Values != null)
             {
@@ -165,7 +172,7 @@ namespace LiveCharts.Wpf
             SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;
-            Splitters = new List<LineSeriesPathHelper>();
+            PathCollection = new List<LineSeriesPathHelper>();
         }
 
         #endregion

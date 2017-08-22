@@ -20,46 +20,27 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Defaults;
-using LiveCharts.Definitions.Series;
+using System;
 
-namespace LiveCharts.SeriesAlgorithms
+namespace LiveCharts.Helpers
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.SeriesAlgorithms.LineCore" />
-    /// <seealso cref="LiveCharts.Definitions.Series.ICartesianSeries" />
-    public class VerticalLineCore : LineCore, ICartesianSeries
+    /// <seealso cref="System.Attribute" />
+    [AttributeUsage(AttributeTargets.Field)]
+    internal class ReasonAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LiveCharts.SeriesAlgorithms.VerticalLineCore"/> class.
-        /// </summary>
-        /// <param name="view">The view.</param>
-        public VerticalLineCore(ISeriesView view) : base(view)
+        public ReasonAttribute()
         {
-            SeriesOrientation = SeriesOrientation.Vertical;
-            PreferredSelectionMode = TooltipSelectionMode.SharedYValues;
+
         }
 
-        double ICartesianSeries.GetMinX(AxisCore axis)
+        public ReasonAttribute(string message)
         {
-            return AxisLimits.SeparatorMin(axis);
+            Message = message;
         }
 
-        double ICartesianSeries.GetMaxX(AxisCore axis)
-        {
-            return AxisLimits.SeparatorMaxRounded(axis);
-        }
-
-        double ICartesianSeries.GetMinY(AxisCore axis)
-        {
-            return AxisLimits.StretchMin(axis);
-        }
-
-        double ICartesianSeries.GetMaxY(AxisCore axis)
-        {
-            return AxisLimits.StretchMax(axis);
-        }
+        public string Message { get; set; }
     }
 }

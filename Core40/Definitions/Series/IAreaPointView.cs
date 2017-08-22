@@ -20,46 +20,17 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using LiveCharts.Dtos;
-
 namespace LiveCharts.Definitions.Series
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Series.ISeriesView" />
-    public interface ILineSeriesView : ISeriesView
+    public interface IAreaPointView
     {
         /// <summary>
-        /// Gets or sets the line smoothness.
+        /// Gets the point diameter.
         /// </summary>
-        /// <value>
-        /// The line smoothness.
-        /// </value>
-        double LineSmoothness { get; }
-
-        /// <summary>
-        /// Gets or sets the area limit.
-        /// </summary>
-        /// <value>
-        /// The area limit.
-        /// </value>
-        double AreaLimit { get; }
-
-        /// <summary>
-        /// Starts the segment.
-        /// </summary>
-        /// <param name="location">The location.</param>
-        /// <param name="areaLimit">The animations speed.</param>
-        /// <param name="animationsSpeed"></param>
-        void StartSegment(CorePoint location, double areaLimit, TimeSpan animationsSpeed);
-
-        /// <summary>
-        /// Ends the segment.
-        /// </summary>
-        /// <param name="atIndex">At index.</param>
-        /// <param name="location">The location.</param>
-        void EndSegment(int atIndex, CorePoint location);
+        /// <returns></returns>
+        double PointMaxRadius { get; }
     }
 }

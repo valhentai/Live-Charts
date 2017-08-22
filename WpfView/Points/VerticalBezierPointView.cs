@@ -81,7 +81,7 @@ namespace LiveCharts.Wpf.Points
                     //}
                     //else
                     //{
-                        var startPoint = ((LineSeries) current.SeriesView).Splitters[0].Left.Point;
+                        var startPoint = ((LineSeries) current.SeriesView).PathCollection[0].Left.Point;
                         Segment.Point1 = startPoint;
                         Segment.Point2 = startPoint;
                         Segment.Point3 = startPoint;
@@ -112,12 +112,6 @@ namespace LiveCharts.Wpf.Points
                 Segment.Point1 = Data.Point1.AsPoint();
                 Segment.Point2 = Data.Point2.AsPoint();
                 Segment.Point3 = Data.Point3.AsPoint();
-
-                if (HoverShape != null)
-                {
-                    Canvas.SetLeft(HoverShape, current.ChartLocation.X - HoverShape.Width * .5);
-                    Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height * .5);
-                }
 
                 if (Shape != null)
                 {
@@ -173,18 +167,13 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(yl, chart.View.AnimationsSpeed));
             }
-
-            if (HoverShape != null)
-            {
-                Canvas.SetLeft(HoverShape, current.ChartLocation.X - HoverShape.Width * .5);
-                Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height * .5);
-            }
         }
 
         public override void OnHover(ChartPoint point)
         {
             var lineSeries = (LineSeries)point.SeriesView;
             if (Shape != null) Shape.Fill = Shape.Stroke;
+
             lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness + 1;
         }
 

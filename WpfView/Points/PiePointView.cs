@@ -56,18 +56,6 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetLeft(DataLabel, chart.View.DrawMarginWidth/2);
             }
 
-            if (HoverShape != null)
-            {
-                var hs = (PieSlice) HoverShape;
-
-                Canvas.SetTop(hs, chart.View.DrawMarginHeight/2);
-                Canvas.SetLeft(hs, chart.View.DrawMarginWidth/2);
-                hs.WedgeAngle = Wedge;
-                hs.RotationAngle = Rotation;
-                hs.InnerRadius = InnerRadius;
-                hs.Radius = Radius;
-            }
-
             var lh = 0d;
             if (DataLabel != null)
             {
@@ -127,7 +115,6 @@ namespace LiveCharts.Wpf.Points
 
         public override void RemoveFromView(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Slice);
             chart.View.RemoveFromDrawMargin(DataLabel);
         }

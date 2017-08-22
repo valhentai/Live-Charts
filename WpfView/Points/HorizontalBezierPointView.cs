@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -31,7 +30,7 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class HorizontalBezierPointView : PointView, IBezierPointView
+    public class HorizontalBezierPointView : PointView, IBezierPointView
     {
         public BezierSegment Segment { get; set; }
         public Path Shape { get; set; }
@@ -96,7 +95,7 @@ namespace LiveCharts.Wpf.Points
                     //}
                     //else
                     //{
-                        var startPoint = ((LineSeries)current.SeriesView).Splitters[0].Left.Point;
+                        var startPoint = ((LineSeries)current.SeriesView).PathCollection[0].Left.Point;
                         Segment.Point1 = startPoint;
                         Segment.Point2 = startPoint;
                         Segment.Point3 = startPoint;
@@ -128,12 +127,6 @@ namespace LiveCharts.Wpf.Points
                 Segment.Point1 = Data.Point1.AsPoint();
                 Segment.Point2 = Data.Point2.AsPoint();
                 Segment.Point3 = Data.Point3.AsPoint();
-
-                if (HoverShape != null)
-                {
-                    Canvas.SetLeft(HoverShape, current.ChartLocation.X - HoverShape.Width*.5);
-                    Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height*.5);
-                }
 
                 if (Shape != null)
                 {
@@ -189,17 +182,10 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty,
                     new DoubleAnimation(yl, chart.View.AnimationsSpeed));
             }
-
-            if (HoverShape != null)
-            {
-                Canvas.SetLeft(HoverShape, current.ChartLocation.X - HoverShape.Width*.5);
-                Canvas.SetTop(HoverShape, current.ChartLocation.Y - HoverShape.Height*.5);
-            }
         }
 
         public override void RemoveFromView(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(HoverShape);
             chart.View.RemoveFromDrawMargin(Shape);
             chart.View.RemoveFromDrawMargin(DataLabel);
             ShadowContainer.Segments.Remove(Segment);
@@ -231,9 +217,10 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var lineSeries = (LineSeries)point.SeriesView;
+            var lineSeries = (LineSeries) point.SeriesView;
             if (Shape != null) Shape.Fill = Shape.Stroke;
-            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness + 1;
+
+            lineSeries.PathCollection.ForEach(s => s.LinePath.StrokeThickness++);
         }
 
         public override void OnHoverLeave(ChartPoint point)
@@ -243,7 +230,11 @@ namespace LiveCharts.Wpf.Points
                 Shape.Fill = point.Fill == null
                     ? lineSeries.PointForeground
                     : (Brush) point.Fill;
-            lineSeries.Path.StrokeThickness = lineSeries.StrokeThickness;
+
+            lineSeries.PathCollection.ForEach(s =>
+            {
+                s.LinePath.StrokeThickness = lineSeries.StrokeThickness;
+            });
         }
     }
 }
