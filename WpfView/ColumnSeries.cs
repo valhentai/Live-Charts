@@ -64,7 +64,6 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-
         #region Properties
 
         /// <summary>

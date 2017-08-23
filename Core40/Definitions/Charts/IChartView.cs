@@ -33,7 +33,7 @@ namespace LiveCharts.Definitions.Charts
     /// <summary>
     /// 
     /// </summary>
-    public interface IChartView
+    public interface I2DChartView
     {
         /// <summary>
         /// Gets the model.

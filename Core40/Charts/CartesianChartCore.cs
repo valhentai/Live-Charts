@@ -42,7 +42,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="updater">The updater.</param>
-        public CartesianChartCore(IChartView view, ChartUpdater updater)
+        public CartesianChartCore(I2DChartView view, ChartUpdater updater)
             : base(view, updater)
         {
         }

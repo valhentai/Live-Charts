@@ -90,7 +90,7 @@ namespace LiveCharts
         /// <value>
         /// The chart view.
         /// </value>
-        public IChartView ChartView { get { return SeriesView.Core.Chart.View; } }
+        public I2DChartView ChartView { get { return SeriesView.Core.Chart.View; } }
 
         internal double Gci { get; set; }
 

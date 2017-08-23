@@ -41,7 +41,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="updater">The updater.</param>
-        public PieChartCore(IChartView view, ChartUpdater updater) : base(view, updater)
+        public PieChartCore(I2DChartView view, ChartUpdater updater) : base(view, updater)
         {
         }
 

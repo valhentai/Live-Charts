@@ -49,7 +49,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="updater">The updater.</param>
-        protected ChartCore(IChartView view, ChartUpdater updater)
+        protected ChartCore(I2DChartView view, ChartUpdater updater)
         {
             View = view;
             Updater = updater;
@@ -103,7 +103,7 @@ namespace LiveCharts.Charts
         /// <value>
         /// The view.
         /// </value>
-        public IChartView View { get; set; }
+        public I2DChartView View { get; set; }
         /// <summary>
         /// Gets or sets the updater.
         /// </summary>

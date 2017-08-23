@@ -58,7 +58,7 @@ namespace LiveCharts.Definitions.Charts
         /// Clears the specified chart.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        void Clear(IChartView chart);
+        void Clear(I2DChartView chart);
 
         //No animated methods
         /// <summary>

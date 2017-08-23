@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf.Charts.Base
     /// <summary>
     /// Base chart class
     /// </summary>
-    public abstract class Chart : UserControl, IChartView
+    public abstract class Chart : UserControl, I2DChartView
     {
         #region Fields
 
@@ -556,7 +556,7 @@ namespace LiveCharts.Wpf.Charts.Base
         
         private void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var result = ((IChartView) this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
+            var result = ((I2DChartView) this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
                 .FirstOrDefault(x =>
                 {
                     return true;
@@ -571,7 +571,7 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             _tooltipTimeoutTimer.Stop();
 
-            var source = ((IChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
+            var source = ((I2DChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
             var senderPoint = source.FirstOrDefault(x => true);
 
             if (senderPoint == null) return;
@@ -584,7 +584,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 {
                     Panel.SetZIndex(DataTooltip, int.MaxValue);
                     _tooltipContainer = new Popup {AllowsTransparency = true, Placement = PlacementMode.RelativePoint};
-                    ((IChartView) this).AddToView(_tooltipContainer);
+                    ((I2DChartView) this).AddToView(_tooltipContainer);
                     _tooltipContainer.Child = DataTooltip;
                     Canvas.SetTop(DataTooltip, 0d);
                     Canvas.SetLeft(DataTooltip, 0d);
@@ -662,7 +662,7 @@ namespace LiveCharts.Wpf.Charts.Base
             _tooltipTimeoutTimer.Stop();
             _tooltipTimeoutTimer.Start();
 
-            var source = ((IChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
+            var source = ((I2DChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
             var senderPoint = source.FirstOrDefault(x =>true);
 
             if (senderPoint == null) return;
@@ -843,7 +843,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             if (ScrollMode == ScrollMode.None)
             {
-                ((IChartView) this).RemoveFromDrawMargin(ScrollBar);
+                ((I2DChartView) this).RemoveFromDrawMargin(ScrollBar);
                 ScrollBar = null;
 
                 return;
@@ -856,7 +856,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 ScrollBar.SetBinding(Shape.FillProperty,
                     new Binding {Path = new PropertyPath(ScrollBarFillProperty), Source = this});
 
-                ((IChartView) this).EnsureElementBelongsToCurrentView(ScrollBar);
+                ((I2DChartView) this).EnsureElementBelongsToCurrentView(ScrollBar);
                 ScrollBar.MouseDown += ScrollBarOnMouseDown;
                 MouseMove += ScrollBarOnMouseMove;
                 ScrollBar.MouseUp += ScrollBarOnMouseUp;
@@ -1058,21 +1058,21 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </value>
         public ChartCore Core { get; }
 
-        CoreSize IChartView.ControlSize => new CoreSize(ActualWidth, ActualHeight);
+        CoreSize I2DChartView.ControlSize => new CoreSize(ActualWidth, ActualHeight);
 
-        double IChartView.DrawMarginTop
+        double I2DChartView.DrawMarginTop
         {
             get { return Canvas.GetTop(_visualDrawMargin); }
             set { Canvas.SetTop(_visualDrawMargin, value); }
         }
 
-        double IChartView.DrawMarginLeft
+        double I2DChartView.DrawMarginLeft
         {
             get { return Canvas.GetLeft(_visualDrawMargin); }
             set { Canvas.SetLeft(_visualDrawMargin, value); }
         }
 
-        double IChartView.DrawMarginWidth
+        double I2DChartView.DrawMarginWidth
         {
             get { return _visualDrawMargin.Width; }
             set
@@ -1082,7 +1082,7 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        double IChartView.DrawMarginHeight
+        double I2DChartView.DrawMarginHeight
         {
             get { return _visualDrawMargin.Height; }
             set
@@ -1092,9 +1092,9 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        SeriesCollection IChartView.Series => Series;
+        SeriesCollection I2DChartView.Series => Series;
 
-        IEnumerable<ISeriesView> IChartView.ActualSeries
+        IEnumerable<ISeriesView> I2DChartView.ActualSeries
         {
             get
             {
@@ -1106,40 +1106,40 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        IList IChartView.Colors => Colors;
+        IList I2DChartView.Colors => Colors;
 
-        IList IChartView.SeriesColors => SeriesColors;
+        IList I2DChartView.SeriesColors => SeriesColors;
 
-        bool IChartView.RandomizeStartingColor => RandomizeStartingColor;
+        bool I2DChartView.RandomizeStartingColor => RandomizeStartingColor;
 
-        TimeSpan IChartView.TooltipTimeout => TooltipTimeout;
+        TimeSpan I2DChartView.TooltipTimeout => TooltipTimeout;
 
-        ZoomingOptions IChartView.Zoom => Zoom;
+        ZoomingOptions I2DChartView.Zoom => Zoom;
 
-        PanningOptions IChartView.Pan => Pan;
+        PanningOptions I2DChartView.Pan => Pan;
 
-        double IChartView.ZoomingSpeed => ZoomingSpeed;
+        double I2DChartView.ZoomingSpeed => ZoomingSpeed;
 
-        LegendLocation IChartView.LegendLocation => LegendLocation;
+        LegendLocation I2DChartView.LegendLocation => LegendLocation;
 
-        bool IChartView.DisableAnimations => DisableAnimations;
+        bool I2DChartView.DisableAnimations => DisableAnimations;
 
-        TimeSpan IChartView.AnimationsSpeed => AnimationsSpeed;
+        TimeSpan I2DChartView.AnimationsSpeed => AnimationsSpeed;
 
-        UpdaterState IChartView.UpdaterState => UpdaterState;
+        UpdaterState I2DChartView.UpdaterState => UpdaterState;
 
-        AxesCollection IChartView.AxisX => AxisX;
+        AxesCollection I2DChartView.AxisX => AxisX;
 
-        AxesCollection IChartView.AxisY => AxisY;
+        AxesCollection I2DChartView.AxisY => AxisY;
 
-        bool IChartView.RequiresHoverShape => DataTooltip != null ||
+        bool I2DChartView.RequiresHoverShape => DataTooltip != null ||
                                               DataHover != null ||
                                               DataClick != null ||
                                               DataClickCommand != null ||
                                               DataHoverCommand != null ||
                                               Hoverable;
 
-        bool IChartView.IsInDesignMode => DesignerProperties.GetIsInDesignMode(this);
+        bool I2DChartView.IsInDesignMode => DesignerProperties.GetIsInDesignMode(this);
 
         /// <summary>
         /// The DataClick event is fired when a user click any data point
@@ -1156,52 +1156,52 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public event UpdaterTickHandler UpdaterTick;
 
-        void IChartView.AddToView(object element)
+        void I2DChartView.AddToView(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualCanvas.Children.Add(wpfElement);
         }
 
-        void IChartView.AddToDrawMargin(object element)
+        void I2DChartView.AddToDrawMargin(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualDrawMargin.Children.Add(wpfElement);
         }
 
-        void IChartView.RemoveFromView(object element)
+        void I2DChartView.RemoveFromView(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualCanvas.Children.Remove(wpfElement);
         }
 
-        void IChartView.RemoveFromDrawMargin(object element)
+        void I2DChartView.RemoveFromDrawMargin(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualDrawMargin.Children.Remove(wpfElement);
         }
 
-        void IChartView.EnsureElementBelongsToCurrentView(object element)
+        void I2DChartView.EnsureElementBelongsToCurrentView(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             var p = (Canvas) wpfElement.Parent;
-            if (p == null) ((IChartView) this).AddToView(wpfElement);
+            if (p == null) ((I2DChartView) this).AddToView(wpfElement);
         }
 
-        void IChartView.EnsureElementBelongsToCurrentDrawMargin(object element)
+        void I2DChartView.EnsureElementBelongsToCurrentDrawMargin(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             var p = (Canvas) wpfElement.Parent;
             p?.Children.Remove(wpfElement);
-            ((IChartView) this).AddToDrawMargin(wpfElement);
+            ((I2DChartView) this).AddToDrawMargin(wpfElement);
         }
 
-        void IChartView.SetParentsTree()
+        void I2DChartView.SetParentsTree()
         {
             AxisX.Chart = Core;
             AxisY.Chart = Core;
@@ -1210,20 +1210,20 @@ namespace LiveCharts.Wpf.Charts.Base
             foreach (var ay in AxisY) ay.Core.Chart = Core;
         }
 
-        void IChartView.HideTooltip()
+        void I2DChartView.HideTooltip()
         {
             if (_tooltipContainer == null) return;
 
             _tooltipContainer.IsOpen = false;
         }
 
-        void IChartView.ShowLegend(CorePoint at)
+        void I2DChartView.ShowLegend(CorePoint at)
         {
             if (ChartLegend == null) return;
 
             if (ChartLegend.Parent == null)
             {
-                ((IChartView) this).AddToView(ChartLegend);
+                ((I2DChartView) this).AddToView(ChartLegend);
                 Canvas.SetLeft(ChartLegend, 0d);
                 Canvas.SetTop(ChartLegend, 0d);
             }
@@ -1234,13 +1234,13 @@ namespace LiveCharts.Wpf.Charts.Base
             Canvas.SetTop(ChartLegend, at.Y);
         }
 
-        void IChartView.HideLegend()
+        void I2DChartView.HideLegend()
         {
             if (ChartLegend != null)
                 ChartLegend.Visibility = Visibility.Hidden;
         }
 
-        CoreSize IChartView.LoadLegend()
+        CoreSize I2DChartView.LoadLegend()
         {
             if (ChartLegend == null || LegendLocation == LegendLocation.None)
                 return new CoreSize();
@@ -1250,7 +1250,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var l = new List<SeriesViewModel>();
 
-            foreach (var t in ((IChartView)this).ActualSeries)
+            foreach (var t in ((I2DChartView)this).ActualSeries)
             {
                 var item = new SeriesViewModel();
 

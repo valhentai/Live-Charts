@@ -106,7 +106,7 @@ namespace LiveCharts.Wpf.Components
         /// Clears the specified chart.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public void Clear(IChartView chart)
+        public void Clear(I2DChartView chart)
         {
             chart.RemoveFromView(TextBlock);
             chart.RemoveFromView(Line);

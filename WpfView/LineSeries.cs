@@ -265,7 +265,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="Series.InitializePointView"/>
-        protected override IChartPointView InitializePointView(IChartView chartView)
+        protected override IChartPointView InitializePointView(I2DChartView chartView)
         {
             var pointView = new HorizontalBezierPointView
             {
