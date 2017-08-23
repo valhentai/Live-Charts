@@ -559,8 +559,7 @@ namespace LiveCharts.Wpf.Charts.Base
             var result = ((IChartView) this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
                 .FirstOrDefault(x =>
                 {
-                    var pointView = x.View as PointView;
-                    return pointView != null && Equals(pointView.HoverShape, sender);
+                    return true;
                 });
 
             DataClick?.Invoke(sender, result);
@@ -573,8 +572,7 @@ namespace LiveCharts.Wpf.Charts.Base
             _tooltipTimeoutTimer.Stop();
 
             var source = ((IChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
-            var senderPoint = source.FirstOrDefault(x => x.View != null &&
-                                                         Equals(((PointView) x.View).HoverShape, sender));
+            var senderPoint = source.FirstOrDefault(x => true);
 
             if (senderPoint == null) return;
 
@@ -665,8 +663,7 @@ namespace LiveCharts.Wpf.Charts.Base
             _tooltipTimeoutTimer.Start();
 
             var source = ((IChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
-            var senderPoint = source.FirstOrDefault(x => x.View != null &&
-                                                         Equals(((PointView) x.View).HoverShape, sender));
+            var senderPoint = source.FirstOrDefault(x =>true);
 
             if (senderPoint == null) return;
 
