@@ -181,7 +181,7 @@ namespace LiveCharts
         /// <value>
         /// The chart view.
         /// </value>
-        public IChartView ChartView { get { return SeriesView.Model.Chart.View; } }
+        public IBiDimensionalChartView BiDimensionalChartView { get { return SeriesView.Model.Chart.View; } }
 
         internal double Gci { get; set; }
     }

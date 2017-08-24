@@ -25,8 +25,8 @@ namespace LiveCharts.Definitions.Charts
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Charts.IChartView" />
-    public interface IPieChart : IChartView
+    /// <seealso cref="IBiDimensionalChartView" />
+    public interface IPieChart : IBiDimensionalChartView
     {
         /// <summary>
         /// Gets or sets the inner radius.

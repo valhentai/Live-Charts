@@ -57,8 +57,8 @@ namespace LiveCharts.Definitions.Charts
         /// <summary>
         /// Clears the specified chart.
         /// </summary>
-        /// <param name="chart">The chart.</param>
-        void Clear(IChartView chart);
+        /// <param name="biDimensionalChart">The chart.</param>
+        void Clear(IBiDimensionalChartView biDimensionalChart);
 
         //No animated methods
         /// <summary>

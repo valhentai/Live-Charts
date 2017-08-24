@@ -32,7 +32,7 @@ namespace LiveCharts.Definitions.Charts
     /// <summary>
     /// 
     /// </summary>
-    public interface IChartView
+    public interface IBiDimensionalChartView
     {
         /// <summary>
         /// Gets the model.
@@ -145,7 +145,7 @@ namespace LiveCharts.Definitions.Charts
         /// </value>
         bool HasDataHoverEventAttached { get; }
         /// <summary>
-        /// Gets a value indicating whether this <see cref="IChartView"/> is hoverable.
+        /// Gets a value indicating whether this <see cref="IBiDimensionalChartView"/> is hoverable.
         /// </summary>
         /// <value>
         ///   <c>true</c> if hoverable; otherwise, <c>false</c>.
