@@ -52,7 +52,7 @@ namespace LiveCharts.Charts
         /// <summary>
         /// Prepares the axes.
         /// </summary>
-        public override void PrepareAxes()
+        internal override void PrepareAxes()
         {
             if (View.ActualSeries.Any(x => !(x.Core is IPieSeries)))
             {

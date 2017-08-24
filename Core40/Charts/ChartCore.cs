@@ -30,7 +30,7 @@ using LiveCharts.Dtos;
 namespace LiveCharts.Charts
 {
     /// <summary>
-    /// 
+    /// Defines 
     /// </summary>
     public abstract class ChartCore
     {
@@ -172,10 +172,7 @@ namespace LiveCharts.Charts
 
         #region Public Methods
 
-        /// <summary>
-        /// Prepares the axes.
-        /// </summary>
-        public virtual void PrepareAxes()
+        internal virtual void PrepareAxes()
         {
             var xAxis = View.FirstDimension;
 
@@ -202,18 +199,12 @@ namespace LiveCharts.Charts
             }
         }
 
-        /// <summary>
-        /// Runs the specialized chart components.
-        /// </summary>
-        public virtual void RunSpecializedChartComponents()
+        internal virtual void RunSpecializedChartComponents()
         {
             
         }
         
-        /// <summary>
-        /// Calculates the components and margin.
-        /// </summary>
-        public void CalculateComponentsAndMargin()
+        internal void CalculateComponentsAndMargin()
         {
             var controlSize = View.ControlSize;
 

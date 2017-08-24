@@ -54,7 +54,7 @@ namespace LiveCharts.Charts
         /// <summary>
         /// Prepares Chart Axes
         /// </summary>
-        public override void PrepareAxes()
+        internal override void PrepareAxes()
         {
             base.PrepareAxes();
 
@@ -147,7 +147,7 @@ namespace LiveCharts.Charts
         /// <summary>
         /// Runs the specialized chart components.
         /// </summary>
-        public override void RunSpecializedChartComponents()
+        internal override void RunSpecializedChartComponents()
         {
             foreach (var visualElement in ((ICartesianChart) View).VisualElements)
             {
