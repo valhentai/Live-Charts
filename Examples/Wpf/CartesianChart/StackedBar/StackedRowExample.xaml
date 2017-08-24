@@ -15,15 +15,15 @@
         <Button Grid.Row="1" Click="UpdateAllOnClick">
             Move All
         </Button>
-        <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" AxisX="{x:Static wpf:DefaultAxes.DefaultAxis}">
-            <wpf:CartesianChart.AxisY>
+        <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" XAxis="{x:Static wpf:DefaultAxes.DefaultAxis}">
+            <wpf:CartesianChart.YAxis>
                 <wpf:Axis Labels="{Binding Labels}">
                     <wpf:Axis.Separator>
                         <!--step 1 forces the axis to display all labels, disabling it makes it invisible-->
                         <wpf:Separator Step="1" IsEnabled="False"></wpf:Separator>
                     </wpf:Axis.Separator>
                 </wpf:Axis>
-            </wpf:CartesianChart.AxisY>
+            </wpf:CartesianChart.YAxis>
         </wpf:CartesianChart>
     </Grid>
 </UserControl>

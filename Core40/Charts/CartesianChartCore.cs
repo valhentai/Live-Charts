@@ -42,7 +42,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="updater">The updater.</param>
-        public CartesianChartCore(I2DChartView view, ChartUpdater updater)
+        public CartesianChartCore(IChart2DView view, ChartUpdater updater)
             : base(view, updater)
         {
         }
@@ -65,7 +65,7 @@ namespace LiveCharts.Charts
             
             var cartesianSeries = View.ActualSeries.Select(x => x.Core).Cast<ICartesianSeries>().ToArray();
 
-            var xAxis = View.AxisX;
+            var xAxis = View.FirstDimension;
 
             for (var index = 0; index < xAxis.Count; index++)
             {
@@ -101,7 +101,7 @@ namespace LiveCharts.Charts
                 xi.PreviousTop = xi.TopLimit;
             }
 
-            var yAxis = View.AxisY;
+            var yAxis = View.SecondDimension;
 
             for (var index = 0; index < yAxis.Count; index++)
             {
@@ -160,7 +160,7 @@ namespace LiveCharts.Charts
         /// </summary>
         public void DrawOrUpdateSections()
         {
-            var xAxis = View.AxisX;
+            var xAxis = View.FirstDimension;
 
             for (var index = 0; index < xAxis.Count; index++)
             {
@@ -174,7 +174,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            var yAxis = View.AxisY;
+            var yAxis = View.SecondDimension;
 
             for (var index = 0; index < yAxis.Count; index++)
             {
@@ -262,11 +262,11 @@ namespace LiveCharts.Charts
                 if (series is IStackedColumnSeriesView || series is IColumnSeriesView || 
                     series is IFinancialSeriesView || series is IHeatSeriesView)
                 {
-                    View.AxisX[series.ScalesXAt].Core.EvaluatesUnitWidth = true;
+                    View.FirstDimension[series.ScalesXAt].Core.EvaluatesUnitWidth = true;
                 }
                 if (series is IStackedRowSeriesView || series is IRowSeriesView || series is IHeatSeriesView)
                 {
-                    View.AxisY[series.ScalesYAt].Core.EvaluatesUnitWidth = true;
+                    View.SecondDimension[series.ScalesYAt].Core.EvaluatesUnitWidth = true;
                 }
             }
         }

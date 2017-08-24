@@ -41,7 +41,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="updater">The updater.</param>
-        public PieChartCore(I2DChartView view, ChartUpdater updater) : base(view, updater)
+        public PieChartCore(IChart2DView view, ChartUpdater updater) : base(view, updater)
         {
         }
 
@@ -59,7 +59,7 @@ namespace LiveCharts.Charts
                 throw new LiveChartsException(ExceptionReason.NotAPieSeries);
             }
 
-            foreach (var xAxis in View.AxisX)
+            foreach (var xAxis in View.FirstDimension)
             {
                 var xi = xAxis.Core;
 
@@ -76,7 +76,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            foreach (var yAxis in View.AxisY)
+            foreach (var yAxis in View.SecondDimension)
             {
                 var yi = yAxis.Core;
 

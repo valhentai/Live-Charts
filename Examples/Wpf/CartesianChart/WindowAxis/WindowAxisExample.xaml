@@ -23,7 +23,7 @@
         </StackPanel>
 
         <wpf:CartesianChart Zoom="X" Grid.Row="4" DisableAnimations="False" Series="{Binding SeriesCollection}">
-            <wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.XAxis>
                 <wpf:WindowAxis
                     MinValue="1970"
                     MaxValue="1990"
@@ -39,10 +39,10 @@
                         <wpf:Separator StrokeThickness="10" Stroke="Black"/>
                     </wpf:WindowAxis.Separator>
                 </wpf:WindowAxis>
-            </wpf:CartesianChart.AxisX>
-            <wpf:CartesianChart.AxisY>
+            </wpf:CartesianChart.XAxis>
+            <wpf:CartesianChart.YAxis>
                 <wpf:Axis MinValue="0" MaxValue="300000000"></wpf:Axis>
-            </wpf:CartesianChart.AxisY>
+            </wpf:CartesianChart.YAxis>
         </wpf:CartesianChart>
 
     </Grid>

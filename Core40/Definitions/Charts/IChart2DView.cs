@@ -33,7 +33,7 @@ namespace LiveCharts.Definitions.Charts
     /// <summary>
     /// 
     /// </summary>
-    public interface I2DChartView
+    public interface IChart2DView
     {
         /// <summary>
         /// Gets the model.
@@ -193,7 +193,7 @@ namespace LiveCharts.Definitions.Charts
         /// <value>
         /// The axis x.
         /// </value>
-        AxesCollection AxisX { get; }
+        AxesCollection FirstDimension { get; }
 
         /// <summary>
         /// Gets or sets the axis y.
@@ -201,7 +201,7 @@ namespace LiveCharts.Definitions.Charts
         /// <value>
         /// The axis y.
         /// </value>
-        AxesCollection AxisY { get; }
+        AxesCollection SecondDimension { get; }
 
         /// <summary>
         /// Gets a value indicating whether [requires hover shape].
@@ -212,7 +212,7 @@ namespace LiveCharts.Definitions.Charts
         bool RequiresHoverShape { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="IChartView"/> is hoverable.
+        /// Gets a value indicating whether this <see cref="IChart2DView"/> is hoverable.
         /// </summary>
         /// <value>
         ///   <c>true</c> if hoverable; otherwise, <c>false</c>.

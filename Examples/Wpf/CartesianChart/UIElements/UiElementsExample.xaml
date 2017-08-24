@@ -27,13 +27,13 @@
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values}" PointGeometry="{x:Null}" Fill="Transparent"></lvc:LineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis LabelFormatter="{Binding Formatter}" LabelsRotation="-90">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="{Binding Step}"/>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

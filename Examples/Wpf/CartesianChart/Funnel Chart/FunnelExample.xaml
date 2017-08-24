@@ -34,14 +34,14 @@
                 <lvc:LineSeries Values="120, 104, 70, 50, 15, 15" Fill="#141859" Panel.ZIndex="-2"/>
                 <lvc:LineSeries Values="-120, -104, -70, -50, -15, -15" Fill="#141859" Panel.ZIndex="-2"/>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis>
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Value="1.5" Stroke="#25FFFFFF" StrokeThickness="5" Panel.ZIndex="1" />
                         <lvc:AxisSection Value="3.5" Stroke="#25FFFFFF" StrokeThickness="5" Panel.ZIndex="1" />
                     </lvc:Axis.Sections>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
             <lvc:CartesianChart.VisualElements>
                 <lvc:VisualElement X="0.75" Y="120" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                     <lvc:VisualElement.UIElement>

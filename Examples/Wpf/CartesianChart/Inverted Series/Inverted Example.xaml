@@ -13,16 +13,16 @@
                 <lvc:RowSeries Values="{Binding Values2}" Panel.ZIndex="1"></lvc:RowSeries>
                 <lvc:VerticalLineSeries Values="{Binding Values1}" Panel.ZIndex="0"></lvc:VerticalLineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis>
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.YAxis>
+            <lvc:CartesianChart.XAxis>
                     <lvc:Axis MinValue="0"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
             <lvc:CartesianChart.DataTooltip>
                 <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
             </lvc:CartesianChart.DataTooltip>

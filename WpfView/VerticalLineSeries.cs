@@ -234,7 +234,7 @@ namespace LiveCharts.Wpf
             var noAnim = Core.Chart.View.DisableAnimations;
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                ? Core.Chart.View.AxisX[ScalesXAt].Core.FirstSeparator
+                ? Core.Chart.View.FirstDimension[ScalesXAt].Core.FirstSeparator
                 : AreaLimit, AxisOrientation.X, Core.Chart, ScalesXAt);
 
             if (Values != null && atIndex == 0)
@@ -304,10 +304,10 @@ namespace LiveCharts.Wpf
             var noAnim = Core.Chart.View.DisableAnimations;
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                 ? Core.Chart.View.AxisX[ScalesXAt].Core.FirstSeparator
+                 ? Core.Chart.View.FirstDimension[ScalesXAt].Core.FirstSeparator
                  : AreaLimit, AxisOrientation.X, Core.Chart, ScalesXAt);
 
-            var uw = Core.Chart.View.AxisY[ScalesYAt].Core.EvaluatesUnitWidth
+            var uw = Core.Chart.View.SecondDimension[ScalesYAt].Core.EvaluatesUnitWidth
                 ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Core.Chart, ScalesYAt) / 2
                 : 0;
             location.Y += uw;

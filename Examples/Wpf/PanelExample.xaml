@@ -66,16 +66,16 @@
                 <lvc:ColumnSeries Values="1,2,3,4,5,6,7,8"></lvc:ColumnSeries>
                 <lvc:LineSeries Values="{Binding Line1}"></lvc:LineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis ShowLabels="True" Labels="Jan, Feb, Mar, Apr, May, Jun, Jul, Ago" LabelsRotation="-15">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1" IsEnabled="False"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis MinValue="0"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
         <lvc:PieChart Grid.Row="1" Grid.Column="1" LegendLocation="Right" InnerRadius="60" Series="{Binding PieSeries}"
                       DataTooltip="{x:Null}" Hoverable="True">
@@ -110,9 +110,9 @@
                 <lvc:CartesianChart.Series>
                     <lvc:LineSeries Fill="#30ffffff" Values="{Binding DynamicValues}"></lvc:LineSeries>
                 </lvc:CartesianChart.Series>
-                <lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.YAxis>
                     <lvc:Axis ShowLabels="True"></lvc:Axis>
-                </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart.YAxis>
             </lvc:CartesianChart>
         </Grid>
         <lvc:GeoMap Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Background="Transparent"

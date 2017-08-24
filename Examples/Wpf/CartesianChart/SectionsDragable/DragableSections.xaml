@@ -23,7 +23,7 @@
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="7,2,8,2,7,4,9,4,2,8"></lvc:LineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis>
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Draggable="True" 
@@ -33,8 +33,8 @@
                                          Panel.ZIndex="99"/>
                     </lvc:Axis.Sections>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis>
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Draggable="True" 
@@ -44,7 +44,7 @@
                                          Panel.ZIndex="99"/>
                     </lvc:Axis.Sections>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

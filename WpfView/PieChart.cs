@@ -32,7 +32,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The pie chart compares mainly the distribution of the data according to different series.
     /// </summary>
-    public class PieChart : Chart, IPieChart
+    public class PieChart : Chart2D, IPieChart
     {
         /// <summary>
         /// Initializes a new instance of PieChart class
@@ -99,10 +99,10 @@ namespace LiveCharts.Wpf
 
             DataTooltip.UpdateLayout();
 
-            var y = ((I2DChartView) this).DrawMarginHeight * .5 +
+            var y = ((IChart2DView) this).DrawMarginHeight * .5 +
                     (sliceMidAngle > 90 && sliceMidAngle < 270 ? -1 : 0) * DataTooltip.ActualHeight -
                     Math.Cos(alphaRad) * 15;
-            var x = ((I2DChartView) this).DrawMarginWidth * .5 +
+            var x = ((IChart2DView) this).DrawMarginWidth * .5 +
                     (sliceMidAngle > 0 && sliceMidAngle < 180 ? -1 : 0) * DataTooltip.ActualWidth +
                     Math.Sin(alphaRad) * 15;
 

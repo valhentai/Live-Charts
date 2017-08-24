@@ -12,13 +12,13 @@
             <lvc:CartesianChart.Series>
                 <lvc:ColumnSeries Title="2016 Customers" Values="{Binding Customers}"></lvc:ColumnSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX >
+            <lvc:CartesianChart.XAxis >
                 <lvc:Axis Labels="{Binding Labels}" LabelsRotation="-15">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
             <lvc:CartesianChart.DataTooltip>
                 <local:CustomersTooltip/>
             </lvc:CartesianChart.DataTooltip>

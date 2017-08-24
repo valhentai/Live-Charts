@@ -20,9 +20,9 @@
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values}" PointGeometry="{x:Null}" LineSmoothness="0"></lvc:LineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis MinValue="{Binding Min}"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

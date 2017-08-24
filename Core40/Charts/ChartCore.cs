@@ -49,7 +49,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="updater">The updater.</param>
-        protected ChartCore(I2DChartView view, ChartUpdater updater)
+        protected ChartCore(IChart2DView view, ChartUpdater updater)
         {
             View = view;
             Updater = updater;
@@ -103,7 +103,7 @@ namespace LiveCharts.Charts
         /// <value>
         /// The view.
         /// </value>
-        public I2DChartView View { get; set; }
+        public IChart2DView View { get; set; }
         /// <summary>
         /// Gets or sets the updater.
         /// </summary>
@@ -177,7 +177,7 @@ namespace LiveCharts.Charts
         /// </summary>
         public virtual void PrepareAxes()
         {
-            var xAxis = View.AxisX;
+            var xAxis = View.FirstDimension;
 
             for (var index = 0; index < xAxis.Count; index++)
             {
@@ -189,7 +189,7 @@ namespace LiveCharts.Charts
                     AxisOrientation.X);
             }
 
-            var yAxis = View.AxisY;
+            var yAxis = View.SecondDimension;
 
             for (var index = 0; index < yAxis.Count; index++)
             {
@@ -223,7 +223,7 @@ namespace LiveCharts.Charts
 
             const double padding = 4;
 
-            var yAxis = View.AxisY;
+            var yAxis = View.SecondDimension;
 
             for (int index = 0; index < yAxis.Count; index++)
             {
@@ -265,7 +265,7 @@ namespace LiveCharts.Charts
                 }
             }
 
-            var xAxis = View.AxisX;
+            var xAxis = View.FirstDimension;
 
             for (var index = 0; index < xAxis.Count; index++)
             {
@@ -297,7 +297,7 @@ namespace LiveCharts.Charts
                     var dif = leftE - curSize.Left;
                     curSize.Left += dif;
                     curSize.Width -= dif;
-                    foreach (var correctedAxis in View.AxisY
+                    foreach (var correctedAxis in View.SecondDimension
                         .Where(correctedAxis => correctedAxis.Position == AxisPosition.LeftBottom))
                     {
                         correctedAxis.Core.Tab += dif;
@@ -309,7 +309,7 @@ namespace LiveCharts.Charts
                 {
                     var dif = rightE - (controlSize.Width - (curSize.Left + curSize.Width));
                     curSize.Width -= dif;
-                    foreach (var correctedAxis in View.AxisY
+                    foreach (var correctedAxis in View.SecondDimension
                         .Where(correctedAxis => correctedAxis.Position == AxisPosition.RightTop))
                     {
                         correctedAxis.Core.Tab -= dif;
@@ -402,8 +402,8 @@ namespace LiveCharts.Charts
         /// <param name="pivot">The pivot.</param>
         public void ZoomIn(CorePoint pivot)
         {
-            var xAxis = View.AxisX;
-            var yAxis = View.AxisY;
+            var xAxis = View.FirstDimension;
+            var yAxis = View.SecondDimension;
 
             if (xAxis== null || yAxis == null) return;
 
@@ -465,8 +465,8 @@ namespace LiveCharts.Charts
         {
             View.HideTooltip();
 
-            var xAxis = View.AxisX;
-            var yAxis = View.AxisY;
+            var xAxis = View.FirstDimension;
+            var yAxis = View.SecondDimension;
 
             var speed = View.ZoomingSpeed < 0.1 ? 0.1 : (View.ZoomingSpeed > 0.95 ? 0.95 : View.ZoomingSpeed);
 
@@ -520,8 +520,8 @@ namespace LiveCharts.Charts
         /// </summary>
         public void ClearZoom()
         {
-            foreach (var ax in View.AxisX) ax.SetRange(double.NaN, double.NaN);
-            foreach (var ax in View.AxisY) ax.SetRange(double.NaN, double.NaN);
+            foreach (var ax in View.FirstDimension) ax.SetRange(double.NaN, double.NaN);
+            foreach (var ax in View.SecondDimension) ax.SetRange(double.NaN, double.NaN);
         }
 
         /// <summary>
@@ -537,8 +537,8 @@ namespace LiveCharts.Charts
                      (View.Zoom == ZoomingOptions.X || View.Zoom == ZoomingOptions.Xy);
             px = px || View.Pan == PanningOptions.X || View.Pan == PanningOptions.Xy;
 
-            var xAxis = View.AxisX;
-            var yAxis = View.AxisY;
+            var xAxis = View.FirstDimension;
+            var yAxis = View.SecondDimension;
 
             if (px)
             {
@@ -635,11 +635,11 @@ namespace LiveCharts.Charts
 
             if (orientation == AxisOrientation.X)
             {
-                _previousXAxis = View.AxisX;
+                _previousXAxis = View.FirstDimension;
             }
             else
             {
-                _previousYAxis = View.AxisY;
+                _previousYAxis = View.SecondDimension;
             }
 
             Updater.EnqueueUpdate();
@@ -741,8 +741,8 @@ namespace LiveCharts.Charts
                 if (sumRight > mostRight) mostRight = sumRight;
             }
 
-            var xAxis = View.AxisX;
-            var yAxis = View.AxisY;
+            var xAxis = View.FirstDimension;
+            var yAxis = View.SecondDimension;
 
             if (stackAt == AxisOrientation.X)
             {

@@ -214,10 +214,10 @@ namespace LiveCharts.Wpf
             var noAnim = Core.Chart.View.DisableAnimations;
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                ? Core.Chart.View.AxisY[ScalesYAt].Core.FirstSeparator
+                ? Core.Chart.View.SecondDimension[ScalesYAt].Core.FirstSeparator
                 : AreaLimit, AxisOrientation.Y, Core.Chart, ScalesYAt);
 
-            var uw = Core.Chart.View.AxisX[ScalesXAt].Core.EvaluatesUnitWidth
+            var uw = Core.Chart.View.FirstDimension[ScalesXAt].Core.EvaluatesUnitWidth
                 ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Core.Chart, ScalesXAt) / 2
                 : 0;
             location.X -= uw;
@@ -265,7 +265,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="Series.InitializePointView"/>
-        protected override IChartPointView InitializePointView(I2DChartView chartView)
+        protected override IChartPointView InitializePointView(IChart2DView chartView)
         {
             var pointView = new HorizontalBezierPointView
             {

@@ -42,14 +42,13 @@ using LiveCharts.Dtos;
 using LiveCharts.Events;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Components;
-using LiveCharts.Wpf.Points;
 
 namespace LiveCharts.Wpf.Charts.Base
 {
     /// <summary>
     /// Base chart class
     /// </summary>
-    public abstract class Chart : UserControl, I2DChartView
+    public abstract class Chart2D : UserControl, IChart2DView
     {
         #region Fields
 
@@ -65,7 +64,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// <summary>
         /// Initializes a new instance of Chart class
         /// </summary>
-        protected Chart()
+        protected Chart2D()
         {
             var freq = DisableAnimations ? TimeSpan.FromMilliseconds(10) : AnimationsSpeed;
             var updater = new Components.ChartUpdater(freq);
@@ -102,8 +101,6 @@ namespace LiveCharts.Wpf.Charts.Base
             SetCurrentValue(MinWidthProperty, 80d);
             SetCurrentValue(AnimationsSpeedProperty, TimeSpan.FromMilliseconds(300));
             SetCurrentValue(TooltipTimeoutProperty, TimeSpan.FromMilliseconds(800));
-            SetCurrentValue(AxisXProperty, new AxesCollection {new Axis()});
-            SetCurrentValue(AxisYProperty, new AxesCollection {new Axis()});
             SetCurrentValue(ChartLegendProperty, new DefaultLegend());
             SetCurrentValue(DataTooltipProperty, new DefaultTooltip());
             Colors = new List<Color>
@@ -165,10 +162,32 @@ namespace LiveCharts.Wpf.Charts.Base
         public static List<Color> Colors { get; set; }
 
         /// <summary>
+        /// Gets the first dimension of the chart.
+        /// </summary>
+        /// <value>
+        /// The axis x.
+        /// </value>
+        public virtual AxesCollection FirstDimension
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        /// <summary>
+        /// Gets the second dimension of the chart.
+        /// </summary>
+        /// <value>
+        /// The axis y.
+        /// </value>
+        public virtual AxesCollection SecondDimension
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        /// <summary>
         /// The series colors property
         /// </summary>
         public static readonly DependencyProperty SeriesColorsProperty = DependencyProperty.Register(
-            "SeriesColors", typeof(ColorsCollection), typeof(Chart), new PropertyMetadata(default(ColorsCollection)));
+            "SeriesColors", typeof(ColorsCollection), typeof(Chart2D), new PropertyMetadata(default(ColorsCollection)));
 
         /// <summary>
         /// Gets or sets 
@@ -180,42 +199,10 @@ namespace LiveCharts.Wpf.Charts.Base
         }
 
         /// <summary>
-        /// The axis y property
-        /// </summary>
-        public static readonly DependencyProperty AxisYProperty = DependencyProperty.Register(
-            "AxisY", typeof(AxesCollection), typeof(Chart),
-            new PropertyMetadata(null, OnAxisInstanceChanged(AxisOrientation.Y)));
-
-        /// <summary>
-        /// Gets or sets vertical axis
-        /// </summary>
-        public AxesCollection AxisY
-        {
-            get { return (AxesCollection)GetValue(AxisYProperty); }
-            set { SetValue(AxisYProperty, value); }
-        }
-
-        /// <summary>
-        /// The axis x property
-        /// </summary>
-        public static readonly DependencyProperty AxisXProperty = DependencyProperty.Register(
-            "AxisX", typeof(AxesCollection), typeof(Chart),
-            new PropertyMetadata(null, OnAxisInstanceChanged(AxisOrientation.X)));
-
-        /// <summary>
-        /// Gets or sets horizontal axis
-        /// </summary>
-        public AxesCollection AxisX
-        {
-            get { return (AxesCollection)GetValue(AxisXProperty); }
-            set { SetValue(AxisXProperty, value); }
-        }
-
-        /// <summary>
         /// The chart legend property
         /// </summary>
         public static readonly DependencyProperty ChartLegendProperty = DependencyProperty.Register(
-            "ChartLegend", typeof(UserControl), typeof(Chart),
+            "ChartLegend", typeof(UserControl), typeof(Chart2D),
             new PropertyMetadata(null, EnqueueUpdateCallback));
 
         /// <summary>
@@ -231,7 +218,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The zoom property
         /// </summary>
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
-            "Zoom", typeof(ZoomingOptions), typeof(Chart),
+            "Zoom", typeof(ZoomingOptions), typeof(Chart2D),
             new PropertyMetadata(default(ZoomingOptions)));
 
         /// <summary>
@@ -247,7 +234,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The pan property
         /// </summary>
         public static readonly DependencyProperty PanProperty = DependencyProperty.Register(
-            "Pan", typeof(PanningOptions), typeof(Chart), new PropertyMetadata(PanningOptions.Unset));
+            "Pan", typeof(PanningOptions), typeof(Chart2D), new PropertyMetadata(PanningOptions.Unset));
 
         /// <summary>
         /// Gets or sets the chart pan, default is Unset, which bases the behavior according to Zoom property
@@ -265,7 +252,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The legend location property
         /// </summary>
         public static readonly DependencyProperty LegendLocationProperty = DependencyProperty.Register(
-            "LegendLocation", typeof(LegendLocation), typeof(Chart),
+            "LegendLocation", typeof(LegendLocation), typeof(Chart2D),
             new PropertyMetadata(LegendLocation.None, EnqueueUpdateCallback));
 
         /// <summary>
@@ -281,7 +268,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The series property
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-            "Series", typeof(SeriesCollection), typeof(Chart),
+            "Series", typeof(SeriesCollection), typeof(Chart2D),
             new PropertyMetadata(default(SeriesCollection), OnSeriesChanged));
 
         /// <summary>
@@ -297,7 +284,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The animations speed property
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
-            "AnimationsSpeed", typeof(TimeSpan), typeof(Chart),
+            "AnimationsSpeed", typeof(TimeSpan), typeof(Chart2D),
             new PropertyMetadata(default(TimeSpan), UpdateChartFrequencyCallback));
 
         /// <summary>
@@ -313,7 +300,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The disable animations property
         /// </summary>
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
-            "DisableAnimations", typeof(bool), typeof(Chart),
+            "DisableAnimations", typeof(bool), typeof(Chart2D),
             new PropertyMetadata(default(bool), UpdateChartFrequencyCallback));
 
         /// <summary>
@@ -329,7 +316,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The data tooltip property
         /// </summary>
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
-            "DataTooltip", typeof(UserControl), typeof(Chart), new PropertyMetadata(null));
+            "DataTooltip", typeof(UserControl), typeof(Chart2D), new PropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the chart data tooltip.
@@ -344,7 +331,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The hoverable property
         /// </summary>
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
-            "Hoverable", typeof(bool), typeof(Chart), new PropertyMetadata(true));
+            "Hoverable", typeof(bool), typeof(Chart2D), new PropertyMetadata(true));
 
         /// <summary>
         /// gets or sets whether chart should react when a user moves the mouse over a data point.
@@ -359,7 +346,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The scroll mode property
         /// </summary>
         public static readonly DependencyProperty ScrollModeProperty = DependencyProperty.Register(
-            "ScrollMode", typeof(ScrollMode), typeof(Chart),
+            "ScrollMode", typeof(ScrollMode), typeof(Chart2D),
             new PropertyMetadata(ScrollMode.None, ScrollModeOnChanged));
 
         /// <summary>
@@ -375,7 +362,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The scroll horizontal from property
         /// </summary>
         public static readonly DependencyProperty ScrollHorizontalFromProperty = DependencyProperty.Register(
-            "ScrollHorizontalFrom", typeof(double), typeof(Chart),
+            "ScrollHorizontalFrom", typeof(double), typeof(Chart2D),
             new PropertyMetadata(default(double), ScrollLimitOnChanged));
 
         /// <summary>
@@ -391,7 +378,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The scroll horizontal to property
         /// </summary>
         public static readonly DependencyProperty ScrollHorizontalToProperty = DependencyProperty.Register(
-            "ScrollHorizontalTo", typeof(double), typeof(Chart),
+            "ScrollHorizontalTo", typeof(double), typeof(Chart2D),
             new PropertyMetadata(default(double), ScrollLimitOnChanged));
 
         /// <summary>
@@ -407,7 +394,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The scroll vertical from property
         /// </summary>
         public static readonly DependencyProperty ScrollVerticalFromProperty = DependencyProperty.Register(
-            "ScrollVerticalFrom", typeof(double), typeof(Chart), new PropertyMetadata(default(double)));
+            "ScrollVerticalFrom", typeof(double), typeof(Chart2D), new PropertyMetadata(default(double)));
 
         /// <summary>
         /// Gets or sets the scrolling vertical start value
@@ -422,7 +409,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The scroll vertical to property
         /// </summary>
         public static readonly DependencyProperty ScrollVerticalToProperty = DependencyProperty.Register(
-            "ScrollVerticalTo", typeof(double), typeof(Chart), new PropertyMetadata(default(double)));
+            "ScrollVerticalTo", typeof(double), typeof(Chart2D), new PropertyMetadata(default(double)));
 
         /// <summary>
         /// Gets or sets the scrolling vertical end value
@@ -437,7 +424,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The scroll bar fill property
         /// </summary>
         public static readonly DependencyProperty ScrollBarFillProperty = DependencyProperty.Register(
-            "ScrollBarFill", typeof(Brush), typeof(Chart),
+            "ScrollBarFill", typeof(Brush), typeof(Chart2D),
             new PropertyMetadata(new SolidColorBrush(Color.FromArgb(30, 30, 30, 30))));
 
         /// <summary>
@@ -453,7 +440,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The zooming speed property
         /// </summary>
         public static readonly DependencyProperty ZoomingSpeedProperty = DependencyProperty.Register(
-            "ZoomingSpeed", typeof(double), typeof(Chart), new PropertyMetadata(0.8d));
+            "ZoomingSpeed", typeof(double), typeof(Chart2D), new PropertyMetadata(0.8d));
 
         /// <summary>
         /// Gets or sets zooming speed, goes from 0.95 (slow) to 0.1 (fast), default is 0.8, it means the current axis range percentage that will be draw in the next zooming step
@@ -468,7 +455,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The updater state property
         /// </summary>
         public static readonly DependencyProperty UpdaterStateProperty = DependencyProperty.Register(
-            "UpdaterState", typeof(UpdaterState), typeof(Chart),
+            "UpdaterState", typeof(UpdaterState), typeof(Chart2D),
             new PropertyMetadata(default(UpdaterState), EnqueueUpdateCallback));
 
         /// <summary>
@@ -484,7 +471,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The data click command property
         /// </summary>
         public static readonly DependencyProperty DataClickCommandProperty = DependencyProperty.Register(
-            "DataClickCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+            "DataClickCommand", typeof(ICommand), typeof(Chart2D), new PropertyMetadata(default(ICommand)));
 
         /// <summary>
         /// Gets or sets the data click command.
@@ -502,7 +489,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The data hover command property
         /// </summary>
         public static readonly DependencyProperty DataHoverCommandProperty = DependencyProperty.Register(
-            "DataHoverCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+            "DataHoverCommand", typeof(ICommand), typeof(Chart2D), new PropertyMetadata(default(ICommand)));
 
         /// <summary>
         /// Gets or sets the data hover command.
@@ -520,7 +507,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The updater tick command property
         /// </summary>
         public static readonly DependencyProperty UpdaterTickCommandProperty = DependencyProperty.Register(
-            "UpdaterTickCommand", typeof(ICommand), typeof(Chart), new PropertyMetadata(default(ICommand)));
+            "UpdaterTickCommand", typeof(ICommand), typeof(Chart2D), new PropertyMetadata(default(ICommand)));
 
         /// <summary>
         /// Gets or sets the updater tick command.
@@ -538,7 +525,7 @@ namespace LiveCharts.Wpf.Charts.Base
         /// The tooltip timeout property
         /// </summary>
         public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
-            "TooltipTimeout", typeof(TimeSpan), typeof(Chart),
+            "TooltipTimeout", typeof(TimeSpan), typeof(Chart2D),
             new PropertyMetadata(default(TimeSpan), TooltipTimeoutCallback));
 
         /// <summary>
@@ -556,7 +543,7 @@ namespace LiveCharts.Wpf.Charts.Base
         
         private void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var result = ((I2DChartView) this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
+            var result = ((IChart2DView) this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
                 .FirstOrDefault(x =>
                 {
                     return true;
@@ -571,7 +558,7 @@ namespace LiveCharts.Wpf.Charts.Base
         {
             _tooltipTimeoutTimer.Stop();
 
-            var source = ((I2DChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
+            var source = ((IChart2DView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
             var senderPoint = source.FirstOrDefault(x => true);
 
             if (senderPoint == null) return;
@@ -584,7 +571,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 {
                     Panel.SetZIndex(DataTooltip, int.MaxValue);
                     _tooltipContainer = new Popup {AllowsTransparency = true, Placement = PlacementMode.RelativePoint};
-                    ((I2DChartView) this).AddToView(_tooltipContainer);
+                    ((IChart2DView) this).AddToView(_tooltipContainer);
                     _tooltipContainer.Child = DataTooltip;
                     Canvas.SetTop(DataTooltip, 0d);
                     Canvas.SetLeft(DataTooltip, 0d);
@@ -662,7 +649,7 @@ namespace LiveCharts.Wpf.Charts.Base
             _tooltipTimeoutTimer.Stop();
             _tooltipTimeoutTimer.Start();
 
-            var source = ((I2DChartView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
+            var source = ((IChart2DView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
             var senderPoint = source.FirstOrDefault(x =>true);
 
             if (senderPoint == null) return;
@@ -680,7 +667,7 @@ namespace LiveCharts.Wpf.Charts.Base
         private static void TooltipTimeoutCallback(DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var chart = (Chart) dependencyObject;
+            var chart = (Chart2D) dependencyObject;
 
             if (chart == null) return;
 
@@ -804,7 +791,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private void OnDraggingStart(object sender, MouseButtonEventArgs e)
         {
-            if (Core == null || AxisX == null || AxisY == null) return;
+            if (Core == null || FirstDimension == null || SecondDimension == null) return;
 
             DragOrigin = e.GetPosition(this);
             IsPanning = true;
@@ -843,7 +830,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             if (ScrollMode == ScrollMode.None)
             {
-                ((I2DChartView) this).RemoveFromDrawMargin(ScrollBar);
+                ((IChart2DView) this).RemoveFromDrawMargin(ScrollBar);
                 ScrollBar = null;
 
                 return;
@@ -856,7 +843,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 ScrollBar.SetBinding(Shape.FillProperty,
                     new Binding {Path = new PropertyPath(ScrollBarFillProperty), Source = this});
 
-                ((I2DChartView) this).EnsureElementBelongsToCurrentView(ScrollBar);
+                ((IChart2DView) this).EnsureElementBelongsToCurrentView(ScrollBar);
                 ScrollBar.MouseDown += ScrollBarOnMouseDown;
                 MouseMove += ScrollBarOnMouseMove;
                 ScrollBar.MouseUp += ScrollBarOnMouseUp;
@@ -926,14 +913,14 @@ namespace LiveCharts.Wpf.Charts.Base
 
         private static void ScrollModeOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            var wpfChart = (Chart) o;
+            var wpfChart = (Chart2D) o;
             if (o == null) return;
             wpfChart.PrepareScrolBar();
         }
 
         private static void ScrollLimitOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            var wpfChart = (Chart) o;
+            var wpfChart = (Chart2D) o;
             if (o == null) return;
             wpfChart.PrepareScrolBar();
         }
@@ -992,14 +979,14 @@ namespace LiveCharts.Wpf.Charts.Base
             DependencyObject dependencyObject, 
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var wpfChart = dependencyObject as Chart;
+            var wpfChart = dependencyObject as Chart2D;
             wpfChart?.Core?.Updater.EnqueueUpdate();
         }
 
         private static void OnSeriesChanged(DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var chart = (Chart)dependencyObject;
+            var chart = (Chart2D)dependencyObject;
 
             chart.Core.NotifySeriesCollectionChanged();
         }
@@ -1008,17 +995,21 @@ namespace LiveCharts.Wpf.Charts.Base
             DependencyObject dependencyObject, 
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var chart = (Chart) dependencyObject;
+            var chart = (Chart2D) dependencyObject;
 
             chart.Core?.NotifyUpdaterFrequencyChanged();
         }
 
-        private static PropertyChangedCallback OnAxisInstanceChanged(AxisOrientation orientation)
+        /// <summary>
+        /// Notifies the core that an axis instance changed.
+        /// </summary>
+        /// <param name="orientation">The orientation.</param>
+        /// <returns></returns>
+        protected static PropertyChangedCallback OnAxisInstanceChanged(AxisOrientation orientation)
         {
             return (dependencyObject, dependencyPropertyChangedEventArgs) =>
             {
-                var chart = (Chart) dependencyObject;
-
+                var chart = (Chart2D) dependencyObject;
                 chart.Core?.NotifyAxisInstanceChanged(orientation);
             };
         }
@@ -1058,21 +1049,21 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </value>
         public ChartCore Core { get; }
 
-        CoreSize I2DChartView.ControlSize => new CoreSize(ActualWidth, ActualHeight);
+        CoreSize IChart2DView.ControlSize => new CoreSize(ActualWidth, ActualHeight);
 
-        double I2DChartView.DrawMarginTop
+        double IChart2DView.DrawMarginTop
         {
             get { return Canvas.GetTop(_visualDrawMargin); }
             set { Canvas.SetTop(_visualDrawMargin, value); }
         }
 
-        double I2DChartView.DrawMarginLeft
+        double IChart2DView.DrawMarginLeft
         {
             get { return Canvas.GetLeft(_visualDrawMargin); }
             set { Canvas.SetLeft(_visualDrawMargin, value); }
         }
 
-        double I2DChartView.DrawMarginWidth
+        double IChart2DView.DrawMarginWidth
         {
             get { return _visualDrawMargin.Width; }
             set
@@ -1082,7 +1073,7 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        double I2DChartView.DrawMarginHeight
+        double IChart2DView.DrawMarginHeight
         {
             get { return _visualDrawMargin.Height; }
             set
@@ -1092,9 +1083,9 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        SeriesCollection I2DChartView.Series => Series;
+        SeriesCollection IChart2DView.Series => Series;
 
-        IEnumerable<ISeriesView> I2DChartView.ActualSeries
+        IEnumerable<ISeriesView> IChart2DView.ActualSeries
         {
             get
             {
@@ -1106,40 +1097,40 @@ namespace LiveCharts.Wpf.Charts.Base
             }
         }
 
-        IList I2DChartView.Colors => Colors;
+        IList IChart2DView.Colors => Colors;
 
-        IList I2DChartView.SeriesColors => SeriesColors;
+        IList IChart2DView.SeriesColors => SeriesColors;
 
-        bool I2DChartView.RandomizeStartingColor => RandomizeStartingColor;
+        bool IChart2DView.RandomizeStartingColor => RandomizeStartingColor;
 
-        TimeSpan I2DChartView.TooltipTimeout => TooltipTimeout;
+        TimeSpan IChart2DView.TooltipTimeout => TooltipTimeout;
 
-        ZoomingOptions I2DChartView.Zoom => Zoom;
+        ZoomingOptions IChart2DView.Zoom => Zoom;
 
-        PanningOptions I2DChartView.Pan => Pan;
+        PanningOptions IChart2DView.Pan => Pan;
 
-        double I2DChartView.ZoomingSpeed => ZoomingSpeed;
+        double IChart2DView.ZoomingSpeed => ZoomingSpeed;
 
-        LegendLocation I2DChartView.LegendLocation => LegendLocation;
+        LegendLocation IChart2DView.LegendLocation => LegendLocation;
 
-        bool I2DChartView.DisableAnimations => DisableAnimations;
+        bool IChart2DView.DisableAnimations => DisableAnimations;
 
-        TimeSpan I2DChartView.AnimationsSpeed => AnimationsSpeed;
+        TimeSpan IChart2DView.AnimationsSpeed => AnimationsSpeed;
 
-        UpdaterState I2DChartView.UpdaterState => UpdaterState;
+        UpdaterState IChart2DView.UpdaterState => UpdaterState;
 
-        AxesCollection I2DChartView.AxisX => AxisX;
+        AxesCollection IChart2DView.FirstDimension => FirstDimension;
 
-        AxesCollection I2DChartView.AxisY => AxisY;
+        AxesCollection IChart2DView.SecondDimension => SecondDimension;
 
-        bool I2DChartView.RequiresHoverShape => DataTooltip != null ||
+        bool IChart2DView.RequiresHoverShape => DataTooltip != null ||
                                               DataHover != null ||
                                               DataClick != null ||
                                               DataClickCommand != null ||
                                               DataHoverCommand != null ||
                                               Hoverable;
 
-        bool I2DChartView.IsInDesignMode => DesignerProperties.GetIsInDesignMode(this);
+        bool IChart2DView.IsInDesignMode => DesignerProperties.GetIsInDesignMode(this);
 
         /// <summary>
         /// The DataClick event is fired when a user click any data point
@@ -1156,74 +1147,74 @@ namespace LiveCharts.Wpf.Charts.Base
         /// </summary>
         public event UpdaterTickHandler UpdaterTick;
 
-        void I2DChartView.AddToView(object element)
+        void IChart2DView.AddToView(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualCanvas.Children.Add(wpfElement);
         }
 
-        void I2DChartView.AddToDrawMargin(object element)
+        void IChart2DView.AddToDrawMargin(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualDrawMargin.Children.Add(wpfElement);
         }
 
-        void I2DChartView.RemoveFromView(object element)
+        void IChart2DView.RemoveFromView(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualCanvas.Children.Remove(wpfElement);
         }
 
-        void I2DChartView.RemoveFromDrawMargin(object element)
+        void IChart2DView.RemoveFromDrawMargin(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             _visualDrawMargin.Children.Remove(wpfElement);
         }
 
-        void I2DChartView.EnsureElementBelongsToCurrentView(object element)
+        void IChart2DView.EnsureElementBelongsToCurrentView(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             var p = (Canvas) wpfElement.Parent;
-            if (p == null) ((I2DChartView) this).AddToView(wpfElement);
+            if (p == null) ((IChart2DView) this).AddToView(wpfElement);
         }
 
-        void I2DChartView.EnsureElementBelongsToCurrentDrawMargin(object element)
+        void IChart2DView.EnsureElementBelongsToCurrentDrawMargin(object element)
         {
             var wpfElement = (FrameworkElement) element;
             if (wpfElement == null) return;
             var p = (Canvas) wpfElement.Parent;
             p?.Children.Remove(wpfElement);
-            ((I2DChartView) this).AddToDrawMargin(wpfElement);
+            ((IChart2DView) this).AddToDrawMargin(wpfElement);
         }
 
-        void I2DChartView.SetParentsTree()
+        void IChart2DView.SetParentsTree()
         {
-            AxisX.Chart = Core;
-            AxisY.Chart = Core;
+            FirstDimension.Chart = Core;
+            SecondDimension.Chart = Core;
 
-            foreach (var ax in AxisX) ax.Core.Chart = Core;
-            foreach (var ay in AxisY) ay.Core.Chart = Core;
+            foreach (var ax in FirstDimension) ax.Core.Chart = Core;
+            foreach (var ay in SecondDimension) ay.Core.Chart = Core;
         }
 
-        void I2DChartView.HideTooltip()
+        void IChart2DView.HideTooltip()
         {
             if (_tooltipContainer == null) return;
 
             _tooltipContainer.IsOpen = false;
         }
 
-        void I2DChartView.ShowLegend(CorePoint at)
+        void IChart2DView.ShowLegend(CorePoint at)
         {
             if (ChartLegend == null) return;
 
             if (ChartLegend.Parent == null)
             {
-                ((I2DChartView) this).AddToView(ChartLegend);
+                ((IChart2DView) this).AddToView(ChartLegend);
                 Canvas.SetLeft(ChartLegend, 0d);
                 Canvas.SetTop(ChartLegend, 0d);
             }
@@ -1234,13 +1225,13 @@ namespace LiveCharts.Wpf.Charts.Base
             Canvas.SetTop(ChartLegend, at.Y);
         }
 
-        void I2DChartView.HideLegend()
+        void IChart2DView.HideLegend()
         {
             if (ChartLegend != null)
                 ChartLegend.Visibility = Visibility.Hidden;
         }
 
-        CoreSize I2DChartView.LoadLegend()
+        CoreSize IChart2DView.LoadLegend()
         {
             if (ChartLegend == null || LegendLocation == LegendLocation.None)
                 return new CoreSize();
@@ -1250,7 +1241,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var l = new List<SeriesViewModel>();
 
-            foreach (var t in ((I2DChartView)this).ActualSeries)
+            foreach (var t in ((IChart2DView)this).ActualSeries)
             {
                 var item = new SeriesViewModel();
 

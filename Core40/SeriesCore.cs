@@ -100,7 +100,7 @@ namespace LiveCharts
         /// </value>
         public AxisCore CurrentXAxis
         {
-            get { return Chart.View.AxisX[View.ScalesXAt].Core; }
+            get { return Chart.View.FirstDimension[View.ScalesXAt].Core; }
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace LiveCharts
         /// </value>
         public AxisCore CurrentYAxis
         {
-            get { return Chart.View.AxisY[View.ScalesYAt].Core; }
+            get { return Chart.View.SecondDimension[View.ScalesYAt].Core; }
         }
 
         /// <summary>

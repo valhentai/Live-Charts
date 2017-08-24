@@ -17,14 +17,14 @@
             <TextBlock Margin="10" TextWrapping="Wrap">Use your mouse wheel to zoom in/out, click hold and drag for panning</TextBlock>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="1" Series="{Binding Series}" Zoom="X">
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis LabelFormatter="{Binding Formatter}" 
                           MinValue="{Binding From, Mode=TwoWay}" 
                           MaxValue="{Binding To, Mode=TwoWay}"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis Labels="{Binding Labels}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

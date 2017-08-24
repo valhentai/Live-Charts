@@ -66,7 +66,7 @@ namespace LiveCharts.Series
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
 
             var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(lineView.AreaLimit)
-                ? Chart.View.AxisY[View.ScalesYAt].Core.FirstSeparator
+                ? Chart.View.SecondDimension[View.ScalesYAt].Core.FirstSeparator
                 : lineView.AreaLimit, AxisOrientation.Y, Chart, View.ScalesYAt);
 
             foreach (var segment in points.SplitEachNaN())

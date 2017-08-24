@@ -17,14 +17,14 @@
             Move All
         </Button>
         <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}">
-            <wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.XAxis>
                 <wpf:Axis Labels="{Binding Labels}">
                     <wpf:Axis.Separator>
                         <!--step 1 forces the axis to display all labels, disabling it makes it invisible-->
                         <wpf:Separator Step="1" IsEnabled="False"></wpf:Separator>
                     </wpf:Axis.Separator>
                 </wpf:Axis>
-            </wpf:CartesianChart.AxisX>
+            </wpf:CartesianChart.XAxis>
         </wpf:CartesianChart>
     </Grid>
 </UserControl>

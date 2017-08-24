@@ -28,16 +28,16 @@
         </TextBlock>
         <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}"
                             Background="#303030">
-            <lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis>
                     <lvc:Axis.Separator>
                         <lvc:Separator Stroke="#606060"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.YAxis>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis Labels="Jan, Feb, Mar, Apr, May" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

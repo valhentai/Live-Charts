@@ -25,7 +25,7 @@
                                 Stroke="#F34336"
                                 Fill="Transparent"/>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis LabelFormatter="{Binding DateTimeFormatter}" 
                           MaxValue="{Binding AxisMax}" 
                           MinValue="{Binding AxisMin}"
@@ -34,7 +34,7 @@
                         <lvc:Separator Step="{Binding AxisStep}" />
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

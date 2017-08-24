@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Wpf.Charts.Base;
 
@@ -20,15 +18,15 @@ namespace LiveCharts.Wpf
         /// <param name="axisX">axis x index</param>
         /// <param name="axisY">axis y index</param>
         /// <returns></returns>
-        public static Point ConvertToChartValues(this Chart chart, Point screenPoint, int axisX = 0, int axisY = 0)
+        public static Point ConvertToChartValues(this Chart2D chart, Point screenPoint, int axisX = 0, int axisY = 0)
         {
-            if (chart.Core == null || chart.AxisX == null || chart.AxisX.Any(x => x.Core == null)) return new Point();
+            if (chart.Core == null || chart.FirstDimension == null || chart.FirstDimension.Any(x => x.Core == null)) return new Point();
 
             var uw = new CorePoint(
-                chart.AxisX[axisX].Core.EvaluatesUnitWidth
+                chart.FirstDimension[axisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart.Core, axisX) / 2
                     : 0,
-                chart.AxisY[axisY].Core.EvaluatesUnitWidth
+                chart.SecondDimension[axisY].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, chart.Core, axisY) / 2
                     : 0);
 
@@ -45,15 +43,15 @@ namespace LiveCharts.Wpf
         /// <param name="axisX">axis x index</param>
         /// <param name="axisY">axis y index</param>
         /// <returns></returns>
-        public static Point ConvertToPixels(this Chart chart, Point chartPoint, int axisX = 0, int axisY = 0)
+        public static Point ConvertToPixels(this Chart2D chart, Point chartPoint, int axisX = 0, int axisY = 0)
         {
-            if (chart.Core == null || chart.AxisX.Any(x => x.Core == null)) return new Point();
+            if (chart.Core == null || chart.FirstDimension.Any(x => x.Core == null)) return new Point();
 
             var uw = new CorePoint(
-                chart.AxisX[axisX].Core.EvaluatesUnitWidth
+                chart.FirstDimension[axisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart.Core, axisX) / 2
                     : 0,
-                chart.AxisY[axisY].Core.EvaluatesUnitWidth
+                chart.SecondDimension[axisY].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, chart.Core, axisY) / 2
                     : 0);
 

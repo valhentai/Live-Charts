@@ -54,7 +54,7 @@ namespace LiveCharts.Wpf
                 if (!Draggable) return;
                 Dragging = this;
                 args.Handled = true;
-                Chart.Ldsp = null;
+                Chart2D.Ldsp = null;
             };
 
             SetCurrentValue(StrokeProperty, new SolidColorBrush(Color.FromRgb(131, 172, 191)));
@@ -300,7 +300,7 @@ namespace LiveCharts.Wpf
             BindingOperations.SetBinding(_rectangle, VisibilityProperty,
                 new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
 
-            var ax = source == AxisOrientation.X ? Model.Chart.View.AxisX[axis] : Model.Chart.View.AxisY[axis];
+            var ax = source == AxisOrientation.X ? Model.Chart.View.FirstDimension[axis] : Model.Chart.View.SecondDimension[axis];
             var uw = ax.Core.EvaluatesUnitWidth ? ChartFunctions.GetUnitWidth(source, Model.Chart, axis) / 2 : 0;
 
             if (Parent == null)

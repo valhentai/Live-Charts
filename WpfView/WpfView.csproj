@@ -99,7 +99,7 @@
     <Compile Include="PieChart.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
-    <Compile Include="Charts\Base\Chart.cs" />
+    <Compile Include="Charts\Base\Chart2D.cs" />
     <Compile Include="Converters\TypeConverters.cs" />
     <Compile Include="DefaultLegend.xaml.cs">
       <DependentUpon>DefaultLegend.xaml</DependentUpon>

@@ -31,16 +31,16 @@
                                 DataLabels="True" FontSize="20" Foreground="#6B303030"
                                 Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis IsEnabled="False" ShowLabels="False"/>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis Foreground="White" FontSize="14">
                     <lvc:Axis.Separator>
                         <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
         <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Background="#4CFFFFFF" Height="270" VerticalAlignment="Top">
             <TextBlock Foreground="White" FontSize="16" HorizontalAlignment="Center" Margin="0,20,0,0">Peak Time Today</TextBlock>

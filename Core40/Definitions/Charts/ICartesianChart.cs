@@ -25,8 +25,8 @@ namespace LiveCharts.Definitions.Charts
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Charts.I2DChartView" />
-    public interface ICartesianChart : I2DChartView
+    /// <seealso cref="IChart2DView" />
+    public interface ICartesianChart : IChart2DView
     {
         /// <summary>
         /// Gets or sets the visual elements.

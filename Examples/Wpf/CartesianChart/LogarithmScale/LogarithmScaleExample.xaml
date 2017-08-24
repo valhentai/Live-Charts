@@ -14,14 +14,14 @@
                     <Setter Property="Stroke" Value="LightGray"></Setter>
                 </Style>
             </lvc:CartesianChart.Resources>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:LogarithmicAxis LabelFormatter="{Binding Formatter}" 
                                      Base="{Binding Base}" >
                     <lvc:LogarithmicAxis.Separator>
                         <lvc:Separator StrokeThickness="1" IsEnabled="True"></lvc:Separator>
                     </lvc:LogarithmicAxis.Separator>
                 </lvc:LogarithmicAxis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

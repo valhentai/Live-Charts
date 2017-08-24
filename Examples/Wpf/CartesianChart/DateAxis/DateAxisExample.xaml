@@ -49,7 +49,7 @@
         </StackPanel>
 
         <lvc:CartesianChart Zoom="X" Grid.Row="4" DisableAnimations="False" Series="{Binding SeriesCollection}">
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:DateAxis
                     MinValue="0"
                     MaxValue="60"
@@ -63,7 +63,7 @@
                         <lvc:Separator StrokeThickness="10" Stroke="Black"/>
                     </lvc:DateAxis.Separator>
                 </lvc:DateAxis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
 
     </Grid>

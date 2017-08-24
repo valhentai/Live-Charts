@@ -131,7 +131,7 @@ namespace LiveCharts.Definitions.Series
         /// Initializes the view.
         /// </summary>
         /// <returns></returns>
-        IChartPointView InitializePointView(I2DChartView chartView);
+        IChartPointView InitializePointView(IChart2DView chartView);
 
         /// <summary>
         /// Called when the series update starts.

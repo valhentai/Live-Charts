@@ -9,12 +9,12 @@
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:NegativeStackedRowExample }">
     <Grid>
         <lvc:CartesianChart Series="{Binding SeriesCollection}">
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis LabelFormatter="{Binding Formatter}"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis Title="Age Range" Labels="{Binding Labels}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
             <lvc:CartesianChart.DataTooltip>
                 <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
             </lvc:CartesianChart.DataTooltip>

@@ -23,7 +23,6 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Wpf.Charts.Base;
 
@@ -32,7 +31,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Cartesian chart can plot any series with x and y coordinates
     /// </summary>
-    public class CartesianChart : Chart, ICartesianChart
+    public class CartesianChart : Chart2D, ICartesianChart
     {
         /// <summary>
         /// Initializes a new instance of CartesianChart class
@@ -44,7 +43,63 @@ namespace LiveCharts.Wpf
                     ? GetDesignerModeCollection()
                     : new SeriesCollection());
 
+            SetCurrentValue(XAxisProperty, new AxesCollection {new Axis()});
+            SetCurrentValue(YAxisProperty, new AxesCollection {new Axis()});
             SetCurrentValue(VisualElementsProperty, new VisualElementsCollection());
+        }
+
+        #region Properties
+
+        /// <summary>
+        /// The axis y property
+        /// </summary>
+        public static readonly DependencyProperty YAxisProperty = DependencyProperty.Register(
+            "YAxis", typeof(AxesCollection), typeof(CartesianChart),
+            new PropertyMetadata(null, OnAxisInstanceChanged(AxisOrientation.Y)));
+
+        /// <summary>
+        /// Gets or sets vertical axis
+        /// </summary>
+        public AxesCollection YAxis
+        {
+            get { return (AxesCollection)GetValue(YAxisProperty); }
+            set { SetValue(YAxisProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets vertical axis
+        /// </summary>
+        [Obsolete("Renamed to YAxis")]
+        public AxesCollection AxisY
+        {
+            get { return (AxesCollection)GetValue(YAxisProperty); }
+            set { SetValue(YAxisProperty, value); }
+        }
+
+        /// <summary>
+        /// The axis x property
+        /// </summary>
+        public static readonly DependencyProperty XAxisProperty = DependencyProperty.Register(
+            "XAxis", typeof(AxesCollection), typeof(CartesianChart),
+            new PropertyMetadata(null, OnAxisInstanceChanged(AxisOrientation.X)));
+
+        /// <summary>
+        /// Gets or sets horizontal axis
+        /// </summary>
+        public AxesCollection XAxis
+        {
+            get { return (AxesCollection)GetValue(XAxisProperty); }
+            set { SetValue(XAxisProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets horizontal axis
+        /// </summary>
+        [Obsolete("Renamed to XAxis")]
+        public AxesCollection AxisX
+        {
+            get { return (AxesCollection)GetValue(XAxisProperty); }
+            set { SetValue(XAxisProperty, value); }
         }
 
         /// <summary>
@@ -62,6 +117,24 @@ namespace LiveCharts.Wpf
             get { return (VisualElementsCollection) GetValue(VisualElementsProperty); }
             set { SetValue(VisualElementsProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets the axis x.
+        /// </summary>
+        /// <value>
+        /// The axis x.
+        /// </value>
+        public sealed override AxesCollection FirstDimension => XAxis;
+
+        /// <summary>
+        /// Gets or sets the axis y.
+        /// </summary>
+        /// <value>
+        /// The axis y.
+        /// </value>
+        public sealed override AxesCollection SecondDimension => YAxis;
+
+        #endregion
 
         private static void OnVisualCollectionChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {

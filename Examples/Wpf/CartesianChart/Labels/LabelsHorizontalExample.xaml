@@ -21,16 +21,16 @@
             <wpf:CartesianChart.DataTooltip>
                 <wpf:DefaultTooltip SelectionMode="SharedYValues"></wpf:DefaultTooltip>
             </wpf:CartesianChart.DataTooltip>
-            <wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.XAxis>
                 <wpf:Axis Title="Sold Items" LabelFormatter="{Binding Formatter}"></wpf:Axis>
-            </wpf:CartesianChart.AxisX>
-            <wpf:CartesianChart.AxisY>
+            </wpf:CartesianChart.XAxis>
+            <wpf:CartesianChart.YAxis>
                 <wpf:Axis Labels="{Binding Labels}" LabelsRotation="65">
                     <wpf:Axis.Separator >
                         <wpf:Separator Step="1"></wpf:Separator>
                     </wpf:Axis.Separator>
                 </wpf:Axis>
-            </wpf:CartesianChart.AxisY>
+            </wpf:CartesianChart.YAxis>
         </wpf:CartesianChart>
     </Grid>
 </UserControl>

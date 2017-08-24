@@ -9,17 +9,17 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <lvc:CartesianChart>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis MinValue="0" MaxValue="12" 
                           Labels="Jan, Feb, Mar, Apr, May, Jun, Jul, Agu, Sep, Oct, Nov, Dec"/>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis MinValue="200" MaxValue="600">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="50"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
             <lvc:CartesianChart.VisualElements>
                 <lvc:VisualElement X="2" Y="250" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <lvc:VisualElement.UIElement>

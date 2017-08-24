@@ -26,13 +26,13 @@
         <Button Grid.Row="1" Margin="7" Click="UpdateAllOnClick">Click me to update all points</Button>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}"
                             Background="#303030">
-            <lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis>
                     <lvc:Axis.Separator>
                         <lvc:Separator Stroke="#606060"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

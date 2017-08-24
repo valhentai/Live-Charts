@@ -15,7 +15,7 @@
             <lvc:CartesianChart.Series>
                 <lvc:ColumnSeries Values="5,6,7,9,2,4,6,5,9,7,5,10"/>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis LabelFormatter="{Binding Formatter}">
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Value="{Binding YPointer}" 
@@ -27,8 +27,8 @@
                                          Panel.ZIndex="1"/>
                     </lvc:Axis.Sections>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.YAxis>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis LabelsRotation="-25" Labels="January, February, March, April, May, Jun, July, Agust, September, October, November, December">
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Value="{Binding XPointer}"
@@ -44,7 +44,7 @@
                         <lvc:Separator Step="1" />
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

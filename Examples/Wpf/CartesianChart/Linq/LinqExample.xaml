@@ -24,16 +24,16 @@
                                   Values="{Binding Results}"
                                   Configuration="{Binding Mapper}"/>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis LabelsRotation="-20" Labels="{Binding Labels}" DisableAnimations="True">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis LabelFormatter="{Binding MillionFormatter}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

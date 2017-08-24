@@ -17,7 +17,7 @@
             Move All
         </Button>
         <lvc:CartesianChart Name="Chart" Grid.Row="2" Series="{Binding SeriesCollection}" >
-            <lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis Name="Axis">
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Value="8.5" StrokeThickness="3" Stroke="#F9D648">
@@ -37,7 +37,7 @@
                         </lvc:AxisSection>
                     </lvc:Axis.Sections>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

@@ -29,13 +29,13 @@
             <Button Click="ResetZoomOnClick">Reset Zoom</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}" 
                           Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis Name="Y" LabelFormatter="{Binding YFormatter}"/>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

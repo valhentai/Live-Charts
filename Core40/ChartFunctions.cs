@@ -45,7 +45,7 @@ namespace LiveCharts
         public static double ToPlotArea(double value, AxisOrientation source, ChartCore chart, int axis = 0)
         {
             return ToPlotArea(value, source, chart,
-                (source == AxisOrientation.X ? chart.View.AxisX : chart.View.AxisY)[axis].Core);
+                (source == AxisOrientation.X ? chart.View.FirstDimension : chart.View.SecondDimension)[axis].Core);
         }
 
         /// <summary>
@@ -99,18 +99,18 @@ namespace LiveCharts
             
             if (source == AxisOrientation.Y)
             {
-                p1.X = chart.View.AxisY[axis].Core.TopLimit;
+                p1.X = chart.View.SecondDimension[axis].Core.TopLimit;
                 p1.Y = chart.View.DrawMarginTop;
 
-                p2.X = chart.View.AxisY[axis].Core.BotLimit;
+                p2.X = chart.View.SecondDimension[axis].Core.BotLimit;
                 p2.Y = chart.View.DrawMarginTop + chart.View.DrawMarginHeight;
             }
             else
             {
-                p1.X = chart.View.AxisX[axis].Core.TopLimit;
+                p1.X = chart.View.FirstDimension[axis].Core.TopLimit;
                 p1.Y = chart.View.DrawMarginWidth + chart.View.DrawMarginLeft;
 
-                p2.X = chart.View.AxisX[axis].Core.BotLimit;
+                p2.X = chart.View.FirstDimension[axis].Core.BotLimit;
                 p2.Y = chart.View.DrawMarginLeft;
             }
 
@@ -179,7 +179,7 @@ namespace LiveCharts
         public static double GetUnitWidth(AxisOrientation source, ChartCore chart, int axis = 0)
         {
             return GetUnitWidth(source, chart,
-                (source == AxisOrientation.X ? chart.View.AxisX : chart.View.AxisY)[axis].Core);
+                (source == AxisOrientation.X ? chart.View.FirstDimension : chart.View.SecondDimension)[axis].Core);
         }
 
         /// <summary>
@@ -220,8 +220,8 @@ namespace LiveCharts
         /// <returns></returns>
         public static TooltipDataViewModel GetTooltipData(ChartPoint senderPoint, ChartCore chart, TooltipSelectionMode selectionMode)
         {
-            var ax = chart.View.AxisX[senderPoint.SeriesView.ScalesXAt].Core;
-            var ay = chart.View.AxisY[senderPoint.SeriesView.ScalesYAt].Core;
+            var ax = chart.View.FirstDimension[senderPoint.SeriesView.ScalesXAt].Core;
+            var ay = chart.View.SecondDimension[senderPoint.SeriesView.ScalesYAt].Core;
 
             switch (selectionMode)
             {

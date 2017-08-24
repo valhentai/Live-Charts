@@ -32,13 +32,13 @@
                 <lvc:ColumnSeries Title="Charles" Values="6,2,6,3,8" Visibility="{Binding CharlesSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
                 <lvc:ColumnSeries Title="John" Values="7,2,8,3,9" Visibility="{Binding JohnSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis Labels="January, February, March, April, May">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

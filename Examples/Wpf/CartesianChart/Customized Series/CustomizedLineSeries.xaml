@@ -33,7 +33,7 @@
                     </lvc:VisualElement.UIElement>
                 </lvc:VisualElement>
             </lvc:CartesianChart.VisualElements>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis IsMerged="True">
                     <lvc:Axis.Separator>
                         <lvc:Separator StrokeThickness="1" StrokeDashArray="2">
@@ -43,8 +43,8 @@
                         </lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.XAxis>
+            <lvc:CartesianChart.YAxis>
                 <lvc:Axis IsMerged="True">
                     <lvc:Axis.Separator>
                         <lvc:Separator StrokeThickness="1.5" StrokeDashArray="4">
@@ -54,7 +54,7 @@
                         </lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart.YAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

@@ -23,10 +23,10 @@
 namespace LiveCharts.Definitions.Charts
 {
     /// <summary>
-    /// 
+    /// Defines a pie chart view.
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Charts.I2DChartView" />
-    public interface IPieChart : I2DChartView
+    /// <seealso cref="IChart2DView" />
+    public interface IPieChart : IChart2DView
     {
         /// <summary>
         /// Gets or sets the inner radius.

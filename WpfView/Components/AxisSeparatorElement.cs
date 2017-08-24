@@ -106,7 +106,7 @@ namespace LiveCharts.Wpf.Components
         /// Clears the specified chart.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public void Clear(I2DChartView chart)
+        public void Clear(IChart2DView chart)
         {
             chart.RemoveFromView(TextBlock);
             chart.RemoveFromView(Line);
@@ -240,7 +240,7 @@ namespace LiveCharts.Wpf.Components
                 Duration = chart.View.AnimationsSpeed
             };
 
-            var dispatcher = ((Chart) chart.View).Dispatcher;
+            var dispatcher = ((Chart2D) chart.View).Dispatcher;
             anim.Completed += (sender, args) =>
             {
                 dispatcher.Invoke(new Action(() =>

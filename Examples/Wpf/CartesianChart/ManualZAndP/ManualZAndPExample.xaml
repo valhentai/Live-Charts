@@ -22,11 +22,11 @@
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values}"></lvc:LineSeries>
             </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis MinValue="{Binding From}" MaxValue="{Binding To}" 
                           Separator="{x:Static lvc:DefaultAxes.CleanSeparator}">
                 </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

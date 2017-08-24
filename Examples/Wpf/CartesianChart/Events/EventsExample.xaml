@@ -25,10 +25,10 @@
                             DataClickCommand="{Binding DataClickCommand}"
                             DataHoverCommand="{Binding DataHoverCommand}"
                             UpdaterTickCommand="{Binding UpdaterTickCommand}">
-            <lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.XAxis>
                 <lvc:Axis RangeChanged="Axis_OnRangeChanged" 
                           RangeChangedCommand="{Binding RangeChangedCommand}"/>
-            </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart.XAxis>
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="4,6,5,3,5" Fill="Transparent" StrokeThickness="4" 
                                 Panel.ZIndex="2" PointGeometrySize="25"/>

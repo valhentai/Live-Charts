@@ -459,7 +459,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="ISeriesView.InitializePointView"/>
-        protected virtual IChartPointView InitializePointView(I2DChartView chartView)
+        protected virtual IChartPointView InitializePointView(IChart2DView chartView)
         {
             throw new NotImplementedException(
                 "The series has not a a InitializePointView method defined, consider overriding Series.InitializePointView() method.");
@@ -576,7 +576,7 @@ namespace LiveCharts.Wpf
             return GetPointView(point, label);
         }
 
-        IChartPointView ISeriesView.InitializePointView(I2DChartView view)
+        IChartPointView ISeriesView.InitializePointView(IChart2DView view)
         {
             return InitializePointView(view);
         }

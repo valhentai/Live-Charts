@@ -106,7 +106,7 @@ namespace LiveCharts.Wpf.Components
 
         private void UpdaterTick(bool restartView, bool force)
         {
-            var wpfChart = (Chart) Chart.View;
+            var wpfChart = (Chart2D) Chart.View;
             
             if (!force && !wpfChart.IsVisible) return;
 
