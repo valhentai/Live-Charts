@@ -78,7 +78,7 @@ namespace LiveCharts.Series
 
                 chartPoint.SeriesView = View;
 
-                chartPoint.View = View.GetPointView(chartPoint, "");
+                chartPoint.View = View.InitializePointView(Chart.View);
 
                 var bubbleView = (IScatterPointView) chartPoint.View;
 

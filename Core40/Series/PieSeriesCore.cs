@@ -71,10 +71,7 @@ namespace LiveCharts.Series
 
             foreach (var chartPoint in View.ActualValues.GetPoints(View))
             {
-                chartPoint.View = View.GetPointView(chartPoint,
-                    View.DataLabels
-                        ? ""
-                        : null);
+                chartPoint.View = View.InitializePointView(Chart.View);
 
                 var pieSlice = (IPieSlicePointView) chartPoint.View;
 

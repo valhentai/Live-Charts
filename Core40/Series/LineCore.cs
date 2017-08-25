@@ -57,7 +57,6 @@ namespace LiveCharts.Series
             var segmentPosition = 0;
 
             var lineView = (ILineSeriesView) View;
-            var areaPointView = (IAreaPointView) View;
 
             var smoothness = lineView.LineSmoothness;
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
@@ -150,11 +149,8 @@ namespace LiveCharts.Series
 
                     if (chartPoint.View == null)
                     {
-                        chartPoint.View = View.InitializePointView(View.Core.Chart.View);
+                        chartPoint.View = View.InitializePointView(Chart.View);
                     }
-
-                    //chartPoint.View = View.GetPointView(chartPoint,
-                    //    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
 
                     var bezierView = chartPoint.View as IBezierPointView;
 
@@ -162,8 +158,6 @@ namespace LiveCharts.Series
                     {
                         throw new LiveChartsException(ExceptionReason.BezierViewRequired);
                     }
-
-                    var mhr = areaPointView.PointMaxRadius < 10 ? 10 : areaPointView.PointMaxRadius;
 
                     bezierView.Data = index == segment.Count - 1
                         ? new BezierData(new CorePoint(p1.X, p1.Y))

@@ -90,7 +90,7 @@ namespace LiveCharts.Series
                 var reference =
                     ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
 
-                chartPoint.View = View.GetPointView(chartPoint, "");
+                chartPoint.View = View.InitializePointView(Chart.View);
 
                 chartPoint.SeriesView = View;
 

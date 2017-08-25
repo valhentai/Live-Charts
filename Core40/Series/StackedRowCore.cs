@@ -87,12 +87,7 @@ namespace LiveCharts.Series
                     ? ChartFunctions.ToDrawMargin(chartPoint.To, AxisOrientation.X, Chart, View.ScalesXAt)
                     : ChartFunctions.ToDrawMargin(chartPoint.To/chartPoint.Sum, AxisOrientation.X, Chart, View.ScalesXAt);
 
-                chartPoint.View = View.GetPointView(chartPoint,
-                    View.DataLabels
-                        ? (chartPoint.Participation > 0.05
-                            ? ""
-                            : string.Empty)
-                        : null);
+                chartPoint.View = View.InitializePointView(Chart.View);
 
                 chartPoint.SeriesView = View;
 

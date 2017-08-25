@@ -558,11 +558,6 @@ namespace LiveCharts.Wpf
 
         double ISeriesView.DefaultFillOpacity => .35d;
 
-        IChartPointView ISeriesView.GetPointView(ChartPoint point, string label)
-        {
-            return GetPointView(point, label);
-        }
-
         IChartPointView ISeriesView.InitializePointView(IChart2DView view)
         {
             return InitializePointView(view);

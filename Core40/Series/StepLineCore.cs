@@ -54,7 +54,7 @@ namespace LiveCharts.Series
             var i = 0;
             foreach (var current in View.ActualValues.GetPoints(View))
             {
-                current.View = View.GetPointView(current, "");
+                current.View = View.InitializePointView(Chart.View);
 
                 current.SeriesView = View;
 

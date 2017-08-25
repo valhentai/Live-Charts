@@ -90,12 +90,7 @@ namespace LiveCharts.Series
                 if (double.IsNaN(from)) from = 0;
                 if (double.IsNaN(to)) to = 0;
 
-                chartPoint.View = View.GetPointView(chartPoint,
-                    View.DataLabels
-                        ? (chartPoint.Participation > 0.05
-                            ? ""
-                            : string.Empty)
-                        : null);
+                chartPoint.View = View.InitializePointView(Chart.View);
 
                 chartPoint.SeriesView = View;
 

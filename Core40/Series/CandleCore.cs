@@ -72,7 +72,7 @@ namespace LiveCharts.Series
             {
                 var x = ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt);
 
-                chartPoint.View = View.GetPointView(chartPoint, "");
+                chartPoint.View = View.InitializePointView(Chart.View);
 
                 chartPoint.SeriesView = View;
 

@@ -121,14 +121,6 @@ namespace LiveCharts.Definitions.Series
         string Title { get; }
 
         /// <summary>
-        /// Gets the point view.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="label">The label.</param>
-        /// <returns></returns>
-        IChartPointView GetPointView(ChartPoint point, string label);
-
-        /// <summary>
         /// Initializes the view.
         /// </summary>
         /// <returns></returns>
