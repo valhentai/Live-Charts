@@ -32,13 +32,13 @@ namespace LiveCharts.Series
     /// </summary>
     /// <seealso cref="SeriesCore" />
     /// <seealso cref="LiveCharts.Definitions.Series.IPieSeries" />
-    public class PieCore : SeriesCore, IPieSeries
+    public class PieSeriesCore : SeriesCore, IPieSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PieCore"/> class.
+        /// Initializes a new instance of the <see cref="PieSeriesCore"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
-        public PieCore(ISeriesView view) : base(view)
+        public PieSeriesCore(ISeriesView view) : base(view)
         {
             PreferredSelectionMode= TooltipSelectionMode.SharedXValues;
         }
@@ -73,7 +73,7 @@ namespace LiveCharts.Series
             {
                 chartPoint.View = View.GetPointView(chartPoint,
                     View.DataLabels
-                        ? View.GetLabelPointFormatter()(chartPoint)
+                        ? ""
                         : null);
 
                 var pieSlice = (IPieSlicePointView) chartPoint.View;
@@ -88,7 +88,7 @@ namespace LiveCharts.Series
                 pieSlice.Rotation = startAt + (chartPoint.StackedParticipation - chartPoint.Participation)*360;
                 pieSlice.Wedge = chartPoint.Participation*360 > 0 ? chartPoint.Participation*360 : 0;
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
 
                 inner = pieSlice.Radius;
             }

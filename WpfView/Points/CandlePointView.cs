@@ -28,6 +28,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Wpf.Points
@@ -44,7 +45,7 @@ namespace LiveCharts.Wpf.Points
         public double Left { get; set; }
         public double StartReference { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             var center = Left + Width / 2;
 
@@ -165,7 +166,7 @@ namespace LiveCharts.Wpf.Points
 
         }
 
-        public override void RemoveFromView(ChartCore chart)
+        public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(OpenToCloseRectangle);
             chart.View.RemoveFromDrawMargin(HighToLowLine);

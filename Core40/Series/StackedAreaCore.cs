@@ -139,7 +139,7 @@ namespace LiveCharts.Series
 
                     chartPoint.View = View.GetPointView(chartPoint,
                         View.DataLabels
-                            ? (chartPoint.Participation > 0.05 ? View.GetLabelPointFormatter()(chartPoint) : string.Empty)
+                            ? (chartPoint.Participation > 0.05 ? "" : string.Empty)
                             : null);
 
                     var bezierView = chartPoint.View as IBezierPointView;
@@ -154,12 +154,10 @@ namespace LiveCharts.Series
                             Point3 = new CorePoint(p2.X, p2.Y)
                         };
 
-                    chartPoint.View.DrawOrMove(previousDrawn, chartPoint, segmentPosition, Chart);
+                    chartPoint.View.Draw(previousDrawn, chartPoint, segmentPosition, View, Chart);
                     segmentPosition++;
 
-                    previousDrawn = chartPoint.View.IsNew
-                        ? previousDrawn
-                        : chartPoint;
+                    previousDrawn = chartPoint;
 
                     p0 = new CorePoint(p1);
                     p1 = new CorePoint(p2);

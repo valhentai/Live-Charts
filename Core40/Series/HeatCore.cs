@@ -95,8 +95,7 @@ namespace LiveCharts.Series
 
                 chartPoint.SeriesView = View;
 
-                chartPoint.View = View.GetPointView(chartPoint,
-                    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
+                chartPoint.View = View.GetPointView(chartPoint, "");
 
                 var heatView = (IHeatPointView)chartPoint.View;
 
@@ -106,7 +105,7 @@ namespace LiveCharts.Series
                 heatView.Width = w;
                 heatView.Height = h;
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
             }
         }
 

@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.Definitions.Points
 {
@@ -30,39 +31,42 @@ namespace LiveCharts.Definitions.Points
     public interface IChartPointView
     {
         /// <summary>
-        /// Gets a value indicating whether this instance is new.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is new; otherwise, <c>false</c>.
-        /// </value>
-        bool IsNew { get; }
-
-        /// <summary>
-        /// Draws the or move.
+        /// Draws the point.
         /// </summary>
         /// <param name="previousDrawn">The previous drawn.</param>
         /// <param name="current">The current.</param>
         /// <param name="index">The index.</param>
+        /// <param name="series"></param>
         /// <param name="chart">The chart.</param>
-        void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart);
+        void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart);
 
         /// <summary>
-        /// Removes from view.
+        /// Erases the point from the view.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        void RemoveFromView(ChartCore chart);
+        void Erase(ChartCore chart);
 
         /// <summary>
-        /// Called when [hover].
+        /// Called when the point is hovered.
         /// </summary>
         /// <param name="point">The point.</param>
         void OnHover(ChartPoint point);
 
         /// <summary>
-        /// Called when [hover leave].
+        /// Called when the point hover leaves.
         /// </summary>
         /// <param name="point">The point.</param>
         void OnHoverLeave(ChartPoint point);
+
+        /// <summary>
+        /// Called when the point is selected.
+        /// </summary>
+        void OnSelection();
+
+        /// <summary>
+        /// Called when the point selection state changes from true to false.
+        /// </summary>
+        void OnSelectionLeave();
     }
 
 }

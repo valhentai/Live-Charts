@@ -90,7 +90,7 @@ namespace LiveCharts.Series
                 chartPoint.View = View.GetPointView(chartPoint,
                     View.DataLabels
                         ? (chartPoint.Participation > 0.05
-                            ? View.GetLabelPointFormatter()(chartPoint)
+                            ? ""
                             : string.Empty)
                         : null);
 
@@ -114,7 +114,7 @@ namespace LiveCharts.Series
                 chartPoint.ChartLocation = new CorePoint(rectangleView.Data.Left + rectangleView.Data.Width,
                     rectangleView.Data.Top);
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
             }
         }
 

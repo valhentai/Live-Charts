@@ -25,6 +25,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
@@ -51,7 +52,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Initializes a new instance of ColumnSeries class, using a given mapper
         /// </summary>
-        public ColumnSeries(object configuration)
+        public ColumnSeries(BiDimensinalMapper configuration)
         {
             Core = new ColumnCore(this);
             Configuration = configuration;

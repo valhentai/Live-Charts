@@ -20,12 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf.Points
         public double Left { get; set; }
         public double StartReference { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             var center = Left + Width / 2;
 
@@ -135,7 +135,7 @@ namespace LiveCharts.Wpf.Points
             CloseLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Close, animSpeed));
         }
 
-        public override void RemoveFromView(ChartCore chart)
+        public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(OpenLine);
             chart.View.RemoveFromDrawMargin(CloseLine);

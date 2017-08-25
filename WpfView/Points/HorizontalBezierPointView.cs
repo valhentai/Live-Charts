@@ -20,16 +20,254 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
 {
+    /// <summary>
+    /// Point drawn by the line series class.
+    /// </summary>
+    /// <seealso cref="IBezierPointView" />
+    public class LineSeriesPointView : IBezierPointView
+    {
+        /// <summary>
+        /// Gets or sets the point shape path.
+        /// </summary>
+        /// <value>
+        /// The point shape path.
+        /// </value>
+        protected Path PointShapePath { get; set; }
+        /// <summary>
+        /// Gets or sets the bezier.
+        /// </summary>
+        /// <value>
+        /// The bezier.
+        /// </value>
+        protected BezierSegment Bezier { get; set; }
+        /// <summary>
+        /// Gets or sets the label.
+        /// </summary>
+        /// <value>
+        /// The label.
+        /// </value>
+        protected ContentControl Label { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data to draw.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
+        public BezierData Data { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shadow path.
+        /// </summary>
+        /// <value>
+        /// The shadow path.
+        /// </value>
+        public PathFigure ShadowPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke path.
+        /// </summary>
+        /// <value>
+        /// The stroke path.
+        /// </value>
+        public PathFigure StrokePath { get; set; }
+
+        /// <inheritdoc cref="IChartPointView.Draw"/>
+        public virtual void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        {
+            var lineSeries = (LineSeries) series;
+
+            // --------------------
+            // Initializing shapes
+            // --------------------
+
+            #region Point shape
+
+            // Initialize the path, if it is required by the series and it is null.
+            if (lineSeries.PointGeometry != null && PointShapePath == null)
+            {
+                PointShapePath = new Path
+                {
+                    Stretch = Stretch.Fill,
+                    StrokeThickness = lineSeries.StrokeThickness
+                };
+
+                chart.View.AddToDrawMargin(PointShapePath);
+            }
+
+            // map the series properties to the drawn point.
+            if (PointShapePath != null)
+            {
+                PointShapePath.Fill = lineSeries.PointForeground;
+                PointShapePath.Stroke = lineSeries.Stroke;
+                PointShapePath.StrokeThickness = lineSeries.StrokeThickness;
+                PointShapePath.Width = lineSeries.PointGeometrySize;
+                PointShapePath.Height = lineSeries.PointGeometrySize;
+                PointShapePath.Data = lineSeries.PointGeometry;
+                PointShapePath.Visibility = lineSeries.Visibility;
+                Panel.SetZIndex(PointShapePath, Panel.GetZIndex(lineSeries) + 1);
+
+                // Obsolete, replaced with IChartPointView.Selected() method.
+                // ToDo: Remove the next 2 lines in a future version...
+                if (current.Stroke != null) PointShapePath.Stroke = (Brush) current.Stroke;
+                if (current.Fill != null) PointShapePath.Fill = (Brush) current.Fill;
+            }
+
+            #endregion
+
+            #region Data Label
+
+            // initialize or update the label.
+            if (lineSeries.DataLabels)
+            {
+                Label = lineSeries.UpdateLabelContent(
+                    new DataLabelViewModel
+                    {
+                        FormattedText = DesignerProperties.GetIsInDesignMode(lineSeries)
+                            ? "'label'"
+                            : lineSeries.LabelPoint(current),
+                        Point = current
+                    }, Label);
+            }
+
+            // erase data label if it is not required anymore.
+            if (!lineSeries.DataLabels && Label != null)
+            {
+                // notice UpdateLabelContent() added the label to the UI, we need to remove it.
+                chart.View.RemoveFromDrawMargin(Label);
+                Label = null;
+            }
+
+            #endregion
+
+            // --------------------
+            // Placing shapes
+            // --------------------
+
+            #region Responsive area in chart
+
+            // register the area where the point interacts with the user (hover and click).
+            var minDimension = lineSeries.PointGeometrySize < 12 ? 12 : lineSeries.PointGeometrySize;
+            current.ResponsiveArea = new ResponsiveRectangle(
+                current.ChartLocation.X - minDimension / 2,
+                current.ChartLocation.Y - minDimension / 2,
+                minDimension,
+                minDimension);
+
+            #endregion
+
+            if (Bezier == null)
+            {
+                Bezier = new BezierSegment();
+            }
+
+            ShadowPath.Segments.Remove(Bezier);
+            ShadowPath.Segments.Insert(index, Bezier);
+            StrokePath.Segments.Remove(Bezier);
+            StrokePath.Segments.Add(Bezier);
+
+            Bezier.Point1 = Data.Point1.AsPoint();
+            Bezier.Point2 = Data.Point2.AsPoint();
+            Bezier.Point3 = Data.Point3.AsPoint();
+
+            if (PointShapePath != null)
+            {
+                Canvas.SetLeft(PointShapePath, current.ChartLocation.X - PointShapePath.Width * .5);
+                Canvas.SetTop(PointShapePath, current.ChartLocation.Y - PointShapePath.Height * .5);
+            }
+
+            if (Label != null)
+            {
+                Label.UpdateLayout();
+                var xl = CorrectXLabel(current.ChartLocation.X - Label.ActualWidth * .5, chart);
+                var yl = CorrectYLabel(current.ChartLocation.Y - Label.ActualHeight * .5, chart);
+                Canvas.SetLeft(Label, xl);
+                Canvas.SetTop(Label, yl);
+            }
+            return;
+        }
+
+        /// <inheritdoc cref="IChartPointView.Erase"/>
+        public virtual void Erase(ChartCore chart)
+        {
+            chart.View.RemoveFromDrawMargin(PointShapePath);
+            chart.View.RemoveFromDrawMargin(Label);
+            ShadowPath.Segments.Remove(Bezier);
+        }
+
+        /// <inheritdoc cref="IChartPointView.OnHover"/>
+        public virtual void OnHover(ChartPoint point)
+        {
+            var lineSeries = (LineSeries)point.SeriesView;
+            if (PointShapePath != null) PointShapePath.Fill = PointShapePath.Stroke;
+
+            lineSeries.PathCollection.ForEach(s => s.StrokePath.StrokeThickness++);
+        }
+
+        /// <inheritdoc cref="IChartPointView.OnHoverLeave"/>
+        public virtual void OnHoverLeave(ChartPoint point)
+        {
+            var lineSeries = (LineSeries)point.SeriesView;
+            if (PointShapePath != null)
+                PointShapePath.Fill = point.Fill == null
+                    ? lineSeries.PointForeground
+                    : (Brush)point.Fill;
+
+            lineSeries.PathCollection.ForEach(s =>
+            {
+                s.StrokePath.StrokeThickness = lineSeries.StrokeThickness;
+            });
+        }
+
+        /// <inheritdoc cref="IChartPointView.OnSelection"/>
+        public virtual void OnSelection()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc cref="IChartPointView.OnHoverLeave"/>
+        public virtual void OnSelectionLeave()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private double CorrectXLabel(double desiredPosition, ChartCore chart)
+        {
+            if (desiredPosition + Label.ActualWidth * .5 < -0.1) return -Label.ActualWidth;
+
+            if (desiredPosition + Label.ActualWidth > chart.View.DrawMarginWidth)
+                desiredPosition -= desiredPosition + Label.ActualWidth - chart.View.DrawMarginWidth + 2;
+
+            if (desiredPosition < 0) desiredPosition = 0;
+
+            return desiredPosition;
+        }
+
+        private double CorrectYLabel(double desiredPosition, ChartCore chart)
+        {
+            desiredPosition -= (PointShapePath == null ? 0 : PointShapePath.ActualHeight * .5) + Label.ActualHeight * .5 + 2;
+
+            if (desiredPosition + Label.ActualHeight > chart.View.DrawMarginHeight)
+                desiredPosition -= desiredPosition + Label.ActualHeight - chart.View.DrawMarginHeight + 2;
+
+            if (desiredPosition < 0) desiredPosition = 0;
+
+            return desiredPosition;
+        }
+    }
+
     public class HorizontalBezierPointView : PointView, IBezierPointView
     {
         public BezierSegment Segment { get; set; }
@@ -38,7 +276,7 @@ namespace LiveCharts.Wpf.Points
         public PathFigure LineContainer { get; set; }
         public BezierData Data { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             var previosPbv = previousDrawn == null
                 ? null
@@ -50,8 +288,6 @@ namespace LiveCharts.Wpf.Points
             ShadowContainer.Segments.Insert(index, Segment);
             LineContainer.Segments.Remove(Segment);
             LineContainer.Segments.Add(Segment);
-
-            ValidArea = new CoreRectangle(current.ChartLocation.X - 7.5, current.ChartLocation.Y - 7.5, 15, 15);
 
             if (IsNew)
             {
@@ -184,11 +420,9 @@ namespace LiveCharts.Wpf.Points
             }
         }
 
-        public override void RemoveFromView(ChartCore chart)
+        public override void Erase(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(Shape);
-            chart.View.RemoveFromDrawMargin(DataLabel);
-            ShadowContainer.Segments.Remove(Segment);
+            
         }
 
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
@@ -217,24 +451,12 @@ namespace LiveCharts.Wpf.Points
 
         public override void OnHover(ChartPoint point)
         {
-            var lineSeries = (LineSeries) point.SeriesView;
-            if (Shape != null) Shape.Fill = Shape.Stroke;
-
-            lineSeries.PathCollection.ForEach(s => s.LinePath.StrokeThickness++);
+            
         }
 
         public override void OnHoverLeave(ChartPoint point)
         {
-            var lineSeries = (LineSeries) point.SeriesView;
-            if (Shape != null)
-                Shape.Fill = point.Fill == null
-                    ? lineSeries.PointForeground
-                    : (Brush) point.Fill;
-
-            lineSeries.PathCollection.ForEach(s =>
-            {
-                s.LinePath.StrokeThickness = lineSeries.StrokeThickness;
-            });
+            
         }
     }
 }

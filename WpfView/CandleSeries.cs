@@ -27,6 +27,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
@@ -55,7 +56,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of OhclSeries class with a given mapper
         /// </summary>
         /// <param name="configuration"></param>
-        public CandleSeries(object configuration)
+        public CandleSeries(BiDimensinalMapper configuration)
         {
             Core = new CandleCore(this);
             Configuration = configuration;

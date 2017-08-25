@@ -78,14 +78,13 @@ namespace LiveCharts.Series
 
                 chartPoint.SeriesView = View;
 
-                chartPoint.View = View.GetPointView(chartPoint,
-                    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
+                chartPoint.View = View.GetPointView(chartPoint, "");
 
                 var bubbleView = (IScatterPointView) chartPoint.View;
 
                 bubbleView.Diameter = m*(chartPoint.Weight - p1.X) + p1.Y;
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
             }
         }
 

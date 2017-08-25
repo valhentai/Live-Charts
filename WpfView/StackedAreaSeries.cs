@@ -27,6 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Series;
 
@@ -59,7 +60,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Initializes a new instance of StackedAreaSeries class, with a given mapper
         /// </summary>
-        public StackedAreaSeries(object configuration)
+        public StackedAreaSeries(BiDimensinalMapper configuration)
         {
             Core = new StackedAreaCore(this);
             Configuration = configuration;

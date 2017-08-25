@@ -25,6 +25,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
@@ -52,7 +53,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Initializes a new instance of StackedColumnSeries class, with a given mapper
         /// </summary>
-        public StackedColumnSeries(object configuration)
+        public StackedColumnSeries(BiDimensinalMapper configuration)
         {
             Core = new StackedColumnCore(this);
             Configuration = configuration;

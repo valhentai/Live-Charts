@@ -28,6 +28,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
@@ -40,7 +41,7 @@ namespace LiveCharts.Wpf.Points
         public BarLabelPosition LabelPosition { get; set; }
         private RotateTransform Transform { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             if (IsNew)
             {
@@ -149,7 +150,7 @@ namespace LiveCharts.Wpf.Points
                 new DoubleAnimation(Data.Width, animSpeed));
         }
 
-        public override void RemoveFromView(ChartCore chart)
+        public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(Rectangle);
             chart.View.RemoveFromDrawMargin(DataLabel);

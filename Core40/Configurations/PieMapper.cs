@@ -6,7 +6,7 @@ namespace LiveCharts.Configurations
     /// Mapper to configure X and Y points
     /// </summary>
     /// <typeparam name="T">Type to configure</typeparam>
-    public class PieMapper<T> : IPointEvaluator<T>
+    public class PieMapper<T> : BiDimensionalMapper<T>
     {
         private readonly Func<T, int, double> _x = (v, i) => i;
         private Func<T, int, double> _y = (v, i) => i;

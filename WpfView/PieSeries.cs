@@ -24,6 +24,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Series;
@@ -43,7 +44,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public PieSeries()
         {
-            Core = new PieCore(this);
+            Core = new PieSeriesCore(this);
             InitializeDefuaults();
         }
 
@@ -51,9 +52,9 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of PieSeries class with a given mapper.
         /// </summary>
         /// <param name="configuration"></param>
-        public PieSeries(object configuration)
+        public PieSeries(BiDimensinalMapper configuration)
         {
-            Core = new PieCore(this);
+            Core = new PieSeriesCore(this);
             Configuration = configuration;
             InitializeDefuaults();
         }

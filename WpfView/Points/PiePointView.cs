@@ -27,6 +27,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.Wpf.Points
 {
@@ -39,7 +40,7 @@ namespace LiveCharts.Wpf.Points
         public PieSlice Slice { get; set; }
         public double OriginalPushOut { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             if (IsNew)
             {
@@ -113,7 +114,7 @@ namespace LiveCharts.Wpf.Points
             Slice.BeginAnimation(PieSlice.RotationAngleProperty, new DoubleAnimation(Rotation, animSpeed));
         }
 
-        public override void RemoveFromView(ChartCore chart)
+        public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(Slice);
             chart.View.RemoveFromDrawMargin(DataLabel);

@@ -87,8 +87,7 @@ namespace LiveCharts.Series
                 var reference =
                     ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
 
-                chartPoint.View = View.GetPointView(chartPoint,
-                    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
+                chartPoint.View = View.GetPointView(chartPoint, "");
 
                 chartPoint.SeriesView = View;
 
@@ -100,11 +99,11 @@ namespace LiveCharts.Series
                     : zero;
 
             
-                if (chartPoint.EvaluatesGantt)
-                {
-                    l = ChartFunctions.ToDrawMargin(chartPoint.XStart, AxisOrientation.X, Chart, View.ScalesXAt);
-                    if (!(reference.X < zero && l < zero)) w -= l;
-                }
+                //if (chartPoint.EvaluatesGantt)
+                //{
+                //    l = ChartFunctions.ToDrawMargin(chartPoint.XStart, AxisOrientation.X, Chart, View.ScalesXAt);
+                //    if (!(reference.X < zero && l < zero)) w -= l;
+                //}
 
                 rectangleView.Data.Height = singleRowHeight - padding;
                 rectangleView.Data.Top = reference.Y + relativeTop - correction;
@@ -117,7 +116,7 @@ namespace LiveCharts.Series
                 chartPoint.ChartLocation = new CorePoint(rectangleView.Data.Left + rectangleView.Data.Width,
                     rectangleView.Data.Top);
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
             }
         }
 

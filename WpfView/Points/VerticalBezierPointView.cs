@@ -25,20 +25,19 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Charts;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
 {
     internal class VerticalBezierPointView : HorizontalBezierPointView
     {
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             var previosPbv = previousDrawn == null ? null : (VerticalBezierPointView) previousDrawn.View;
 
             ShadowContainer.Segments.Remove(Segment);
             ShadowContainer.Segments.Insert(index, Segment);
-
-            ValidArea = new CoreRectangle(current.ChartLocation.X - 7.5, current.ChartLocation.Y - 7.5, 15, 15);
 
             if (IsNew)
             {

@@ -20,20 +20,22 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Configurations
+using LiveCharts.Dtos;
+
+namespace LiveCharts
 {
     /// <summary>
-    /// 
+    /// Defines a responsive area.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface IPointEvaluator<in T>
+    public abstract class ResponsiveArea
     {
         /// <summary>
-        /// Evaluates the specified key.
+        /// Determines whether the specified point is inside the area.
         /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
         /// <param name="point">The point.</param>
-        void Evaluate(int key, T value, ChartPoint point);
+        /// <returns>
+        ///   <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
+        /// </returns>
+        public abstract bool IsInside(CorePoint point);
     }
 }

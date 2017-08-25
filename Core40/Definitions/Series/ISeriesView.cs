@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 
@@ -77,7 +78,7 @@ namespace LiveCharts.Definitions.Series
         /// <value>
         /// The configuration.
         /// </value>
-        object Configuration { get; }
+        BiDimensinalMapper Configuration { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is series visible.
@@ -163,11 +164,5 @@ namespace LiveCharts.Definitions.Series
         /// Places the specialized elements.
         /// </summary>
         void PlaceSpecializedElements();
-
-        /// <summary>
-        /// Gets the label point formatter.
-        /// </summary>
-        /// <returns></returns>
-        Func<ChartPoint, string> GetLabelPointFormatter();
     }
 }

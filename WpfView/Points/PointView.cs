@@ -22,6 +22,7 @@ using System;
 using System.Windows.Controls;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
@@ -30,14 +31,13 @@ namespace LiveCharts.Wpf.Points
     {
         public ContentControl DataLabel { get; set; }
         public bool IsNew { get; set; }
-        public CoreRectangle ValidArea { get; internal set; }
 
-        public virtual void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public virtual void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void RemoveFromView(ChartCore chart)
+        public virtual void Erase(ChartCore chart)
         {
             throw new NotImplementedException();
         }
@@ -50,6 +50,16 @@ namespace LiveCharts.Wpf.Points
         public virtual void OnHoverLeave(ChartPoint point)
         {
             
+        }
+
+        public virtual void OnSelection()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnSelectionLeave()
+        {
+            throw new NotImplementedException();
         }
     }
 }

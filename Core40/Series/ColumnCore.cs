@@ -90,8 +90,7 @@ namespace LiveCharts.Series
                 var reference =
                     ChartFunctions.ToDrawMargin(chartPoint, View.ScalesXAt, View.ScalesYAt, Chart);
 
-                chartPoint.View = View.GetPointView(chartPoint,
-                    View.DataLabels ? View.GetLabelPointFormatter()(chartPoint) : null);
+                chartPoint.View = View.GetPointView(chartPoint, "");
 
                 chartPoint.SeriesView = View;
 
@@ -113,7 +112,7 @@ namespace LiveCharts.Series
                 chartPoint.ChartLocation = new CorePoint(rectangleView.Data.Left + singleColWidth/2 - padding/2,
                     t);
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
             }
         }
 

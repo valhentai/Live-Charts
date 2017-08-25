@@ -27,6 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Dtos;
 using LiveCharts.Series;
@@ -59,7 +60,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Initializes an new instance of VerticalLineSeries class, with a given mapper
         /// </summary>
-        public VerticalLineSeries(object configuration)
+        public VerticalLineSeries(BiDimensinalMapper configuration)
         {
             Core = new VerticalLineCore(this);
             Configuration = configuration;
@@ -224,7 +225,7 @@ namespace LiveCharts.Wpf
         public override void StartSegment(int atIndex, CorePoint location)
         {
             if (PathCollection.Count <= _activeSplitters)
-                PathCollection.Add(new LineSeriesPathHelper(location,  0) { IsNew = true });
+                PathCollection.Add(new LineSeriesPathHelper(location,  0) { });
 
             var splitter = PathCollection[_activeSplitters];
             splitter.SplitterCollectorIndex = _splittersCollector;
@@ -252,11 +253,11 @@ namespace LiveCharts.Wpf
             {
                 Figure.Segments.Remove(splitter.Bottom);
 
-                if (splitter.IsNew)
-                {
-                    splitter.Bottom.Point = new Point(Core.Chart.View.DrawMarginWidth, location.Y);
-                    splitter.Left.Point = new Point(Core.Chart.View.DrawMarginWidth, location.Y);
-                }
+                //if (splitter.IsNew)
+                //{
+                //    splitter.Bottom.Point = new Point(Core.Chart.View.DrawMarginWidth, location.Y);
+                //    splitter.Left.Point = new Point(Core.Chart.View.DrawMarginWidth, location.Y);
+                //}
 
                 if (noAnim)
                     splitter.Bottom.Point = new Point(Core.Chart.View.DrawMarginWidth, location.Y);
@@ -276,11 +277,11 @@ namespace LiveCharts.Wpf
                 return;
             }
 
-            if (splitter.IsNew)
-            {
-                splitter.Bottom.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-                splitter.Left.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-            }
+            //if (splitter.IsNew)
+            //{
+            //    splitter.Bottom.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
+            //    splitter.Left.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
+            //}
 
             Figure.Segments.Remove(splitter.Left);
             if (Core.Chart.View.DisableAnimations)
@@ -312,10 +313,10 @@ namespace LiveCharts.Wpf
                 : 0;
             location.Y += uw;
 
-            if (splitter.IsNew)
-            {
-                splitter.Right.Point = new Point(0, location.Y);
-            }
+            //if (splitter.IsNew)
+            //{
+            //    splitter.Right.Point = new Point(0, location.Y);
+            //}
 
             Figure.Segments.Remove(splitter.Right);
             if (noAnim)
@@ -325,7 +326,7 @@ namespace LiveCharts.Wpf
                     new PointAnimation(new Point(areaLimit, location.Y), animSpeed));
             Figure.Segments.Insert(atIndex, splitter.Right);
 
-            splitter.IsNew = false;
+            /*plitter.IsNew = false;*/
         }
 
         #endregion

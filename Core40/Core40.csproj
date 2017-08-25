@@ -63,10 +63,11 @@
     <Compile Include="Charts\PieChartCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
+    <Compile Include="Configurations\BiDimensinalMapper.cs" />
     <Compile Include="Configurations\CartesianMapper.cs" />
     <Compile Include="Configurations\FinancialMapper.cs" />
-    <Compile Include="Configurations\GanttMapper.cs" />
-    <Compile Include="Configurations\IPointEvaluator.cs" />
+    <Compile Include="Configurations\RangedMapper.cs" />
+    <Compile Include="Configurations\BiDimensionalMapper.cs" />
     <Compile Include="Configurations\Mappers.cs" />
     <Compile Include="Configurations\PieMapper.cs" />
     <Compile Include="Configurations\PolarMapper.cs" />
@@ -79,6 +80,9 @@
     <Compile Include="Delegates.cs" />
     <Compile Include="Helpers\ExceptionReason.cs" />
     <Compile Include="Helpers\ReasonAttribute.cs" />
+    <Compile Include="ResponsiveArea.cs" />
+    <Compile Include="ResponsivePolarArea.cs" />
+    <Compile Include="ResponsiveRectangle.cs" />
     <Compile Include="WindowAxisCore.cs" />
     <Compile Include="DateAxisWindows.cs" />
     <Compile Include="DateSeparatorElementCore.cs" />
@@ -161,7 +165,7 @@
     <Compile Include="Series\HeatCore.cs" />
     <Compile Include="Series\LineCore.cs" />
     <Compile Include="Series\OhlcCore.cs" />
-    <Compile Include="Series\PieCore.cs" />
+    <Compile Include="Series\PieSeriesCore.cs" />
     <Compile Include="Series\RowCore.cs" />
     <Compile Include="Series\ScatterCore.cs" />
     <Compile Include="Series\StackedAreaCore.cs" />

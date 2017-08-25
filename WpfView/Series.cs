@@ -27,6 +27,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
@@ -62,7 +63,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new Instance of series, with a given configuration
         /// </summary>
         /// <param name="configuration"></param>
-        protected Series(object configuration)
+        protected Series(BiDimensinalMapper configuration)
         {
             DefaultFillOpacity = 0.35;
             Configuration = configuration;
@@ -370,14 +371,14 @@ namespace LiveCharts.Wpf
         /// The configuration property
         /// </summary>
         public static readonly DependencyProperty ConfigurationProperty = DependencyProperty.Register(
-            "Configuration", typeof (object), typeof (Series), 
+            "Configuration", typeof (BiDimensinalMapper), typeof (Series), 
             new PropertyMetadata(default(object), EnqueueUpdateCallback));
         /// <summary>
         /// Gets or sets series mapper, if this property is set then the library will ignore the SeriesCollection mapper and global mappers.
         /// </summary>
-        public object Configuration
+        public BiDimensinalMapper Configuration
         {
-            get { return GetValue(ConfigurationProperty); }
+            get { return (BiDimensinalMapper) GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 
@@ -394,15 +395,7 @@ namespace LiveCharts.Wpf
         {
             var series = dependencyObject as Series;
 
-            if (series == null || series.Core == null)
-            {
-                return;
-            }
-
-            if (series.Core.Chart != null)
-            {
-                series.Core.Chart.Updater.EnqueueUpdate();
-            }
+            series?.Core?.Chart?.Updater.EnqueueUpdate();
         }
 
         private static void OnValuesInstanceChanged(DependencyObject dependencyObject,
@@ -418,7 +411,13 @@ namespace LiveCharts.Wpf
             series.Core.NotifySeriesVisibilityChanged();
         }
 
-        internal ContentControl UpdateLabelContent(DataLabelViewModel content, ContentControl currentControl)
+        /// <summary>
+        /// Updates the content of the label, it creates a new instance, and adds it to the view it was not already initialized, it will reuse the previous instance when it is already loaded.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <param name="currentControl">The current control.</param>
+        /// <returns></returns>
+        public ContentControl UpdateLabelContent(DataLabelViewModel content, ContentControl currentControl)
         {
             ContentControl control;
 
@@ -481,10 +480,7 @@ namespace LiveCharts.Wpf
             Values.GetPoints(this)
                 .ForEach(p =>
                 {
-                    if (p.View != null)
-                    {
-                        p.View.RemoveFromView(Core.Chart);
-                    }
+                    p.View?.Erase(Core.Chart);
                 });
 
             if (removeFromView)
@@ -527,34 +523,25 @@ namespace LiveCharts.Wpf
 
         }
 
-        /// <inheritdoc cref="ISeriesView.GetLabelPointFormatter"/>
-        protected Func<ChartPoint, string> GetLabelPointFormatter()
-        {
-            if (DesignerProperties.GetIsInDesignMode(this))
-                return x => "Label";
-
-            return LabelPoint;
-        }
-
         #endregion
 
         #region ISeriesView Implementation
 
-        SeriesCore ISeriesView.Core { get { return Core; } }
+        SeriesCore ISeriesView.Core => Core;
 
         IChartValues ISeriesView.Values { get { return Values; } set { Values = value; } }
 
-        bool ISeriesView.DataLabels { get { return DataLabels; } }
+        bool ISeriesView.DataLabels => DataLabels;
 
-        int ISeriesView.ScalesXAt { get { return ScalesXAt; } }
+        int ISeriesView.ScalesXAt => ScalesXAt;
 
-        int ISeriesView.ScalesYAt { get { return ScalesYAt; } }
+        int ISeriesView.ScalesYAt => ScalesYAt;
 
-        object ISeriesView.Configuration { get { return Configuration; } }
+        BiDimensinalMapper ISeriesView.Configuration => Configuration;
 
-        bool ISeriesView.IsSeriesVisible { get { return Visibility == Visibility.Visible; } }
+        bool ISeriesView.IsSeriesVisible => Visibility == Visibility.Visible;
 
-        Func<ChartPoint, string> ISeriesView.LabelPoint { get { return LabelPoint; } }
+        Func<ChartPoint, string> ISeriesView.LabelPoint => LabelPoint;
 
         IChartValues ISeriesView.ActualValues
         {
@@ -567,9 +554,9 @@ namespace LiveCharts.Wpf
             }
         }
 
-        string ISeriesView.Title { get { return Title; } }
+        string ISeriesView.Title => Title;
 
-        double ISeriesView.DefaultFillOpacity { get { return .35d; }}
+        double ISeriesView.DefaultFillOpacity => .35d;
 
         IChartPointView ISeriesView.GetPointView(ChartPoint point, string label)
         {
@@ -609,11 +596,6 @@ namespace LiveCharts.Wpf
         void ISeriesView.PlaceSpecializedElements()
         {
             PlaceSpecializedElements();
-        }
-
-        Func<ChartPoint, string> ISeriesView.GetLabelPointFormatter()
-        {
-            return GetLabelPointFormatter();
         }
 
         #endregion

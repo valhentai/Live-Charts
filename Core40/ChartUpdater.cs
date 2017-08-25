@@ -95,7 +95,7 @@ namespace LiveCharts
                     s.ActualValues.GetPoints(s).ForEach(p =>
                     {
                         if (p == null || p.View == null) return;
-                        p.View.RemoveFromView(Chart);
+                        p.View.Erase(Chart);
                         p.View = null;
                     });
                 });

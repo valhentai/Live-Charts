@@ -25,6 +25,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
@@ -53,7 +54,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of RowSeries class with a given mapper
         /// </summary>
         /// <param name="configuration"></param>
-        public RowSeries(object configuration)
+        public RowSeries(BiDimensinalMapper configuration)
         {
             Core = new RowCore(this);
             Configuration = configuration;
@@ -218,8 +219,8 @@ namespace LiveCharts.Wpf
             SetCurrentValue(RowPaddingProperty, 2d);
             SetCurrentValue(LabelsPositionProperty, BarLabelPosition.Top);
 
-            Func<ChartPoint, string> defaultLabel = x => x.EvaluatesGantt
-                ? $"starts {Core.CurrentXAxis.GetFormatter()(x.XStart)}, ends {Core.CurrentXAxis.GetFormatter()(x.XFinish)}"
+            Func<ChartPoint, string> defaultLabel = x => true
+                ? $"starts {Core.CurrentXAxis.GetFormatter()(x.XStart)}, ends {Core.CurrentXAxis.GetFormatter()(x.XEnd)}"
                 : Core.CurrentXAxis.GetFormatter()(x.X);
             SetCurrentValue(LabelPointProperty, defaultLabel);
 

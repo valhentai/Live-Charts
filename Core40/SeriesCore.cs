@@ -140,7 +140,7 @@ namespace LiveCharts
                     {
                         if (x.View != null)
                         {
-                            x.View.RemoveFromView(Chart);
+                            x.View.Erase(Chart);
                         }
                     });
             }

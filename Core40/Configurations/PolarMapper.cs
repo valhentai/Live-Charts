@@ -28,7 +28,7 @@ namespace LiveCharts.Configurations
     /// Mapper to configure polar series
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PolarMapper<T> : IPointEvaluator<T>
+    public class PolarMapper<T> : BiDimensionalMapper<T>
     {
         private Func<T, int, double> _r;
         private Func<T, int, double> _angle;
@@ -41,7 +41,7 @@ namespace LiveCharts.Configurations
         /// <param name="point">Point to set</param>
         /// <param name="value"></param>
         /// <param name="key"></param>
-        public void Evaluate(int key, T value, ChartPoint point)
+        public override void Evaluate(int key, T value, ChartPoint point)
         {
             point.Radius = _r(value, key);
             point.Angle = _angle(value, key);
@@ -86,48 +86,6 @@ namespace LiveCharts.Configurations
         public PolarMapper<T> Angle(Func<T, int, double> predicate)
         {
             _angle = predicate;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the Stroke of the point
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public PolarMapper<T> Stroke(Func<T, object> predicate)
-        {
-            return Stroke((t, i) => predicate(t));
-        }
-
-        /// <summary>
-        /// Sets the Stroke of the point
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public PolarMapper<T> Stroke(Func<T, int, object> predicate)
-        {
-            _stroke = predicate;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the Fill of the point
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public PolarMapper<T> Fill(Func<T, object> predicate)
-        {
-            return Fill((t, i) => predicate(t));
-        }
-
-        /// <summary>
-        /// Sets the Fill of the point
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public PolarMapper<T> Fill(Func<T, int, object> predicate)
-        {
-            _fill = predicate;
             return this;
         }
     }

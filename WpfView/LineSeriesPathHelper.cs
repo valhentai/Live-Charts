@@ -45,16 +45,13 @@ namespace LiveCharts.Wpf
             Right = new LineSegment {Point = p};
         }
 
-        //ToDo: Delete!
-        public bool IsNew { get; set; }
-
         /// <summary>
         /// Gets or sets the line path.
         /// </summary>
         /// <value>
         /// The line path.
         /// </value>
-        public Path LinePath { get; set; }
+        public Path StrokePath { get; set; }
 
         /// <summary>
         /// Gets or sets the shadow path.
@@ -65,12 +62,12 @@ namespace LiveCharts.Wpf
         public Path ShadowPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the line figure.
+        /// Gets the line figure.
         /// </summary>
         /// <value>
         /// The line figure.
         /// </value>
-        public PathFigure LineFigure { get; set; }
+        public PathFigure StrokeFigure => ((PathGeometry) StrokePath.Data).Figures[0];
 
         /// <summary>
         /// Gets or sets the shadow figure.
@@ -78,7 +75,7 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The shadow figure.
         /// </value>
-        public PathFigure ShadowFigure { get; set; }
+        public PathFigure ShadowFigure => ((PathGeometry) ShadowPath.Data).Figures[0];
 
         /// <summary>
         /// Gets the bottom.
@@ -86,7 +83,7 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The bottom.
         /// </value>
-        public LineSegment Bottom { get; private set; }
+        public LineSegment Bottom { get; }
 
         /// <summary>
         /// Gets the left.
@@ -94,7 +91,7 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The left.
         /// </value>
-        public LineSegment Left { get; private set; }
+        public LineSegment Left { get; }
 
         /// <summary>
         /// Gets the right.
@@ -102,7 +99,7 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The right.
         /// </value>
-        public LineSegment Right { get; private set; }
+        public LineSegment Right { get; }
 
         /// <summary>
         /// Gets or sets the index of the splitter collector.
@@ -110,6 +107,6 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The index of the splitter collector.
         /// </value>
-        public int SplitterCollectorIndex { get; set; }
+        public int SplitterCollectorIndex { get; internal set; }
     }
 }

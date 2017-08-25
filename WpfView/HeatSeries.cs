@@ -29,6 +29,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
@@ -59,7 +60,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of HeatSries class, using a given mapper
         /// </summary>
         /// <param name="configuration"></param>
-        public HeatSeries(object configuration)
+        public HeatSeries(BiDimensinalMapper configuration)
         {
             Core = new HeatCore(this);
             Configuration = configuration;
@@ -200,7 +201,7 @@ namespace LiveCharts.Wpf
             Values.GetPoints(this).ForEach(p =>
             {
                 if (p.View != null)
-                    p.View.RemoveFromView(Core.Chart);
+                    p.View.Erase(Core.Chart);
             });
             if (removeFromView) Core.Chart.View.RemoveFromView(this);
         }

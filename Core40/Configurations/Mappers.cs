@@ -23,7 +23,7 @@
 namespace LiveCharts.Configurations
 {
     /// <summary>
-    /// Gets the already built point mappers
+    /// Gets the already built point mappers.
     /// </summary>
     public static class Mappers
     {
@@ -62,9 +62,19 @@ namespace LiveCharts.Configurations
         /// </summary>
         /// <typeparam name="T">type to amp</typeparam>
         /// <returns>a new polar mapper insance</returns>
-        public static GanttMapper<T> Gantt<T>()
+        public static RangedMapper<T> Gantt<T>()
         {
-            return new GanttMapper<T>();
+            return new RangedMapper<T>();
+        }
+
+        /// <summary>
+        /// Gets a ranged mapper.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static RangedMapper<T> Ranged<T>()
+        {
+            return new RangedMapper<T>();
         }
 
         /// <summary>

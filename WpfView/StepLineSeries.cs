@@ -25,6 +25,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Series;
@@ -53,7 +54,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of BubbleSeries class using a given mapper
         /// </summary>
         /// <param name="configuration"></param>
-        public StepLineSeries(object configuration)
+        public StepLineSeries(BiDimensinalMapper configuration)
         {
             Core = new StepLineCore(this);
             Configuration = configuration;

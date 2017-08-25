@@ -64,7 +64,7 @@ namespace LiveCharts
         #endregion
 
         #region Properties
-        private IPointEvaluator<T> DefaultConfiguration { get; set; }
+        private BiDimensionalMapper<T> DefaultConfiguration { get; set; }
         private Dictionary<ISeriesView, PointTracker> Trackers { get; set; }
         #endregion
 
@@ -250,7 +250,7 @@ namespace LiveCharts
             foreach (var garbage in GetGarbagePoints(seriesView).ToList())
             {
                 if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
-                    garbage.View.RemoveFromView(seriesView.Core.Chart);
+                    garbage.View.Erase(seriesView.Core.Chart);
 
                 if (!isclass)
                 {
@@ -284,7 +284,7 @@ namespace LiveCharts
 
         #region Privates
 
-        private IPointEvaluator<T> GetConfig(ISeriesView view)
+        private BiDimensionalMapper<T> GetConfig(ISeriesView view)
         {
             //Trying to get the user defined configuration...
 
@@ -293,13 +293,13 @@ namespace LiveCharts
             if (view == null || view.Core.SeriesCollection == null) return null;
 
             var config =
-                (view.Configuration ?? view.Core.SeriesCollection.Configuration) as IPointEvaluator<T>;
+                (view.Configuration ?? view.Core.SeriesCollection.Configuration) as BiDimensionalMapper<T>;
 
             if (config != null) return config;
 
             return DefaultConfiguration ??
                    (DefaultConfiguration =
-                       ChartCore.Configurations.GetConfig<T>(view.Core.SeriesOrientation) as IPointEvaluator<T>);
+                       ChartCore.Configurations.GetConfig<T>(view.Core.SeriesOrientation) as BiDimensionalMapper<T>);
         }
 
         private static ChartPoint GetChartPoint(bool isClass, PointTracker tracker, int index, T value)

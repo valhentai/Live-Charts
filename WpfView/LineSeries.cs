@@ -27,6 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
@@ -57,9 +58,9 @@ namespace LiveCharts.Wpf
 
         #region Fields
 
-        private int _activeSplitters;
+        private int _activeSplitterCount;
         private int _splittersCollector;
-
+        
         #endregion
 
         #region Constructors
@@ -77,7 +78,7 @@ namespace LiveCharts.Wpf
         /// Initializes a new instance of the LineSeries class with a given mapper
         /// </summary>
         /// <param name="configuration"></param>
-        public LineSeries(object configuration)
+        public LineSeries(BiDimensinalMapper configuration)
         {
             Core = new LineCore(this);
             Configuration = configuration;
@@ -159,23 +160,23 @@ namespace LiveCharts.Wpf
 
         #region Series View Implementation
 
-        double ILineSeriesView.LineSmoothness { get { return LineSmoothness; } }
+        double ILineSeriesView.LineSmoothness => LineSmoothness;
 
-        double ILineSeriesView.AreaLimit { get { return AreaLimit; } }
+        double ILineSeriesView.AreaLimit => AreaLimit;
 
-        double IAreaPointView.PointMaxRadius { get { return (PointGeometry == null ? 0 : PointGeometrySize) / 2; } }
+        double IAreaPointView.PointMaxRadius => (PointGeometry == null ? 0 : PointGeometrySize) / 2;
 
         void ILineSeriesView.StartSegment(CorePoint location, double areaLimit, TimeSpan animationsSpeed)
         {
             InitializeNewPath(location, areaLimit);
 
-            var splitter = PathCollection[_activeSplitters];
+            var splitter = PathCollection[_activeSplitterCount];
             splitter.SplitterCollectorIndex = _splittersCollector;
 
             if (animationsSpeed == TimeSpan.Zero)
             {
-                PathCollection[_activeSplitters].LineFigure.StartPoint = new Point(location.X, location.Y);
-                PathCollection[_activeSplitters].ShadowFigure.StartPoint = new Point(location.X, areaLimit);
+                PathCollection[_activeSplitterCount].StrokeFigure.StartPoint = new Point(location.X, location.Y);
+                PathCollection[_activeSplitterCount].ShadowFigure.StartPoint = new Point(location.X, areaLimit);
 
                 //if (splitter.IsNew)
                 //{
@@ -188,12 +189,12 @@ namespace LiveCharts.Wpf
             }
             else
             {
-                PathCollection[_activeSplitters]
-                    .LineFigure.BeginAnimation(
+                PathCollection[_activeSplitterCount]
+                    .StrokeFigure.BeginAnimation(
                         PathFigure.StartPointProperty,
                         new PointAnimation(new Point(location.X, location.Y), animationsSpeed));
 
-                PathCollection[_activeSplitters]
+                PathCollection[_activeSplitterCount]
                     .ShadowFigure.BeginAnimation(
                         PathFigure.StartPointProperty,
                         new PointAnimation(new Point(location.X, areaLimit), animationsSpeed));
@@ -208,7 +209,7 @@ namespace LiveCharts.Wpf
 
         void ILineSeriesView.EndSegment(int atIndex, CorePoint location)
         {
-            var splitter = PathCollection[_activeSplitters];
+            var splitter = PathCollection[_activeSplitterCount];
 
             var animSpeed = Core.Chart.View.AnimationsSpeed;
             var noAnim = Core.Chart.View.DisableAnimations;
@@ -227,15 +228,15 @@ namespace LiveCharts.Wpf
             //    splitter.Right.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
             //}
 
-            PathCollection[_activeSplitters].ShadowFigure.Segments.Remove(splitter.Right);
+            PathCollection[_activeSplitterCount].ShadowFigure.Segments.Remove(splitter.Right);
             if (noAnim)
                 splitter.Right.Point = new Point(location.X, areaLimit);
             else
                 splitter.Right.BeginAnimation(LineSegment.PointProperty,
                     new PointAnimation(new Point(location.X, areaLimit), animSpeed));
-            PathCollection[_activeSplitters].ShadowFigure.Segments.Insert(atIndex, splitter.Right);
+            PathCollection[_activeSplitterCount].ShadowFigure.Segments.Insert(atIndex, splitter.Right);
 
-            _activeSplitters++;
+            _activeSplitterCount++;
         }
 
         #endregion
@@ -245,7 +246,7 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="Series.OnSeriesUpdateStart" />
         protected override void OnSeriesUpdateStart()
         {
-            _activeSplitters = 0;
+            _activeSplitterCount = 0;
             if (_splittersCollector != int.MaxValue - 1) return;
             PathCollection.ForEach(s => s.SplitterCollectorIndex = 0);
             _splittersCollector = 0;
@@ -256,7 +257,7 @@ namespace LiveCharts.Wpf
         {
             base.OnSeriesUpdateFinish();
 
-            for (var i = _activeSplitters; i < PathCollection.Count; i++)
+            for (var i = _activeSplitterCount; i < PathCollection.Count; i++)
             {
                 var s = PathCollection[i - 1];
                 Core.Chart.View.RemoveFromView(s);
@@ -267,16 +268,11 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="Series.InitializePointView"/>
         protected override IChartPointView InitializePointView(IChart2DView chartView)
         {
-            var pointView = new HorizontalBezierPointView
+            var pointView = new LineSeriesPointView
             {
-                Segment = new BezierSegment(),
-                ShadowContainer = PathCollection[_activeSplitters].ShadowFigure,
-                LineContainer = PathCollection[_activeSplitters].LineFigure,
-                IsNew = true
+                ShadowPath = PathCollection[_activeSplitterCount].ShadowFigure,
+                StrokePath = PathCollection[_activeSplitterCount].StrokeFigure
             };
-
-            chartView.AddToDrawMargin(pointView.Shape);
-            chartView.AddToDrawMargin(pointView.DataLabel);
 
             return pointView;
         }
@@ -284,72 +280,7 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="Series.GetPointView" />
         protected override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var mhr = PointGeometrySize < 10 ? 10 : PointGeometrySize;
-
-            var pbv = (HorizontalBezierPointView) point.View;
-
-            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
-            //{
-            //    pbv.HoverShape = new Rectangle
-            //    {
-            //        Fill = Brushes.Transparent,
-            //        StrokeThickness = 0,
-            //        Width = mhr,
-            //        Height = mhr
-            //    };
-
-            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            //}
-
-            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
-
-            if (PointGeometry != null && pbv.Shape == null)
-            {
-                if (PointGeometry != null)
-                {
-                    pbv.Shape = new Path
-                    {
-                        Stretch = Stretch.Fill,
-                        StrokeThickness = StrokeThickness
-                    };
-                }
-
-                Core.Chart.View.AddToDrawMargin(pbv.Shape);
-            }
-
-            if (pbv.Shape != null)
-            {
-                pbv.Shape.Fill = PointForeground;
-                pbv.Shape.Stroke = Stroke;
-                pbv.Shape.StrokeThickness = StrokeThickness;
-                pbv.Shape.Width = PointGeometrySize;
-                pbv.Shape.Height = PointGeometrySize;
-                pbv.Shape.Data = PointGeometry;
-                pbv.Shape.Visibility = Visibility;
-                Panel.SetZIndex(pbv.Shape, Panel.GetZIndex(this) + 1);
-
-                if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;
-                if (point.Fill != null) pbv.Shape.Fill = (Brush)point.Fill;
-            }
-
-            if (DataLabels)
-            {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
-                {
-                    FormattedText = label,
-                    Point = point
-                }, pbv.DataLabel);
-            }
-
-            if (!DataLabels && pbv.DataLabel != null)
-            {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.DataLabel);
-                pbv.DataLabel = null;
-            }
-
-            return pbv;
+             return null;
         }
 
         /// <inheritdoc cref="Erase" />
@@ -357,15 +288,14 @@ namespace LiveCharts.Wpf
         {
             ((ISeriesView)this).ActualValues.GetPoints(this).ForEach(p =>
             {
-                if (p.View != null)
-                    p.View.RemoveFromView(Core.Chart);
+                p.View?.Erase(Core.Chart);
             });
 
             if (removeFromView)
             {
                 PathCollection.ForEach(s =>
                 {
-                    Core.Chart.View.RemoveFromDrawMargin(s.LinePath);
+                    Core.Chart.View.RemoveFromDrawMargin(s.StrokePath);
                     Core.Chart.View.RemoveFromDrawMargin(s.ShadowPath);
                 });
                 Core.Chart.View.RemoveFromView(this);
@@ -378,7 +308,7 @@ namespace LiveCharts.Wpf
 
         private void InitializeNewPath(CorePoint location, double areaLimit)
         {
-            if (PathCollection.Count > _activeSplitters) return;
+            if (PathCollection.Count > _activeSplitterCount) return;
 
             var shadow = new Path
             {
@@ -426,20 +356,18 @@ namespace LiveCharts.Wpf
 
             PathCollection.Add(new LineSeriesPathHelper(location, areaLimit)
             {
-                ShadowFigure = ((PathGeometry)shadow.Data).Figures[0],
-                LineFigure = ((PathGeometry)line.Data).Figures[0],
-                LinePath = line,
+                StrokePath = line,
                 ShadowPath = shadow
             });
 
             _splittersCollector++;
 
-            var splitter = PathCollection[_activeSplitters];
+            var splitter = PathCollection[_activeSplitterCount];
             splitter.SplitterCollectorIndex = _splittersCollector;
-            PathCollection[_activeSplitters].ShadowFigure.Segments.Remove(splitter.Bottom);
-            PathCollection[_activeSplitters].ShadowFigure.Segments.Remove(splitter.Left);
-            PathCollection[_activeSplitters].ShadowFigure.Segments.Insert(0, splitter.Bottom);
-            PathCollection[_activeSplitters].ShadowFigure.Segments.Insert(1, splitter.Left);
+            PathCollection[_activeSplitterCount].ShadowFigure.Segments.Remove(splitter.Bottom);
+            PathCollection[_activeSplitterCount].ShadowFigure.Segments.Remove(splitter.Left);
+            PathCollection[_activeSplitterCount].ShadowFigure.Segments.Insert(0, splitter.Bottom);
+            PathCollection[_activeSplitterCount].ShadowFigure.Segments.Insert(1, splitter.Left);
         }
 
         private void InitializeDefuaults()

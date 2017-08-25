@@ -32,6 +32,8 @@ namespace LiveCharts
     /// </summary>
     public class ChartPoint
     {
+        private bool _selected;
+
         /// <summary>
         /// Gets the X point value
         /// </summary>
@@ -62,7 +64,7 @@ namespace LiveCharts
         /// <value>
         /// The visual area.
         /// </value>
-        public CoreRectangle VisualArea { get; set; }
+        public ResponsiveArea ResponsiveArea { get; set; }
 
         /// <summary>
         /// Gets the index of this point in the chart
@@ -90,7 +92,35 @@ namespace LiveCharts
         /// <value>
         /// The chart view.
         /// </value>
-        public IChart2DView ChartView { get { return SeriesView.Core.Chart.View; } }
+        public IChart2DView ChartView => SeriesView.Core.Chart.View;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ChartPoint"/> is selected.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if selected; otherwise, <c>false</c>.
+        /// </value>
+        public bool Selected
+        {
+            get { return _selected; }
+            set
+            {
+                var changed = value != _selected;
+
+                _selected = value;
+
+                if (!changed) return;
+
+                if (_selected)
+                {
+                    View.OnSelection();
+                }
+                else
+                {
+                    View.OnSelectionLeave();
+                }
+            }
+        }
 
         internal double Gci { get; set; }
 
@@ -146,7 +176,7 @@ namespace LiveCharts
         /// <value>
         /// The x edn.
         /// </value>
-        public double XFinish { get; set; }
+        public double XEnd { get; set; }
 
         /// <summary>
         /// Gets or sets the y end.
@@ -154,7 +184,7 @@ namespace LiveCharts
         /// <value>
         /// The y end.
         /// </value>
-        public double YFinish { get; set; }
+        public double YEnd { get; set; }
 
         /// <summary>
         /// Gets the Open value of the point
@@ -185,14 +215,6 @@ namespace LiveCharts
         /// Gets the angle of a point
         /// </summary>
         public double Angle { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [evaluates gantt point].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [evaluates gantt point]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EvaluatesGantt { get; internal set; }
     }
 
 }

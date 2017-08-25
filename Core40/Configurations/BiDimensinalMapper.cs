@@ -1,4 +1,4 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
 //Copyright(c) 2016 Alberto Rodriguez Orozco & LiveCharts Contributors
 
@@ -20,29 +20,19 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Dtos;
-
-namespace LiveCharts.Definitions.Points
+namespace LiveCharts.Configurations
 {
     /// <summary>
-    /// 
+    /// Defines a mapper.
     /// </summary>
-    /// <seealso cref="IChartPointView" />
-    public interface IRectanglePointView : IChartPointView
+    public abstract class BiDimensinalMapper
     {
         /// <summary>
-        /// Gets or sets the data.
+        /// Evaluates the specified key.
         /// </summary>
-        /// <value>
-        /// The data.
-        /// </value>
-        CoreRectangle Data { get; set; }
-        /// <summary>
-        /// Gets or sets the zero reference.
-        /// </summary>
-        /// <value>
-        /// The zero reference.
-        /// </value>
-        double ZeroReference { get; set; }
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="point">The point.</param>
+        public abstract void Evaluate(int key, object value, ChartPoint point);
     }
 }

@@ -26,6 +26,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
+using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Points
@@ -37,7 +38,7 @@ namespace LiveCharts.Wpf.Points
         public double Width { get; set; }
         public double Height { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
         {
             Canvas.SetTop(Rectangle, current.ChartLocation.Y);
             Canvas.SetLeft(Rectangle, current.ChartLocation.X);
@@ -77,7 +78,7 @@ namespace LiveCharts.Wpf.Points
                 new ColorAnimation(targetColor, animSpeed));
         }
 
-        public override void RemoveFromView(ChartCore chart)
+        public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(Rectangle);
             chart.View.RemoveFromDrawMargin(DataLabel);

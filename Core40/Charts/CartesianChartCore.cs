@@ -35,8 +35,6 @@ namespace LiveCharts.Charts
     /// </summary>
     public class CartesianChartCore : ChartCore
     {
-        #region Constructors
-
         /// <summary>
         /// Initializes Chart model
         /// </summary>
@@ -47,9 +45,40 @@ namespace LiveCharts.Charts
         {
         }
 
-        #endregion
+        /// <summary>
+        /// Draws the or update sections.
+        /// </summary>
+        public void DrawOrUpdateSections()
+        {
+            var xAxis = View.FirstDimension;
 
-        #region Publics
+            for (var index = 0; index < xAxis.Count; index++)
+            {
+                var xi = xAxis[index].Core;
+                if (xi.Sections == null) continue;
+                foreach (var section in xi.Sections)
+                {
+                    section.AxisIndex = index;
+                    section.Source = AxisOrientation.X;
+                    section.View.DrawOrMove(AxisOrientation.X, index);
+                }
+            }
+
+            var yAxis = View.SecondDimension;
+
+            for (var index = 0; index < yAxis.Count; index++)
+            {
+                var yi = yAxis[index].Core;
+                if (yi.Sections == null) continue;
+                foreach (var section in yi.Sections)
+                {
+                    section.AxisIndex = index;
+                    section.Source = AxisOrientation.Y;
+                    section.View.DrawOrMove(AxisOrientation.Y, index);
+                }
+            }
+            
+        }
 
         /// <summary>
         /// Prepares Chart Axes
@@ -62,7 +91,7 @@ namespace LiveCharts.Charts
             {
                 throw new LiveChartsException(ExceptionReason.NotACartesianSeries);
             }
-            
+
             var cartesianSeries = View.ActualSeries.Select(x => x.Core).Cast<ICartesianSeries>().ToArray();
 
             var xAxis = View.FirstDimension;
@@ -149,50 +178,11 @@ namespace LiveCharts.Charts
         /// </summary>
         internal override void RunSpecializedChartComponents()
         {
-            foreach (var visualElement in ((ICartesianChart) View).VisualElements)
+            foreach (var visualElement in ((ICartesianChart)View).VisualElements)
             {
                 visualElement.AddOrMove(this);
             }
         }
-
-        /// <summary>
-        /// Draws the or update sections.
-        /// </summary>
-        public void DrawOrUpdateSections()
-        {
-            var xAxis = View.FirstDimension;
-
-            for (var index = 0; index < xAxis.Count; index++)
-            {
-                var xi = xAxis[index].Core;
-                if (xi.Sections == null) continue;
-                foreach (var section in xi.Sections)
-                {
-                    section.AxisIndex = index;
-                    section.Source = AxisOrientation.X;
-                    section.View.DrawOrMove(AxisOrientation.X, index);
-                }
-            }
-
-            var yAxis = View.SecondDimension;
-
-            for (var index = 0; index < yAxis.Count; index++)
-            {
-                var yi = yAxis[index].Core;
-                if (yi.Sections == null) continue;
-                foreach (var section in yi.Sections)
-                {
-                    section.AxisIndex = index;
-                    section.Source = AxisOrientation.Y;
-                    section.View.DrawOrMove(AxisOrientation.Y, index);
-                }
-            }
-            
-        }
-
-        #endregion
-
-        #region Privates
 
         private static void SetAxisLimits(AxisCore ax, IList<ICartesianSeries> series, AxisOrientation orientation)
         {
@@ -205,7 +195,7 @@ namespace LiveCharts.Charts
                     ? new CoreLimit(series[0].GetMinX(ax), series[0].GetMaxX(ax))
                     : new CoreLimit(series[0].GetMinY(ax), series[0].GetMaxY(ax));
                 var view = series[0].View as IAreaPointView;
-                firstR = view != null ? view.PointMaxRadius : 0;
+                firstR = view?.PointMaxRadius ?? 0;
             }
 
             //                     [ max, min, pointRadius ]
@@ -218,7 +208,7 @@ namespace LiveCharts.Charts
                     ? new CoreLimit(cartesianSeries.GetMinX(ax), cartesianSeries.GetMaxX(ax))
                     : new CoreLimit(cartesianSeries.GetMinY(ax), cartesianSeries.GetMaxY(ax));
                 var view = cartesianSeries.View as IAreaPointView;
-                var radius = view != null ? view.PointMaxRadius : 0;
+                var radius = view?.PointMaxRadius ?? 0;
 
                 if (limit.Max > boundries[0]) boundries[0] = limit.Max;
                 if (limit.Min < boundries[1]) boundries[1] = limit.Min;
@@ -327,7 +317,5 @@ namespace LiveCharts.Charts
                 StackPoints(group, AxisOrientation.X, group.Key, isPercentage ? StackMode.Percentage : StackMode.Values);
             }
         }
-
-        #endregion
     }
 }
