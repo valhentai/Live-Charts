@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -65,9 +65,30 @@ namespace LiveCharts.Series
             var smoothness = lineView.LineSmoothness;
             smoothness = smoothness > 1 ? 1 : (smoothness < 0 ? 0 : smoothness);
 
-            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(lineView.AreaLimit)
-                ? Chart.View.SecondDimension[View.ScalesYAt].Core.FirstSeparator
-                : lineView.AreaLimit, AxisOrientation.Y, Chart, View.ScalesYAt);
+            double areaLimit;
+
+            if (SeriesOrientation == SeriesOrientation.Horizontal)
+            {
+                areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(lineView.AreaLimit)
+                    ? Chart.View.SecondDimension[View.ScalesYAt].Core.FirstSeparator
+                    : lineView.AreaLimit, AxisOrientation.Y, Chart, View.ScalesYAt);
+            }
+            else
+            {
+                areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(lineView.AreaLimit)
+                    ? Chart.View.FirstDimension[View.ScalesXAt].Core.FirstSeparator
+                    : lineView.AreaLimit, AxisOrientation.X, Chart, View.ScalesXAt);
+            }
+
+            var uw = new CorePoint(
+                CurrentXAxis.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2
+                    : 0,
+                CurrentYAxis.EvaluatesUnitWidth
+                    ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt) / 2
+                    : 0);
+
+            var animationsSpeed = Chart.View.DisableAnimations ? TimeSpan.Zero : Chart.View.AnimationsSpeed;
 
             foreach (var segment in points.SplitEachNaN())
             {
@@ -84,20 +105,12 @@ namespace LiveCharts.Series
                     ? GetStackedPoint(segment[2])
                     : p2;
 
-                var uw = new CorePoint(
-                    CurrentXAxis.EvaluatesUnitWidth
-                        ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2
-                        : 0,
-                    CurrentYAxis.EvaluatesUnitWidth
-                        ? ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt) / 2
-                        : 0);
-
                 p0 += uw;
                 p1 += uw;
                 p2 += uw;
                 p3 += uw;
 
-                lineView.StartSegment(p1, areaLimit, Chart.AnimationsSpeed);
+                lineView.StartSegment(p1, areaLimit, animationsSpeed);
                 segmentPosition += segmentPosition == 0 ? 1 : 2;
 
                 ChartPoint previousDrawn = null;
@@ -165,7 +178,9 @@ namespace LiveCharts.Series
 
                     p3 += uw;
                 }
-                lineView.EndSegment(segmentPosition, p1);
+                lineView.EndSegment(segmentPosition,
+                    SeriesOrientation == SeriesOrientation.Horizontal ? p1 : new CorePoint(p1.X, p1.Y + uw.Y),
+                    areaLimit, animationsSpeed);
                 segmentPosition++;
             }
         }

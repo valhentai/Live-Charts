@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -82,80 +82,6 @@ namespace LiveCharts.Wpf
             get { return (StackMode) GetValue(StackModeProperty); }
             set { SetValue(StackModeProperty, value); }
         }
-        #endregion
-
-        #region Overridden Methods
-
-        /// <summary>
-        /// This method runs when the update starts
-        /// </summary>
-        protected override void OnSeriesUpdateStart()
-        {
-            _activeSplitters = 0;
-
-            if (_splittersCollector == int.MaxValue - 1)
-            {
-                //just in case!
-                PathCollection.ForEach(s => s.SplitterCollectorIndex = 0);
-                _splittersCollector = 0;
-            }
-
-            _splittersCollector++;
-
-            if (Figure != null && Values != null)
-            {
-                var yIni = ChartFunctions.ToDrawMargin(Values.GetTracker(this).YLimit.Min, AxisOrientation.Y, Core.Chart, ScalesYAt);
-
-                if (Core.Chart.View.DisableAnimations)
-                    Figure.StartPoint = new Point(0, yIni);
-                else
-                    Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(0, yIni),
-                            Core.Chart.View.AnimationsSpeed));
-            }
-
-            if (IsPathInitialized)
-            {
-                Core.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
-                Path.Stroke = Stroke;
-                Path.StrokeThickness = StrokeThickness;
-                Path.Fill = Fill;
-                Path.Visibility = Visibility;
-                Path.StrokeDashArray = StrokeDashArray;
-                return;
-            }
-
-            IsPathInitialized = true;
-
-            Path = new Path
-            {
-                Stroke = Stroke,
-                StrokeThickness = StrokeThickness,
-                Fill = Fill,
-                Visibility = Visibility,
-                StrokeDashArray = StrokeDashArray
-            };
-
-            Panel.SetZIndex(Path, Panel.GetZIndex(this));
-
-            var geometry = new PathGeometry();
-            Figure = new PathFigure();
-            geometry.Figures.Add(Figure);
-            Path.Data = geometry;
-            Core.Chart.View.AddToDrawMargin(Path);
-
-            var y = ChartFunctions.ToDrawMargin(((ISeriesView) this).ActualValues.GetTracker(this).YLimit.Min, AxisOrientation.Y, Core.Chart, ScalesYAt);
-            Figure.StartPoint = new Point(0, y);
-
-            var i = Core.Chart.View.Series.IndexOf(this);
-            Panel.SetZIndex(Path, Core.Chart.View.Series.Count - i);
-        }
-
-        #endregion
-
-        #region Public Methods 
-
-
         #endregion
 
         #region Private Methods

@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -40,13 +40,6 @@ namespace LiveCharts.Wpf
     /// <seealso cref="LiveCharts.Definitions.Series.IStackedAreaSeriesView" />
     public class StackedAreaSeries : LineSeries, IStackedAreaSeriesView
     {
-        #region Fields
-
-        private int _activeSplitters;
-        private int _splittersCollector;
-
-        #endregion
-
         #region Constructors
         /// <summary>
         /// Initializes a new instance of StackedAreaSeries class
@@ -69,9 +62,6 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Private Properties
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -88,78 +78,6 @@ namespace LiveCharts.Wpf
             get { return (StackMode)GetValue(StackModeProperty); }
             set { SetValue(StackModeProperty, value); }
         }
-        #endregion
-
-        #region Overridden Methods
-
-        /// <summary>
-        /// This method runs when the update starts
-        /// </summary>
-        protected override void OnSeriesUpdateStart()
-        {
-            _activeSplitters = 0;
-
-            if (_splittersCollector == int.MaxValue - 1)
-            {
-                //just in case!
-                PathCollection.ForEach(s => s.SplitterCollectorIndex = 0);
-                _splittersCollector = 0;
-            }
-
-            _splittersCollector++;
-
-            if (Figure != null && Values != null)
-            {
-                var xIni = ChartFunctions.ToDrawMargin(Values.GetTracker(this).XLimit.Min, AxisOrientation.X, Core.Chart, ScalesXAt);
-
-                if (Core.Chart.View.DisableAnimations)
-                    Figure.StartPoint = new Point(xIni, Core.Chart.View.DrawMarginHeight);
-                else
-                    Figure.BeginAnimation(PathFigure.StartPointProperty,
-                        new PointAnimation(new Point(xIni, Core.Chart.View.DrawMarginHeight),
-                            Core.Chart.View.AnimationsSpeed));
-            }
-
-            if (IsPathInitialized)
-            {
-                Core.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
-                Path.Stroke = Stroke;
-                Path.StrokeThickness = StrokeThickness;
-                Path.Fill = Fill;
-                Path.Visibility = Visibility;
-                Path.StrokeDashArray = StrokeDashArray;
-                return;
-            }
-
-            IsPathInitialized = true;
-
-            Path = new Path
-            {
-                Stroke = Stroke,
-                StrokeThickness = StrokeThickness,
-                Fill = Fill,
-                Visibility = Visibility,
-                StrokeDashArray = StrokeDashArray
-            };
-
-            var geometry = new PathGeometry();
-            Figure = new PathFigure();
-            geometry.Figures.Add(Figure);
-            Path.Data = geometry;
-            Core.Chart.View.AddToDrawMargin(Path);
-
-            var x = ChartFunctions.ToDrawMargin(((ISeriesView) this).ActualValues.GetTracker(this).XLimit.Min, AxisOrientation.X, Core.Chart, ScalesXAt);
-            Figure.StartPoint = new Point(x, Core.Chart.View.DrawMarginHeight);
-
-            var i = Core.Chart.View.Series.IndexOf(this);
-            Panel.SetZIndex(Path, Core.Chart.View.Series.Count - i);
-        }
-
-        #endregion
-
-        #region Public Methods 
-
-
         #endregion
 
         #region Private Methods

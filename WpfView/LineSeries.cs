@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.Series;
 using LiveCharts.Wpf.Components;
-using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
@@ -44,18 +44,6 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class LineSeries : Series, ILineSeriesView, IAreaPointView, IFondeable
     {
-        public Path Path { get; set; }
-        public PathFigure Figure { get; set; }
-        public bool IsNew { get; set; }
-        public bool IsPathInitialized  { get; set; }
-        public virtual void StartSegment(int atIndex, CorePoint location)
-        {
-        }
-        public virtual void EndSegment(int atIndex, CorePoint location)
-        {
-        }
-        //ToDo: Remove all these ^^
-
         #region Fields
 
         private int _activeSplitterCount;
@@ -178,12 +166,6 @@ namespace LiveCharts.Wpf
                 PathCollection[_activeSplitterCount].StrokeFigure.StartPoint = new Point(location.X, location.Y);
                 PathCollection[_activeSplitterCount].ShadowFigure.StartPoint = new Point(location.X, areaLimit);
 
-                //if (splitter.IsNew)
-                //{
-                //    splitter.Bottom.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-                //    splitter.Left.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-                //}
-
                 splitter.Bottom.Point = new Point(location.X, areaLimit);
                 splitter.Left.Point = location.AsPoint();
             }
@@ -207,33 +189,22 @@ namespace LiveCharts.Wpf
             }
         }
 
-        void ILineSeriesView.EndSegment(int atIndex, CorePoint location)
+        void ILineSeriesView.EndSegment(int atIndex, CorePoint location, double areaLimit, TimeSpan animationsSpeed)
         {
             var splitter = PathCollection[_activeSplitterCount];
 
-            var animSpeed = Core.Chart.View.AnimationsSpeed;
-            var noAnim = Core.Chart.View.DisableAnimations;
-
-            var areaLimit = ChartFunctions.ToDrawMargin(double.IsNaN(AreaLimit)
-                ? Core.Chart.View.SecondDimension[ScalesYAt].Core.FirstSeparator
-                : AreaLimit, AxisOrientation.Y, Core.Chart, ScalesYAt);
-
-            var uw = Core.Chart.View.FirstDimension[ScalesXAt].Core.EvaluatesUnitWidth
-                ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Core.Chart, ScalesXAt) / 2
-                : 0;
-            location.X -= uw;
-
-            //if (splitter.IsNew)
-            //{
-            //    splitter.Right.Point = new Point(location.X, Core.Chart.View.DrawMarginHeight);
-            //}
-
             PathCollection[_activeSplitterCount].ShadowFigure.Segments.Remove(splitter.Right);
-            if (noAnim)
+
+            if (animationsSpeed == TimeSpan.Zero)
+            {
                 splitter.Right.Point = new Point(location.X, areaLimit);
+            }
             else
+            {
                 splitter.Right.BeginAnimation(LineSegment.PointProperty,
-                    new PointAnimation(new Point(location.X, areaLimit), animSpeed));
+                    new PointAnimation(new Point(location.X, areaLimit), animationsSpeed));
+            }
+
             PathCollection[_activeSplitterCount].ShadowFigure.Segments.Insert(atIndex, splitter.Right);
 
             _activeSplitterCount++;
@@ -268,19 +239,13 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="Series.InitializePointView"/>
         protected override IChartPointView InitializePointView(IChart2DView chartView)
         {
-            var pointView = new LineSeriesPointView
+            var pointView = new HorizontalBezierPointView
             {
                 ShadowPath = PathCollection[_activeSplitterCount].ShadowFigure,
                 StrokePath = PathCollection[_activeSplitterCount].StrokeFigure
             };
 
             return pointView;
-        }
-
-        /// <inheritdoc cref="Series.GetPointView" />
-        protected override IChartPointView GetPointView(ChartPoint point, string label)
-        {
-             return null;
         }
 
         /// <inheritdoc cref="Erase" />
@@ -324,8 +289,7 @@ namespace LiveCharts.Wpf
                             StartPoint = new Point(location.X, areaLimit)
                         }
                     }
-                },
-
+                }
             };
 
             Panel.SetZIndex(shadow, Panel.GetZIndex(this));

@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -156,17 +156,6 @@ namespace LiveCharts.Charts
         /// The pan origin.
         /// </value>
         public CorePoint PanOrigin { get; set; }
-
-        /// <summary>
-        /// Gets the actual animations speed.
-        /// </summary>
-        /// <value>
-        /// The actual animations speed.
-        /// </value>
-        public TimeSpan AnimationsSpeed
-        {
-            get { return View.DisableAnimations ? TimeSpan.Zero : View.AnimationsSpeed; }
-        }
 
         #endregion
 

@@ -1,6 +1,6 @@
 ﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodriguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Helpers;
 
 namespace LiveCharts.Wpf.Points
 {
-    internal class CandlePointView : PointView, IOhlcPointView
+    internal class OhlcPointView : PointView, IOhlcPointView
     {
         public Line HighToLowLine { get; set; }
-        public Rectangle OpenToCloseRectangle { get; set; }
+        public Line OpenLine { get; set; }
+        public Line CloseLine { get; set; }
         public double Open { get; set; }
         public double High { get; set; }
         public double Close { get; set; }
@@ -56,11 +53,21 @@ namespace LiveCharts.Wpf.Points
                 HighToLowLine.Y1 = StartReference;
                 HighToLowLine.Y2 = StartReference;
 
-                Canvas.SetTop(OpenToCloseRectangle, (Open + Close) / 2);
-                Canvas.SetLeft(OpenToCloseRectangle, Left);
+                OpenLine.X1 = Left;
+                OpenLine.X2 = center;
+                OpenLine.Y1 = StartReference;
+                OpenLine.Y2 = StartReference;
 
-                OpenToCloseRectangle.Width = Width;
-                OpenToCloseRectangle.Height = 0;
+                CloseLine.X1 = center;
+                CloseLine.X2 = Left + Width;
+                CloseLine.Y1 = StartReference;
+                CloseLine.Y2 = StartReference;
+
+                if (DataLabel != null)
+                {
+                    Canvas.SetTop(DataLabel, current.ChartLocation.Y);
+                    Canvas.SetLeft(DataLabel, current.ChartLocation.X);
+                }
             }
 
             if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
@@ -69,15 +76,6 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetLeft(DataLabel, current.ChartLocation.X);
             }
 
-            //if (HoverShape != null)
-            //{
-            //    var h = Math.Abs(High - Low);
-            //    HoverShape.Width = Width;
-            //    HoverShape.Height = h > 10 ? h : 10;
-            //    Canvas.SetLeft(HoverShape, Left);
-            //    Canvas.SetTop(HoverShape, High);
-            //}
-
             if (chart.View.DisableAnimations)
             {
                 HighToLowLine.Y1 = High;
@@ -85,55 +83,28 @@ namespace LiveCharts.Wpf.Points
                 HighToLowLine.X1 = center;
                 HighToLowLine.X2 = center;
 
-                OpenToCloseRectangle.Width = Width;
-                OpenToCloseRectangle.Height = Math.Abs(Open - Close);
+                OpenLine.Y1 = Open;
+                OpenLine.Y2 = Open;
+                OpenLine.X1 = Left;
+                OpenLine.X2 = center;
 
-                Canvas.SetTop(OpenToCloseRectangle, Math.Min(Open, Close));
-                Canvas.SetLeft(OpenToCloseRectangle, Left);
+                CloseLine.Y1 = Close;
+                CloseLine.Y2 = Close;
+                CloseLine.X1 = center;
+                CloseLine.X2 = Left;
 
                 if (DataLabel != null)
                 {
                     DataLabel.UpdateLayout();
 
-                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight * .5, chart);
-                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth * .5, chart);
-
+                    var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualHeight*.5, chart);
+                    var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualWidth*.5, chart);
+                    
                     Canvas.SetTop(DataLabel, cy);
                     Canvas.SetLeft(DataLabel, cx);
                 }
 
                 return;
-            }
-
-            var candleSeries = (CandleSeries) current.SeriesView;
-
-            if (candleSeries.ColoringRules == null)
-            {
-                if (current.Open <= current.Close)
-                {
-                    HighToLowLine.Stroke = candleSeries.IncreaseBrush;
-                    OpenToCloseRectangle.Fill = candleSeries.IncreaseBrush;
-                    OpenToCloseRectangle.Stroke = candleSeries.IncreaseBrush;
-                }
-                else
-                {
-                    HighToLowLine.Stroke = candleSeries.DecreaseBrush;
-                    OpenToCloseRectangle.Fill = candleSeries.DecreaseBrush;
-                    OpenToCloseRectangle.Stroke = candleSeries.DecreaseBrush;
-                }
-            }
-            else
-            {
-                foreach (var rule in candleSeries.ColoringRules)
-                {
-                    if (!rule.Condition(current, previousDrawn)) continue;
-
-                    HighToLowLine.Stroke = rule.Stroke;
-                    OpenToCloseRectangle.Fill = rule.Fill;
-                    OpenToCloseRectangle.Stroke = rule.Stroke;
-
-                    break;
-                }
             }
 
             var animSpeed = chart.View.AnimationsSpeed;
@@ -142,8 +113,8 @@ namespace LiveCharts.Wpf.Points
             {
                 DataLabel.UpdateLayout();
 
-                var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
-                var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
+                var cx = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth*.5, chart);
+                var cy = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight*.5, chart);
 
                 DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
@@ -151,24 +122,23 @@ namespace LiveCharts.Wpf.Points
 
             HighToLowLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
             HighToLowLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
+            OpenLine.BeginAnimation(Line.X1Property, new DoubleAnimation(Left, animSpeed));
+            OpenLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
+            CloseLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
+            CloseLine.BeginAnimation(Line.X2Property, new DoubleAnimation(Left + Width, animSpeed));
+
             HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
             HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
-
-            OpenToCloseRectangle.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(Left, animSpeed));
-            OpenToCloseRectangle.BeginAnimation(Canvas.TopProperty,
-                new DoubleAnimation(Math.Min(Open, Close), animSpeed));
-
-            OpenToCloseRectangle.BeginAnimation(FrameworkElement.WidthProperty,
-                new DoubleAnimation(Width, animSpeed));
-            OpenToCloseRectangle.BeginAnimation(FrameworkElement.HeightProperty,
-                new DoubleAnimation(Math.Max(Math.Abs(Open - Close), OpenToCloseRectangle.StrokeThickness), animSpeed));
-
+            OpenLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(Open, animSpeed));
+            OpenLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Open, animSpeed));
+            CloseLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(Close, animSpeed));
+            CloseLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Close, animSpeed));
         }
 
         public override void Erase(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(OpenToCloseRectangle);
+            chart.View.RemoveFromDrawMargin(OpenLine);
+            chart.View.RemoveFromDrawMargin(CloseLine);
             chart.View.RemoveFromDrawMargin(HighToLowLine);
             chart.View.RemoveFromDrawMargin(DataLabel);
         }
@@ -187,8 +157,6 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            //desiredPosition -= Ellipse.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
-
             if (desiredPosition + DataLabel.ActualHeight > chart.View.DrawMarginHeight)
                 desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.View.DrawMarginHeight + 2;
 

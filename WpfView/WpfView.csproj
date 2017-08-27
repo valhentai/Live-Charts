@@ -79,6 +79,7 @@
     <Compile Include="IChartLegend.cs" />
     <Compile Include="IChartTooltip.cs" />
     <Compile Include="LogarithmicAxis.cs" />
+    <Compile Include="PointViews\BaseBezierPointView.cs" />
     <Compile Include="ScatterSeries.cs" />
     <Compile Include="DefaultGeoMapTooltip.xaml.cs">
       <DependentUpon>DefaultGeoMapTooltip.xaml</DependentUpon>
@@ -89,9 +90,9 @@
     </Compile>
     <Compile Include="CandleSeries.cs" />
     <Compile Include="Maps\MapResolver.cs" />
-    <Compile Include="Points\HeatPoint.cs" />
-    <Compile Include="Points\CandlePointView.cs" />
-    <Compile Include="Points\StepLinePointView.cs" />
+    <Compile Include="PointViews\HeatPoint.cs" />
+    <Compile Include="PointViews\CandlePointView.cs" />
+    <Compile Include="PointViews\StepLinePointView.cs" />
     <Compile Include="SectionsCollection.cs" />
     <Compile Include="Axis.cs" />
     <Compile Include="AxisSection.cs" />
@@ -107,13 +108,13 @@
     <Compile Include="DefaultTooltip.xaml.cs">
       <DependentUpon>DefaultTooltip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Points\PiePointView.cs" />
-    <Compile Include="Points\OhlcPointView.cs" />
-    <Compile Include="Points\ScatterPointView.cs" />
-    <Compile Include="Points\PieSlice.cs" />
-    <Compile Include="Points\RowPointView.cs" />
-    <Compile Include="Points\ColumnPointView.cs" />
-    <Compile Include="Points\VerticalBezierPointView.cs" />
+    <Compile Include="PointViews\PiePointView.cs" />
+    <Compile Include="PointViews\OhlcPointView.cs" />
+    <Compile Include="PointViews\ScatterPointView.cs" />
+    <Compile Include="PointViews\PieSlice.cs" />
+    <Compile Include="PointViews\RowPointView.cs" />
+    <Compile Include="PointViews\ColumnPointView.cs" />
+    <Compile Include="PointViews\VerticalBezierPointView.cs" />
     <Compile Include="HeatSeries.cs" />
     <Compile Include="PieSeries.cs" />
     <Compile Include="OhlcSeries.cs" />
@@ -125,14 +126,14 @@
     <Compile Include="StepLineSeries.cs" />
     <Compile Include="VerticalStackedAreaSeries.cs" />
     <Compile Include="VerticalLineSeries.cs" />
-    <Compile Include="Points\HorizontalBezierPointView.cs" />
+    <Compile Include="PointViews\HorizontalBezierPointView.cs" />
     <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Components\TooltipDto.cs" />
     <Compile Include="CartesianChart.cs" />
     <Compile Include="LineSeries.cs" />
     <Compile Include="Extentions.cs" />
-    <Compile Include="Points\PointView.cs" />
+    <Compile Include="PointViews\PointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
