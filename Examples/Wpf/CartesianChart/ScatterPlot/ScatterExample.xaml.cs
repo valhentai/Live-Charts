@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Defaults;
 
-namespace Wpf.CartesianChart.ScatterPlot
+namespace Samples.Wpf.CartesianChart.ScatterPlot
 {
     /// <summary>
     /// Interaction logic for ScatterExample.xaml

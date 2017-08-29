@@ -74,10 +74,14 @@
     <Compile Include="Components\DefaultXamlReader.cs" />
     <Compile Include="Components\IFondeable.cs" />
     <Compile Include="Components\ThreadAccess.cs" />
+    <Compile Include="Converters\ChartPointToStringConverter.cs" />
+    <Compile Include="Converters\GeometryOrDefautConverter.cs" />
+    <Compile Include="Converters\SeriesFillConverter.cs" />
+    <Compile Include="Converters\ParticipationVisibilityConverter.cs" />
+    <Compile Include="Converters\SharedConverter.cs" />
+    <Compile Include="Converters\SharedVisibilityConverter.cs" />
     <Compile Include="DateAxis.cs" />
     <Compile Include="FinancialColoringRule.cs" />
-    <Compile Include="IChartLegend.cs" />
-    <Compile Include="IChartTooltip.cs" />
     <Compile Include="LogarithmicAxis.cs" />
     <Compile Include="PointViews\BaseBezierPointView.cs" />
     <Compile Include="ScatterSeries.cs" />
@@ -100,7 +104,7 @@
     <Compile Include="PieChart.cs" />
     <Compile Include="Components\ChartUpdater.cs" />
     <Compile Include="Components\AxisSeparatorElement.cs" />
-    <Compile Include="Charts\Base\Chart2D.cs" />
+    <Compile Include="Chart2D.cs" />
     <Compile Include="Converters\TypeConverters.cs" />
     <Compile Include="DefaultLegend.xaml.cs">
       <DependentUpon>DefaultLegend.xaml</DependentUpon>
@@ -127,7 +131,6 @@
     <Compile Include="VerticalStackedAreaSeries.cs" />
     <Compile Include="VerticalLineSeries.cs" />
     <Compile Include="PointViews\HorizontalBezierPointView.cs" />
-    <Compile Include="Components\Converters.cs" />
     <Compile Include="DefaultAxes.cs" />
     <Compile Include="Components\TooltipDto.cs" />
     <Compile Include="CartesianChart.cs" />
@@ -230,9 +233,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core40\Core40.csproj">
+    <ProjectReference Include="..\Core40\LiveCharts.csproj">
       <Project>{f261c3d7-6194-4625-9516-044081b06028}</Project>
-      <Name>Core40</Name>
+      <Name>LiveCharts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

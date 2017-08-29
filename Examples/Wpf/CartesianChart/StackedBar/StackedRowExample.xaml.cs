@@ -16,7 +16,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.StackedBar
+namespace Samples.Wpf.CartesianChart.StackedBar
 {
     /// <summary>
     /// Interaction logic for StackedRowExample.xaml

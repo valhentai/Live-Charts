@@ -89,7 +89,7 @@ namespace LiveCharts.Series
 
                 chartPoint.ChartLocation = new CorePoint(x + exceed/2, (candeView.High + candeView.Low)/2);
 
-                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
+                chartPoint.View.Draw(null, 0, View, Chart);
             }
         }
 

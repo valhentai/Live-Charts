@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Wpf.CartesianChart.Funnel_Chart
+namespace Samples.Wpf.CartesianChart.Funnel_Chart
 {
     /// <summary>
     /// Interaction logic for FunnelExample.xaml

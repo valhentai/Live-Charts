@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.BasicLine
+namespace Samples.Wpf.CartesianChart.BasicLine
 {
     public partial class BasicLineExample : UserControl
     {

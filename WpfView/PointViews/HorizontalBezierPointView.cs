@@ -36,10 +36,10 @@ namespace LiveCharts.Wpf.PointViews
     public class HorizontalBezierPointView : BaseBezierPointView
     {
         /// <inheritdoc cref="BaseBezierPointView.Draw"/>
-        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
             // handles shapes, deletes, or initializes a new instance if necessary.
-            base.Draw(previousDrawn, current, index, series, chart);
+            base.Draw(previousDrawn, index, series, chart);
 
             var lineSeries = (LineSeries) series;
             var previousPv = previousDrawn?.View as HorizontalBezierPointView;
@@ -50,7 +50,7 @@ namespace LiveCharts.Wpf.PointViews
             if (Label != null)
             {
                 Canvas.SetTop(Label, y);
-                Canvas.SetLeft(Label, current.ChartLocation.X - Label.ActualWidth * .5);
+                Canvas.SetLeft(Label, ChartPoint.ChartLocation.X - Label.ActualWidth * .5);
             }
 
             #region No animated
@@ -73,15 +73,15 @@ namespace LiveCharts.Wpf.PointViews
 
                 if (PointShapePath != null)
                 {
-                    Canvas.SetLeft(PointShapePath, current.ChartLocation.X - PointShapePath.Width * .5);
-                    Canvas.SetTop(PointShapePath, current.ChartLocation.Y - PointShapePath.Height * .5);
+                    Canvas.SetLeft(PointShapePath, ChartPoint.ChartLocation.X - PointShapePath.Width * .5);
+                    Canvas.SetTop(PointShapePath, ChartPoint.ChartLocation.Y - PointShapePath.Height * .5);
                 }
 
                 if (Label != null)
                 {
                     Label.UpdateLayout();
-                    var xl = CorrectXLabel(current.ChartLocation.X - Label.ActualWidth * .5, chart);
-                    var yl = CorrectYLabel(current.ChartLocation.Y - Label.ActualHeight * .5, chart);
+                    var xl = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualWidth * .5, chart);
+                    var yl = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualHeight * .5, chart);
                     Canvas.SetLeft(Label, xl);
                     Canvas.SetTop(Label, yl);
                 }
@@ -128,7 +128,7 @@ namespace LiveCharts.Wpf.PointViews
                 else
                 {
                     // and there is no a previous point
-                    if (current.Gci < 1)
+                    if (ChartPoint.Gci <= 1)
                     {
                         // on first draw
                         Bezier.Point1 = new Point(Data.Point1.X, y);
@@ -138,13 +138,13 @@ namespace LiveCharts.Wpf.PointViews
                         if (PointShapePath != null)
                         {
                             Canvas.SetTop(PointShapePath, y);
-                            Canvas.SetLeft(PointShapePath, current.ChartLocation.X - PointShapePath.Width * .5);
+                            Canvas.SetLeft(PointShapePath, ChartPoint.ChartLocation.X - PointShapePath.Width * .5);
                         }
 
                         if (Label != null)
                         {
                             Canvas.SetTop(Label, y);
-                            Canvas.SetLeft(Label, current.ChartLocation.X - Label.ActualWidth * .5);
+                            Canvas.SetLeft(Label, ChartPoint.ChartLocation.X - Label.ActualWidth * .5);
                         }
                     }
                     else
@@ -186,15 +186,15 @@ namespace LiveCharts.Wpf.PointViews
             {
                 if (double.IsNaN(Canvas.GetLeft(PointShapePath)))
                 {
-                    Canvas.SetLeft(PointShapePath, current.ChartLocation.X - PointShapePath.Width * .5);
-                    Canvas.SetTop(PointShapePath, current.ChartLocation.Y - PointShapePath.Height * .5);
+                    Canvas.SetLeft(PointShapePath, ChartPoint.ChartLocation.X - PointShapePath.Width * .5);
+                    Canvas.SetTop(PointShapePath, ChartPoint.ChartLocation.Y - PointShapePath.Height * .5);
                 }
                 else
                 {
                     PointShapePath.BeginAnimation(Canvas.LeftProperty,
-                        new DoubleAnimation(current.ChartLocation.X - PointShapePath.Width * .5, chart.View.AnimationsSpeed));
+                        new DoubleAnimation(ChartPoint.ChartLocation.X - PointShapePath.Width * .5, chart.View.AnimationsSpeed));
                     PointShapePath.BeginAnimation(Canvas.TopProperty,
-                        new DoubleAnimation(current.ChartLocation.Y - PointShapePath.Height * .5, chart.View.AnimationsSpeed));
+                        new DoubleAnimation(ChartPoint.ChartLocation.Y - PointShapePath.Height * .5, chart.View.AnimationsSpeed));
                 }
             }
 
@@ -202,8 +202,8 @@ namespace LiveCharts.Wpf.PointViews
             {
                 Label.UpdateLayout();
 
-                var xl = CorrectXLabel(current.ChartLocation.X - Label.ActualWidth * .5, chart);
-                var yl = CorrectYLabel(current.ChartLocation.Y - Label.ActualHeight * .5, chart);
+                var xl = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualWidth * .5, chart);
+                var yl = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualHeight * .5, chart);
 
                 Label.BeginAnimation(Canvas.LeftProperty,
                     new DoubleAnimation(xl, chart.View.AnimationsSpeed));

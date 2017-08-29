@@ -211,14 +211,7 @@ namespace LiveCharts
                    ToDrawMargin(min, AxisOrientation.X, chart, axis);
         }
 
-        /// <summary>
-        /// Returns data in the chart according to:
-        /// </summary>
-        /// <param name="senderPoint">point that was hovered</param>
-        /// <param name="chart">chart model to get the data from</param>
-        /// <param name="selectionMode">selection mode</param>
-        /// <returns></returns>
-        public static TooltipDataViewModel GetTooltipData(ChartPoint senderPoint, ChartCore chart, TooltipSelectionMode selectionMode)
+        internal static TooltipDataViewModel GetTooltipData(ChartPoint senderPoint, ChartCore chart, TooltipSelectionMode selectionMode)
         {
             var ax = chart.View.FirstDimension[senderPoint.SeriesView.ScalesXAt].Core;
             var ay = chart.View.SecondDimension[senderPoint.SeriesView.ScalesYAt].Core;
@@ -279,6 +272,8 @@ namespace LiveCharts
                             .Where(x => Math.Abs(x.Y - senderPoint.Y) < tys),
                         Shares = senderPoint.Y
                     };
+                case TooltipSelectionMode.Auto:
+                    throw new ArgumentOutOfRangeException();
                 default:
                     throw new ArgumentOutOfRangeException();
             }

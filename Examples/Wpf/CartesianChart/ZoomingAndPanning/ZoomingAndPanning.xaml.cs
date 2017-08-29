@@ -8,7 +8,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.ZoomingAndPanning
+namespace Samples.Wpf.CartesianChart.ZoomingAndPanning
 {
     /// <summary>
     /// Interaction logic for ZoomingAndPanning.xaml

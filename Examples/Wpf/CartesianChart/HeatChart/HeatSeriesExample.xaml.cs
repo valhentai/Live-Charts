@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Defaults;
 
-namespace Wpf.CartesianChart.HeatChart
+namespace Samples.Wpf.CartesianChart.HeatChart
 {
     public partial class HeatSeriesExample : UserControl
     {

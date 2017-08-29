@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Wpf.CartesianChart.ThreadSafe
+namespace Samples.Wpf.CartesianChart.ThreadSafe
 {
     public class RelayCommand : ICommand
     {

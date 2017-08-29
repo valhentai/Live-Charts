@@ -29,7 +29,6 @@ using System.Windows.Shapes;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Dtos;
 using LiveCharts.Helpers;
-using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf
 {

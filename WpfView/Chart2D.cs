@@ -43,7 +43,7 @@ using LiveCharts.Events;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Components;
 
-namespace LiveCharts.Wpf.Charts.Base
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// Base chart class
@@ -543,105 +543,66 @@ namespace LiveCharts.Wpf.Charts.Base
         
         private void DataMouseDown(object sender, MouseEventArgs e)
         {
-            var result = ((IChart2DView) this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
-                .FirstOrDefault(x =>
-                {
-                    return true;
-                });
+            var p = Mouse.GetPosition(_visualDrawMargin);
 
+            var result = ((IChart2DView) this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x))
+                .FirstOrDefault(x => x.ResponsiveArea != null && 
+                x.ResponsiveArea.IsInside(p.X, p.Y));
+            
             DataClick?.Invoke(sender, result);
             if (DataClickCommand != null && DataClickCommand.CanExecute(result)) DataClickCommand.Execute(result);
         }
-
-
+        
         private void DataMouseEnter(object sender, EventArgs e)
         {
+            var p = Mouse.GetPosition(_visualDrawMargin);
+
             _tooltipTimeoutTimer.Stop();
 
-            var source = ((IChart2DView)this).ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
-            var senderPoint = source.FirstOrDefault(x => true);
+            var hoveredPoint = Core.InjectTooltipData(p.X, p.Y);
 
-            if (senderPoint == null) return;
+            if (hoveredPoint == null) return;
 
-            if (Hoverable) senderPoint.View.OnHover(senderPoint);
-
-            if (DataTooltip != null)
+            if (Hoverable)
             {
-                if (DataTooltip.Parent == null)
-                {
-                    Panel.SetZIndex(DataTooltip, int.MaxValue);
-                    _tooltipContainer = new Popup {AllowsTransparency = true, Placement = PlacementMode.RelativePoint};
-                    ((IChart2DView) this).AddToView(_tooltipContainer);
-                    _tooltipContainer.Child = DataTooltip;
-                    Canvas.SetTop(DataTooltip, 0d);
-                    Canvas.SetLeft(DataTooltip, 0d);
-                }
-
-                var lcTooltip = DataTooltip as IChartTooltip;
-                if (lcTooltip == null)
-                {
-                    throw new LiveChartsException(ExceptionReason.InvalidTooltipException);
-                }
-
-                if (lcTooltip.SelectionMode == null)
-                    lcTooltip.SelectionMode = senderPoint.SeriesView.Core.PreferredSelectionMode;
-
-                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Core, lcTooltip.SelectionMode.Value);
-
-                lcTooltip.Data = new TooltipData
-                {
-                    XFormatter = coreModel.XFormatter,
-                    YFormatter = coreModel.YFormatter,
-                    SharedValue = coreModel.Shares,
-                    SenderSeries = (Series) senderPoint.SeriesView,
-                    SelectionMode = lcTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
-                    Points = coreModel.Points.Select(x => new DataPointViewModel
-                        {
-                            Series = new SeriesViewModel
-                            {
-                                PointGeometry = ((Series) x.SeriesView).PointGeometry ??
-                                                Geometry.Parse("M0,0 L1,0"),
-                                Fill = ((Series) x.SeriesView) is IFondeable &&
-                                       !(x.SeriesView is IVerticalStackedAreaSeriesView ||
-                                         x.SeriesView is IStackedAreaSeriesView)
-                                    ? ((IFondeable) x.SeriesView).PointForeground
-                                    : ((Series) x.SeriesView).Fill,
-                                Stroke = ((Series) x.SeriesView).Stroke,
-                                StrokeThickness = ((Series) x.SeriesView).StrokeThickness,
-                                Title = ((Series) x.SeriesView).Title,
-                            },
-                            ChartPoint = x
-                        })
-                        .ToList()
-                };
-
-                _tooltipContainer.IsOpen = true;
-                DataTooltip.UpdateLayout();
-
-                var location = GetTooltipPosition(senderPoint);
-                location = new Point(Canvas.GetLeft(_visualDrawMargin) + location.X, Canvas.GetTop(_visualDrawMargin) + location.Y);
-
-                if (DisableAnimations)
-                {
-                    _tooltipContainer.VerticalOffset = location.Y;
-                    _tooltipContainer.HorizontalOffset = location.X;
-                }
-                else
-                {
-                    _tooltipContainer.BeginAnimation(Popup.VerticalOffsetProperty,
-                        new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
-                    _tooltipContainer.BeginAnimation(Popup.HorizontalOffsetProperty,
-                        new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
-                }
+                hoveredPoint.View.OnHover();
             }
 
-            OnDataHover(sender, senderPoint);
-        }
+            _tooltipContainer.IsOpen = true;
 
-        internal void OnDataHover(object sender, ChartPoint point)
-        {
-            DataHover?.Invoke(sender, point);
-            if (DataHoverCommand != null && DataHoverCommand.CanExecute(point)) DataHoverCommand.Execute(point);
+            if (DataTooltip.Parent == null)
+            {
+                Panel.SetZIndex(DataTooltip, int.MaxValue);
+                _tooltipContainer = new Popup { AllowsTransparency = true, Placement = PlacementMode.RelativePoint };
+                ((IChart2DView)this).AddToView(_tooltipContainer);
+                _tooltipContainer.Child = DataTooltip;
+                Canvas.SetTop(DataTooltip, 0d);
+                Canvas.SetLeft(DataTooltip, 0d);
+            }
+
+            DataTooltip.UpdateLayout();
+
+            var location = GetTooltipPosition(hoveredPoint);
+            location = new Point(Canvas.GetLeft(_visualDrawMargin) + location.X, Canvas.GetTop(_visualDrawMargin) + location.Y);
+
+            if (DisableAnimations)
+            {
+                _tooltipContainer.VerticalOffset = location.Y;
+                _tooltipContainer.HorizontalOffset = location.X;
+            }
+            else
+            {
+                _tooltipContainer.BeginAnimation(Popup.VerticalOffsetProperty,
+                    new DoubleAnimation(location.Y, TimeSpan.FromMilliseconds(200)));
+                _tooltipContainer.BeginAnimation(Popup.HorizontalOffsetProperty,
+                    new DoubleAnimation(location.X, TimeSpan.FromMilliseconds(200)));
+            }
+
+            DataHover?.Invoke(sender, hoveredPoint);
+            if (DataHoverCommand != null && DataHoverCommand.CanExecute(hoveredPoint))
+            {
+                DataHoverCommand.Execute(hoveredPoint);
+            }
         }
 
         private void DataMouseLeave(object sender, EventArgs e)
@@ -654,7 +615,7 @@ namespace LiveCharts.Wpf.Charts.Base
 
             if (senderPoint == null) return;
 
-            if (Hoverable) senderPoint.View.OnHoverLeave(senderPoint);
+            if (Hoverable) senderPoint.View.OnHoverLeave();
         }
 
         private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
@@ -1103,6 +1064,21 @@ namespace LiveCharts.Wpf.Charts.Base
 
         bool IChart2DView.RandomizeStartingColor => RandomizeStartingColor;
 
+        IChartTooltip IChart2DView.Tooltip
+        {
+            get
+            {
+                var tt = DataTooltip as IChartTooltip;
+
+                if (tt == null)
+                {
+                    throw new LiveChartsException(ExceptionReason.InvalidTooltipException);
+                }
+
+                return tt;
+            }
+        }
+
         TimeSpan IChart2DView.TooltipTimeout => TooltipTimeout;
 
         ZoomingOptions IChart2DView.Zoom => Zoom;
@@ -1234,53 +1210,43 @@ namespace LiveCharts.Wpf.Charts.Base
         CoreSize IChart2DView.LoadLegend()
         {
             if (ChartLegend == null || LegendLocation == LegendLocation.None)
-                return new CoreSize();
-
-            if (ChartLegend.Parent == null)
-                _visualCanvas.Children.Add(ChartLegend);
-
-            var l = new List<SeriesViewModel>();
-
-            foreach (var t in ((IChart2DView)this).ActualSeries)
             {
-                var item = new SeriesViewModel();
-
-                var series = (Series)t;
-
-                item.Title = series.Title;
-                item.StrokeThickness = series.StrokeThickness;
-                item.Stroke = series.Stroke;
-                item.Fill = ((Series)t) is IFondeable &&
-                            !(t is IVerticalStackedAreaSeriesView ||
-                              t is IStackedAreaSeriesView)
-                    ? ((IFondeable)t).PointForeground
-                    : ((Series)t).Fill;
-                item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M0,0 L1,0");
-
-                l.Add(item);
+                return new CoreSize();
             }
 
-            var iChartLegend = ChartLegend as IChartLegend;
-            if (iChartLegend == null)
+            if (ChartLegend.Parent == null)
+            {
+                _visualCanvas.Children.Add(ChartLegend);
+            }
+
+            var legend = ChartLegend as IChartLegend;
+
+            if (legend == null)
             {
                 throw new LiveChartsException(ExceptionReason.InvalidLegend);
             }
 
-            iChartLegend.Series = l;
+            legend.Series = ((IChart2DView) this).ActualSeries.ToArray();
 
             var defaultLegend = ChartLegend as DefaultLegend;
+            
+            //special case for LiveCharts default legend,
+            //you can inherit from this class, so you get this behavior also.
             if (defaultLegend != null)
             {
-                defaultLegend.InternalOrientation = LegendLocation == LegendLocation.Bottom ||
-                                                    LegendLocation == LegendLocation.Top
-                    ? Orientation.Horizontal
-                    : Orientation.Vertical;
+                if (defaultLegend.Orientation == null)
+                {
+                    defaultLegend.ActualOrientation = LegendLocation == LegendLocation.Bottom ||
+                                                      LegendLocation == LegendLocation.Top
+                        ? Orientation.Horizontal
+                        : Orientation.Vertical;
+                }
 
-                defaultLegend.MaxWidth = defaultLegend.InternalOrientation == Orientation.Horizontal
+                defaultLegend.MaxWidth = defaultLegend.ActualOrientation == Orientation.Horizontal
                     ? ActualWidth
                     : double.PositiveInfinity;
 
-                defaultLegend.MaxHeight = defaultLegend.InternalOrientation == Orientation.Vertical
+                defaultLegend.MaxHeight = defaultLegend.ActualOrientation == Orientation.Vertical
                     ? ActualHeight
                     : double.PositiveInfinity;
             }

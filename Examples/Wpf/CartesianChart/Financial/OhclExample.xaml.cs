@@ -9,7 +9,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
 
-namespace Wpf.CartesianChart.Financial
+namespace Samples.Wpf.CartesianChart.Financial
 {
     public partial class OhclExample : UserControl, INotifyPropertyChanged
     {

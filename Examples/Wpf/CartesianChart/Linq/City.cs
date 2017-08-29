@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wpf.CartesianChart.Linq
+namespace Samples.Wpf.CartesianChart.Linq
 {
     public class City
     {

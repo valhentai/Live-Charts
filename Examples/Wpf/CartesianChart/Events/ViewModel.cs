@@ -2,7 +2,7 @@ using System;
 using LiveCharts;
 using LiveCharts.Events;
 
-namespace Wpf.CartesianChart.Events
+namespace Samples.Wpf.CartesianChart.Events
 {
     public class ViewModel
     {

@@ -20,8 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Dtos;
-
 namespace LiveCharts
 {
     /// <summary>
@@ -32,10 +30,10 @@ namespace LiveCharts
         /// <summary>
         /// Determines whether the specified point is inside the area.
         /// </summary>
-        /// <param name="point">The point.</param>
+        /// <param name="values">The point.</param>
         /// <returns>
         ///   <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool IsInside(CorePoint point);
+        public abstract bool IsInside(params double[] values);
     }
 }

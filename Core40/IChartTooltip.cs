@@ -1,9 +1,4 @@
-//The MIT License(MIT)
-
-//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
-
-//Permission is hereby granted, free of charge, to any person obtaining a copy
-//of this software and associated documentation files (the "Software"), to deal
+ï»¿//of this software and associated documentation files (the "Software"), to deal
 //in the Software without restriction, including without limitation the rights
 //to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 //copies of the Software, and to permit persons to whom the Software is
@@ -20,15 +15,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.ComponentModel;
-
-namespace LiveCharts.Wpf
+namespace LiveCharts
 {
     /// <summary>
-    /// 
+    /// Defines a chart tooltip.
     /// </summary>
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public interface IChartTooltip : INotifyPropertyChanged
+    public interface IChartTooltip
     {
         /// <summary>
         /// Gets or sets the data.
@@ -43,6 +35,7 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The selection mode.
         /// </value>
-        TooltipSelectionMode? SelectionMode { get; set; }
+        TooltipSelectionMode SelectionMode { get; }
     }
 }
+

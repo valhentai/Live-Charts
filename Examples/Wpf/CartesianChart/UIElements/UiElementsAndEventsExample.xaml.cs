@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Wpf.CartesianChart.UIElements
+namespace Samples.Wpf.CartesianChart.UIElements
 {
     public partial class UiElementsAndEventsExample : UserControl
     {

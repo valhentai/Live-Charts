@@ -5,7 +5,7 @@ using System.Windows.Input;
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Energy_Predictions
+namespace Samples.Wpf.CartesianChart.Energy_Predictions
 {
     /// <summary>
     /// Interaction logic for EnergyPredictionExample.xaml

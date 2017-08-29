@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wpf.CartesianChart.SectionsDragable
+namespace Samples.Wpf.CartesianChart.SectionsDragable
 {
     /// <summary>
     /// Interaction logic for DragableSections.xaml

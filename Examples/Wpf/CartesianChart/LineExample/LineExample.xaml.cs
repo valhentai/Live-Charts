@@ -16,7 +16,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart
+namespace Samples.Wpf.CartesianChart
 {
     /// <summary>
     /// Interaction logic for LineExample.xaml

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wpf.CartesianChart
+namespace Samples.Wpf.CartesianChart
 {
     /// <summary>
     /// Interaction logic for MultiAxisChart.xaml

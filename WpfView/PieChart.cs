@@ -22,10 +22,8 @@
 
 using System;
 using System.Windows;
-using LiveCharts.Charts;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Wpf.Charts.Base;
-using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {

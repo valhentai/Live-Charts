@@ -85,10 +85,10 @@ namespace LiveCharts
         public double Width { get; set; }
 
         /// <inheritdoc cref="ResponsiveArea.IsInside"/>
-        public override bool IsInside(CorePoint point)
+        public override bool IsInside(params double[] values)
         {
-            return point.X >= Left && point.X <= Left + Width &&
-                   point.Y >= Top && point.Y <= Top + Height;
+            return values[0] >= Left && values[0] <= Left + Width &&
+                   values[1] >= Top && values[1] <= Top + Height;
         }
     }
 }

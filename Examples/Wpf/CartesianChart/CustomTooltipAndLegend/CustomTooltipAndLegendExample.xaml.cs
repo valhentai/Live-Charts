@@ -1,8 +1,9 @@
 ﻿using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Configurations;
+using Samples.Wpf.CartesianChart.CustomTooltipAndLegend;
 
-namespace Wpf.CartesianChart.CustomTooltipAndLegend
+namespace Samples.Wpf.CartesianChart.CustomTooltipAndLegend
 {
     public partial class CustomTooltipAndLegendExample : UserControl
     {

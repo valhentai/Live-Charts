@@ -9,7 +9,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.DateAxis
+namespace Samples.Wpf.CartesianChart.DateAxis
 {
     public partial class DateAxisExample : UserControl, INotifyPropertyChanged
     {

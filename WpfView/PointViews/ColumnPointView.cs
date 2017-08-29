@@ -31,7 +31,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts.Wpf.PointViews
 {
     internal class ColumnPointView : PointView, IRectanglePointView
     {
@@ -41,9 +41,9 @@ namespace LiveCharts.Wpf.Points
         public BarLabelPosition LabelPosition { get; set; }
         private RotateTransform Transform { get; set; }
 
-        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
-            if (IsNew)
+            //if (IsNew)
             {
                 Canvas.SetTop(Rectangle, ZeroReference);
                 Canvas.SetLeft(Rectangle, Data.Left);
@@ -52,10 +52,10 @@ namespace LiveCharts.Wpf.Points
                 Rectangle.Height = 0;
             }
 
-            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            if (Label != null && double.IsNaN(Canvas.GetLeft(Label)))
             {
-                Canvas.SetTop(DataLabel, ZeroReference);
-                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
+                Canvas.SetTop(Label, ZeroReference);
+                Canvas.SetLeft(Label, ChartPoint.ChartLocation.X);
             }
           
             Func<double> getY = () =>
@@ -69,24 +69,24 @@ namespace LiveCharts.Wpf.Points
                     if (Transform == null)
                         Transform = new RotateTransform(270);
 
-                    y = Data.Top + Data.Height/2 + DataLabel.ActualWidth*.5;
-                    DataLabel.RenderTransform = Transform;
+                    y = Data.Top + Data.Height/2 + Label.ActualWidth*.5;
+                    Label.RenderTransform = Transform;
                 }
                 else if (LabelPosition == BarLabelPosition.Perpendicular)
                 {
-                    y = Data.Top + Data.Height/2 - DataLabel.ActualHeight * .5;
+                    y = Data.Top + Data.Height/2 - Label.ActualHeight * .5;
                 }
                 else
                 {
                     if (ZeroReference > Data.Top)
                     {
-                        y = Data.Top - DataLabel.ActualHeight;
+                        y = Data.Top - Label.ActualHeight;
                         if (y < 0) y = Data.Top;
                     }
                     else
                     {
                         y = Data.Top + Data.Height;
-                        if (y + DataLabel.ActualHeight > chart.View.DrawMarginHeight) y -= DataLabel.ActualHeight;
+                        if (y + Label.ActualHeight > chart.View.DrawMarginHeight) y -= Label.ActualHeight;
                     }
                 }
 
@@ -101,19 +101,19 @@ namespace LiveCharts.Wpf.Points
                 if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
 #pragma warning restore 618
                 {
-                    x = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
+                    x = Data.Left + Data.Width/2 - Label.ActualHeight/2;
                 }
                 else if (LabelPosition == BarLabelPosition.Perpendicular)
                 {
-                    x = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
+                    x = Data.Left + Data.Width/2 - Label.ActualWidth/2;
                 }
                 else
                 {
-                    x = Data.Left + Data.Width / 2 - DataLabel.ActualWidth / 2;
+                    x = Data.Left + Data.Width / 2 - Label.ActualWidth / 2;
                     if (x < 0)
                         x = 2;
-                    if (x + DataLabel.ActualWidth > chart.View.DrawMarginWidth)
-                        x -= x + DataLabel.ActualWidth - chart.View.DrawMarginWidth + 2;
+                    if (x + Label.ActualWidth > chart.View.DrawMarginWidth)
+                        x -= x + Label.ActualWidth - chart.View.DrawMarginWidth + 2;
                 }
 
                 return x;
@@ -127,12 +127,12 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetTop(Rectangle, Data.Top);
                 Canvas.SetLeft(Rectangle, Data.Left);
 
-                if (DataLabel != null)
+                if (Label != null)
                 {
-                    DataLabel.UpdateLayout();
+                    Label.UpdateLayout();
 
-                    Canvas.SetTop(DataLabel, getY());
-                    Canvas.SetLeft(DataLabel, getX());
+                    Canvas.SetTop(Label, getY());
+                    Canvas.SetLeft(Label, getX());
                 }
 
                 return;
@@ -140,12 +140,12 @@ namespace LiveCharts.Wpf.Points
 
             var animSpeed = chart.View.AnimationsSpeed;
 
-            if (DataLabel != null)
+            if (Label != null)
             {
-                DataLabel.UpdateLayout();
+                Label.UpdateLayout();
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(getX(), animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
+                Label.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(getX(), animSpeed));
+                Label.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
             }
 
             Rectangle.BeginAnimation(Canvas.LeftProperty, 
@@ -162,27 +162,27 @@ namespace LiveCharts.Wpf.Points
         public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(Rectangle);
-            chart.View.RemoveFromDrawMargin(DataLabel);
+            chart.View.RemoveFromDrawMargin(Label);
         }
 
-        public override void OnHover(ChartPoint point)
+        public override void OnHover()
         {
             var copy = Rectangle.Fill.Clone();
             copy.Opacity -= .15;
             Rectangle.Fill = copy;
         }
 
-        public override void OnHoverLeave(ChartPoint point)
+        public override void OnHoverLeave()
         {
             if (Rectangle == null) return;
 
-            if (point.Fill != null)
+            if (ChartPoint.Fill != null)
             {
-                Rectangle.Fill = (Brush) point.Fill;
+                Rectangle.Fill = (Brush) ChartPoint.Fill;
             }
             else
             {
-                Rectangle.Fill = ((Series) point.SeriesView).Fill;
+                Rectangle.Fill = ((Series) ChartPoint.SeriesView).Fill;
             }
         }
     }

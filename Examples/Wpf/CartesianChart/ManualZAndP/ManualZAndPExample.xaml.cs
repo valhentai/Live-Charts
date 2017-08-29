@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using Wpf.Annotations;
 
-namespace Wpf.CartesianChart.ManualZAndP
+namespace Samples.Wpf.CartesianChart.ManualZAndP
 {
     public partial class ManualZAndPExample : UserControl, INotifyPropertyChanged
     {

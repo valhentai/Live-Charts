@@ -35,7 +35,7 @@ namespace LiveCharts.Wpf.PointViews
     /// A base bezier point view.
     /// </summary>
     /// <seealso cref="IBezierPointView" />
-    public class BaseBezierPointView : IBezierPointView
+    public class BaseBezierPointView : PointView, IBezierPointView
     {
         /// <summary>
         /// Gets or sets the point shape path.
@@ -86,7 +86,7 @@ namespace LiveCharts.Wpf.PointViews
         public PathFigure StrokePath { get; set; }
 
         /// <inheritdoc cref="IChartPointView.Draw"/>
-        public virtual void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        public virtual void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
             var lineSeries = (LineSeries) series;
             
@@ -122,8 +122,8 @@ namespace LiveCharts.Wpf.PointViews
 
                 // Obsolete, replaced with IChartPointView.Selected() method.
                 // ToDo: Remove the next 2 lines in a future version...
-                if (current.Stroke != null) PointShapePath.Stroke = (Brush) current.Stroke;
-                if (current.Fill != null) PointShapePath.Fill = (Brush) current.Fill;
+                if (ChartPoint.Stroke != null) PointShapePath.Stroke = (Brush) ChartPoint.Stroke;
+                if (ChartPoint.Fill != null) PointShapePath.Fill = (Brush) ChartPoint.Fill;
             }
             
             // erase the path shape if it is not required any more
@@ -145,8 +145,8 @@ namespace LiveCharts.Wpf.PointViews
                     {
                         FormattedText = DesignerProperties.GetIsInDesignMode(lineSeries)
                             ? "'label'"
-                            : lineSeries.LabelPoint(current),
-                        Point = current
+                            : lineSeries.LabelPoint(ChartPoint),
+                        Point = ChartPoint
                     }, Label);
             }
 
@@ -168,9 +168,9 @@ namespace LiveCharts.Wpf.PointViews
 
             // register the area where the point interacts with the user (hover and click).
             var minDimension = lineSeries.PointGeometrySize < 12 ? 12 : lineSeries.PointGeometrySize;
-            current.ResponsiveArea = new ResponsiveRectangle(
-                current.ChartLocation.X - minDimension / 2,
-                current.ChartLocation.Y - minDimension / 2,
+            ChartPoint.ResponsiveArea = new ResponsiveRectangle(
+                ChartPoint.ChartLocation.X - minDimension / 2,
+                ChartPoint.ChartLocation.Y - minDimension / 2,
                 minDimension,
                 minDimension);
 
@@ -186,22 +186,22 @@ namespace LiveCharts.Wpf.PointViews
         }
 
         /// <inheritdoc cref="IChartPointView.OnHover"/>
-        public virtual void OnHover(ChartPoint point)
+        public virtual void OnHover()
         {
-            var lineSeries = (LineSeries)point.SeriesView;
+            var lineSeries = (LineSeries)ChartPoint.SeriesView;
             if (PointShapePath != null) PointShapePath.Fill = PointShapePath.Stroke;
 
             lineSeries.PathCollection.ForEach(s => s.StrokePath.StrokeThickness++);
         }
 
         /// <inheritdoc cref="IChartPointView.OnHoverLeave"/>
-        public virtual void OnHoverLeave(ChartPoint point)
+        public virtual void OnHoverLeave()
         {
-            var lineSeries = (LineSeries)point.SeriesView;
+            var lineSeries = (LineSeries)ChartPoint.SeriesView;
             if (PointShapePath != null)
-                PointShapePath.Fill = point.Fill == null
+                PointShapePath.Fill = ChartPoint.Fill == null
                     ? lineSeries.PointForeground
-                    : (Brush)point.Fill;
+                    : (Brush)ChartPoint.Fill;
 
             lineSeries.PathCollection.ForEach(s =>
             {

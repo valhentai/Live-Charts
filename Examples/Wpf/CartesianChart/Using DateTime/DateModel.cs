@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wpf.CartesianChart.Using_DateTime
+namespace Samples.Wpf.CartesianChart.Using_DateTime
 {
     public class DateModel
     {

@@ -6,7 +6,7 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 
-namespace Wpf.CartesianChart.PointState
+namespace Samples.Wpf.CartesianChart.PointState
 {
     /// <summary>
     /// Interaction logic for PointStateExample.xaml

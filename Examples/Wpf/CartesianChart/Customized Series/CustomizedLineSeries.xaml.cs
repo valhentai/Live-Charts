@@ -5,7 +5,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Customized_Line_Series
+namespace Samples.Wpf.CartesianChart.Customized_Line_Series
 {
     /// <summary>
     /// Interaction logic for CustomizedExample.xaml

@@ -123,14 +123,6 @@ namespace LiveCharts.Definitions.Charts
         /// </value>
         bool RandomizeStartingColor { get; }
 
-            /// <summary>
-        /// Gets or sets the tooltip timeout.
-        /// </summary>
-        /// <value>
-        /// The tooltip timeout.
-        /// </value>
-        TimeSpan TooltipTimeout { get; }
-
         /// <summary>
         /// Gets or sets the zoom.
         /// </summary>
@@ -154,6 +146,22 @@ namespace LiveCharts.Definitions.Charts
         /// The zooming speed.
         /// </value>
         double ZoomingSpeed { get; }
+
+        /// <summary>
+        /// Gets or sets the tooltip timeout.
+        /// </summary>
+        /// <value>
+        /// The tooltip timeout.
+        /// </value>
+        TimeSpan TooltipTimeout { get; }
+
+        /// <summary>
+        /// Gets the tooltip.
+        /// </summary>
+        /// <value>
+        /// The tooltip.
+        /// </value>
+        IChartTooltip Tooltip { get; }
 
         /// <summary>
         /// Gets or sets the legend location.

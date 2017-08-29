@@ -20,23 +20,21 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using System.ComponentModel;
+using LiveCharts.Definitions.Series;
 
-namespace LiveCharts.Wpf
+namespace LiveCharts
 {
     /// <summary>
-    /// 
+    /// Defines a chart legend.
     /// </summary>
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public interface IChartLegend : INotifyPropertyChanged
+    public interface IChartLegend
     {
         /// <summary>
-        /// Gets or sets the series.
+        /// Gets or sets the series to display.
         /// </summary>
         /// <value>
         /// The series.
         /// </value>
-        List<SeriesViewModel> Series { get; set; }
+        ISeriesView[] Series { get; set; }
     }
 }

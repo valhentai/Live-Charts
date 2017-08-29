@@ -4,7 +4,7 @@ using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.SectionsMouseMove
+namespace Samples.Wpf.CartesianChart.SectionsMouseMove
 {
 	/// <summary>
 	/// Interaction logic for SectionMouseMoveSample.xaml

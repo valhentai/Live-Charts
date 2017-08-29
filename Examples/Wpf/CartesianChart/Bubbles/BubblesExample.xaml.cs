@@ -6,7 +6,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Bubbles
+namespace Samples.Wpf.CartesianChart.Bubbles
 {
     public partial class BubblesExample : UserControl
     {

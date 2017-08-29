@@ -32,7 +32,7 @@ namespace LiveCharts
     /// </summary>
     public class ChartPoint
     {
-        private bool _selected;
+        private bool _isSelected;
 
         /// <summary>
         /// Gets the X point value
@@ -100,18 +100,18 @@ namespace LiveCharts
         /// <value>
         ///   <c>true</c> if selected; otherwise, <c>false</c>.
         /// </value>
-        public bool Selected
+        public bool IsSelected
         {
-            get { return _selected; }
+            get { return _isSelected; }
             set
             {
-                var changed = value != _selected;
+                var changed = value != _isSelected;
 
-                _selected = value;
+                _isSelected = value;
 
                 if (!changed) return;
 
-                if (_selected)
+                if (_isSelected)
                 {
                     View.OnSelection();
                 }

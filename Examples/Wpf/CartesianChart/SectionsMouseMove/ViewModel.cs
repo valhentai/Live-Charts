@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Wpf.CartesianChart.SectionsMouseMove
+namespace Samples.Wpf.CartesianChart.SectionsMouseMove
 {
     public class ViewModel : INotifyPropertyChanged
     {

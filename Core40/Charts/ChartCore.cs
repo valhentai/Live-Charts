@@ -26,6 +26,7 @@ using System.Linq;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
+using LiveCharts.Helpers;
 
 namespace LiveCharts.Charts
 {
@@ -158,8 +159,6 @@ namespace LiveCharts.Charts
         public CorePoint PanOrigin { get; set; }
 
         #endregion
-
-        #region Public Methods
 
         internal virtual void PrepareAxes()
         {
@@ -329,6 +328,48 @@ namespace LiveCharts.Charts
                 xi.Core.UpdateSeparators(AxisOrientation.X, this, index);
                 xi.SetTitleLeft(curSize.Left + curSize.Width*.5 - xi.GetLabelSize().Width*.5);
             }
+        }
+
+        /// <summary>
+        ///  Notifies the chart that the pointer is moving at a certain position.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <returns>the hovered point, null if none.</returns>
+        /// <exception cref="LiveChartsException"></exception>
+        public ChartPoint InjectTooltipData(params double[] values)
+        {
+            var source = View.ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
+
+            var senderPoint = source.FirstOrDefault(x => x.ResponsiveArea != null &&
+                                                         x.ResponsiveArea.IsInside(values));
+
+            if (senderPoint == null) return null;
+
+            if (View.Tooltip == null) return senderPoint;
+
+            var tooltip = View.Tooltip;
+            if (tooltip == null)
+            {
+                throw new LiveChartsException(ExceptionReason.InvalidTooltipException);
+            }
+
+            var selectionMode = tooltip.SelectionMode == TooltipSelectionMode.Auto
+                ? senderPoint.SeriesView.Core.PreferredSelectionMode
+                : tooltip.SelectionMode;
+
+            var coreModel = ChartFunctions.GetTooltipData(senderPoint, this, selectionMode);
+
+            tooltip.Data = new TooltipData
+            {
+                XFormatter = coreModel.XFormatter,
+                YFormatter = coreModel.YFormatter,
+                SharedValue = coreModel.Shares,
+                SenderSeries = senderPoint.SeriesView,
+                CurrentSelectionMode = selectionMode,
+                Points = coreModel.Points.ToArray()
+            };
+
+            return senderPoint;
         }
 
         /// <summary>
@@ -638,10 +679,6 @@ namespace LiveCharts.Charts
             Updater.EnqueueUpdate(true);
         }
 
-        #endregion
-
-        #region Protected
-
         /// <summary>
         /// Stacks the points.
         /// </summary>
@@ -776,9 +813,6 @@ namespace LiveCharts.Charts
                 }
             }
         }
-        #endregion
-
-        #region Privates
 
         private static void SetAxisLimits(AxisCore ax, IList<ISeriesView> series, AxisOrientation orientation)
         {
@@ -818,7 +852,5 @@ namespace LiveCharts.Charts
 
             ax.MaxPointRadius = boundries[2];
         }
-
-        #endregion
     }
 }

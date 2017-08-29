@@ -85,7 +85,7 @@ namespace LiveCharts.Series
                 pieSlice.Rotation = startAt + (chartPoint.StackedParticipation - chartPoint.Participation)*360;
                 pieSlice.Wedge = chartPoint.Participation*360 > 0 ? chartPoint.Participation*360 : 0;
 
-                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
+                chartPoint.View.Draw(null, 0, View, Chart);
 
                 inner = pieSlice.Radius;
             }

@@ -9,7 +9,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Sections
+namespace Samples.Wpf.CartesianChart.Sections
 {
     public partial class SectionsExample : UserControl
     {

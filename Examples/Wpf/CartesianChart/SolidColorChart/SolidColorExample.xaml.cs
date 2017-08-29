@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using LiveCharts;
 
-namespace Wpf.CartesianChart.SolidColorChart
+namespace Samples.Wpf.CartesianChart.SolidColorChart
 {
     /// <summary>
     /// Interaction logic for SolidColorExample.xaml

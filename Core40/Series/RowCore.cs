@@ -116,7 +116,7 @@ namespace LiveCharts.Series
                 chartPoint.ChartLocation = new CorePoint(rectangleView.Data.Left + rectangleView.Data.Width,
                     rectangleView.Data.Top);
 
-                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
+                chartPoint.View.Draw(null, 0, View, Chart);
             }
         }
 

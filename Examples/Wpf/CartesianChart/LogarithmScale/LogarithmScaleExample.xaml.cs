@@ -5,7 +5,7 @@ using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.LogarithmScale
+namespace Samples.Wpf.CartesianChart.LogarithmScale
 {
     public partial class LogarithmScaleExample : UserControl
     {

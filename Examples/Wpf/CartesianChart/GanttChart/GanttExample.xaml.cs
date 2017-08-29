@@ -8,7 +8,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.GanttChart
+namespace Samples.Wpf.CartesianChart.GanttChart
 {
     /// <summary>
     /// Interaction logic for GanttExample.xaml

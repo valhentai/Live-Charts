@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Data;
 using LiveCharts;
 
-namespace Wpf.CartesianChart.Energy_Predictions
+namespace Samples.Wpf.CartesianChart.Energy_Predictions
 {
     public class ReverseConverter : IValueConverter
     {

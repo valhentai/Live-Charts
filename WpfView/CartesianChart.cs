@@ -24,7 +24,6 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf
 {

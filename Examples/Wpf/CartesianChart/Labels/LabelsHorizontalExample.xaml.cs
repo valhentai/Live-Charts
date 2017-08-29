@@ -7,7 +7,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Labels
+namespace Samples.Wpf.CartesianChart.Labels
 {
     /// <summary>
     /// Interaction logic for LabelsHorizontalExample.xaml

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Wpf.CartesianChart.Events
+namespace Samples.Wpf.CartesianChart.Events
 {
     public class MyCommand<T> : ICommand where T : class
     {

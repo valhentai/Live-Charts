@@ -80,9 +80,12 @@
     <Compile Include="Delegates.cs" />
     <Compile Include="Helpers\ExceptionReason.cs" />
     <Compile Include="Helpers\ReasonAttribute.cs" />
+    <Compile Include="IChartLegend.cs" />
+    <Compile Include="IChartTooltip.cs" />
     <Compile Include="ResponsiveArea.cs" />
     <Compile Include="ResponsivePolarArea.cs" />
     <Compile Include="ResponsiveRectangle.cs" />
+    <Compile Include="TooltipData.cs" />
     <Compile Include="WindowAxisCore.cs" />
     <Compile Include="DateAxisWindows.cs" />
     <Compile Include="DateSeparatorElementCore.cs" />

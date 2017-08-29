@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Windows;
 using LiveCharts.Dtos;
-using LiveCharts.Wpf.Charts.Base;
 
 namespace LiveCharts.Wpf
 {

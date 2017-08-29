@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.NegativeStackedRow
+namespace Samples.Wpf.CartesianChart.NegativeStackedRow
 {
     /// <summary>
     /// Interaction logic for NEgativeStackedRowExample.xaml

@@ -5,7 +5,7 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Using_DateTime
+namespace Samples.Wpf.CartesianChart.Using_DateTime
 {
     public partial class DateTime : UserControl
     {

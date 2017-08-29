@@ -16,7 +16,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.StackedArea
+namespace Samples.Wpf.CartesianChart.StackedArea
 {
     /// <summary>
     /// Interaction logic for VerticalStackedAreaExample.xaml

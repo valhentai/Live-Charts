@@ -30,6 +30,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf"
+             xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
+             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance wpf:DefaultTooltip}"
              x:Name="Control">
@@ -37,23 +39,34 @@
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{Binding Foreground}"></Setter>
         </Style>
-        <wpf:SharedConverter x:Key="SharedConverter"/>
-        <wpf:SharedVisibilityConverter x:Key="SharedVisibilityConverter"/>
-        <wpf:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
-        <wpf:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
+        <converters:SharedConverter x:Key="SharedConverter"/>
+        <converters:SharedVisibilityConverter x:Key="SharedVisibilityConverter"/>
+        <converters:ChartPointToStringConverter x:Key="ChartPointToStringConverter"/>
+        <converters:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
+        <converters:SeriesFillConverter x:Key="SeriesFillConverter"></converters:SeriesFillConverter>
+        <converters:GeometryOrDefautConverter x:Key="GeometryOrDefaultConverter"></converters:GeometryOrDefautConverter>
         <BooleanToVisibilityConverter x:Key="Bvc"></BooleanToVisibilityConverter>
     </UserControl.Resources>
     <UserControl.Template>
         <ControlTemplate>
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center" >
-                <Border Background="{Binding Background}" BorderThickness="1" Effect="{Binding Effect}" CornerRadius="{Binding CornerRadius}"
-                        Width="{Binding Width}" Height="{Binding Height}"/>
-                <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
-                        BorderThickness="{Binding BorderThickness}" Padding="{Binding Padding}"
+                <Border Background="{Binding Background}" 
+                        BorderThickness="1" 
+                        Effect="{Binding Effect}" 
+                        CornerRadius="{Binding CornerRadius}"
+                        Width="{Binding Width}" 
+                        Height="{Binding Height}"/>
+                <Border Background="{Binding Background}" 
+                        CornerRadius="{Binding CornerRadius}"
+                        BorderThickness="{Binding BorderThickness}" 
+                        Padding="{Binding Padding}"
                         BorderBrush="{Binding BorderBrush}"
-                        Width="{Binding Width}" Height="{Binding Height}">
+                        Width="{Binding Width}" 
+                        Height="{Binding Height}">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" HorizontalAlignment="Center" FontWeight="Bold">
+                        <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" 
+                                   HorizontalAlignment="Center" 
+                                   FontWeight="Bold">
                             <TextBlock.Visibility>
                                 <MultiBinding Converter="{StaticResource SharedVisibilityConverter}">
                                     <Binding Path="Data"></Binding>
@@ -63,7 +76,7 @@
                         </TextBlock>
                         <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type wpf:DataPointViewModel}">
+                                <DataTemplate DataType="{x:Type liveCharts:ChartPoint}">
                                     <Grid Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -72,21 +85,28 @@
                                             <ColumnDefinition Width="Auto" SharedSizeGroup="Participation"/>
                                         </Grid.ColumnDefinitions>
                                         <Path Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
-                                             Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
-                                             StrokeThickness="{Binding Series.StrokeThickness}" 
-                                             Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
-                                             Stretch="Fill" Data="{Binding Series.PointGeometry}"
-                                             Visibility="{Binding ShowSeries, ElementName=Control, Converter={StaticResource Bvc}}"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding Series.Title}" VerticalAlignment="Center" Margin="5 0 5 0"
+                                              Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+                                              Stretch="Fill" 
+                                              StrokeThickness="{Binding SeriesView.(wpf:Series.StrokeThickness)}" 
+                                              Stroke="{Binding SeriesView.(wpf:Series.Stroke)}" 
+                                              Fill="{Binding SeriesView, Converter={StaticResource SeriesFillConverter}}" 
+                                              Data="{Binding SeriesView.(wpf:Series.PointGeometry), Converter={StaticResource GeometryOrDefaultConverter}}"
+                                              Visibility="{Binding ShowSeries, ElementName=Control, Converter={StaticResource Bvc}}"/>
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="{Binding SeriesView.(wpf:Series.Title)}" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="5 0 5 0"
                                                    Visibility="{Binding ShowSeries, ElementName=Control, Converter={StaticResource Bvc}}"/>
-
-                                        <TextBlock Grid.Column="2" Text="{Binding ChartPoint, Converter={StaticResource ChartPointLabelConverter}}" VerticalAlignment="Center"/>
-
-                                        <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
-                                               VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
-                                                                                                    AncestorType={x:Type StackPanel}}, 
-                                                                    Converter={StaticResource ParticipationVisibilityConverter}}"/>
+                                        <TextBlock Grid.Column="2" 
+                                                   Text="{Binding Converter={StaticResource ChartPointToStringConverter}}" 
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding StringFormat={}{0:P}}" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="5 0 0 0" 
+                                                   Visibility="{Binding DataContext.Data, 
+                                            RelativeSource={RelativeSource  FindAncestor,
+                                            AncestorType={x:Type StackPanel}}, 
+                                            Converter={StaticResource ParticipationVisibilityConverter}}"/>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -97,3 +117,4 @@
         </ControlTemplate>
     </UserControl.Template>
 </UserControl>
+

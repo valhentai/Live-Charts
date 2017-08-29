@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wpf.CartesianChart.StepLine
+namespace Samples.Wpf.CartesianChart.StepLine
 {
     /// <summary>
     /// Interaction logic for StepLineExample.xaml

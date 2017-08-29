@@ -2,7 +2,7 @@
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.CustomTooltipAndLegend
+namespace Samples.Wpf.CartesianChart.CustomTooltipAndLegend
 {
     public partial class CustomersTooltip : IChartTooltip
     {

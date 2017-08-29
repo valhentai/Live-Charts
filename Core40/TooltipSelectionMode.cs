@@ -28,7 +28,7 @@ namespace LiveCharts
     public enum TooltipSelectionMode
     {
         /// <summary>
-        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode
+        /// LiveCharts will decide the selection mode based on the series (that fired the tooltip) preferred section mode.
         /// </summary>
         Auto,
         /// <summary>

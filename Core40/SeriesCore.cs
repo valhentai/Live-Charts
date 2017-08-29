@@ -98,10 +98,7 @@ namespace LiveCharts
         /// <value>
         /// The current x axis.
         /// </value>
-        public AxisCore CurrentXAxis
-        {
-            get { return Chart.View.FirstDimension[View.ScalesXAt].Core; }
-        }
+        public AxisCore CurrentXAxis => Chart.View.FirstDimension[View.ScalesXAt].Core;
 
         /// <summary>
         /// Gets the current y axis.
@@ -109,10 +106,7 @@ namespace LiveCharts
         /// <value>
         /// The current y axis.
         /// </value>
-        public AxisCore CurrentYAxis
-        {
-            get { return Chart.View.SecondDimension[View.ScalesYAt].Core; }
-        }
+        public AxisCore CurrentYAxis => Chart.View.SecondDimension[View.ScalesYAt].Core;
 
         /// <summary>
         /// Updates this instance.
@@ -133,17 +127,11 @@ namespace LiveCharts
         /// </summary>
         public void NotifyChartValuesInstanceChanged()
         {
-            if (_lastKnownValues != null)
-            {
-                _lastKnownValues.GetPoints(View)
-                    .ForEach(x =>
-                    {
-                        if (x.View != null)
-                        {
-                            x.View.Erase(Chart);
-                        }
-                    });
-            }
+            _lastKnownValues?.GetPoints(View)
+                .ForEach(x =>
+                {
+                    x.View?.Erase(Chart);
+                });
             Chart.Updater.EnqueueUpdate();
             _lastKnownValues = View.Values;
         }

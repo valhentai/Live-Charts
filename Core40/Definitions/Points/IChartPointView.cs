@@ -31,14 +31,21 @@ namespace LiveCharts.Definitions.Points
     public interface IChartPointView
     {
         /// <summary>
+        /// Gets the ChartPoint that owns the view.
+        /// </summary>
+        /// <value>
+        /// The point.
+        /// </value>
+        ChartPoint ChartPoint { get; }
+
+        /// <summary>
         /// Draws the point.
         /// </summary>
         /// <param name="previousDrawn">The previous drawn.</param>
-        /// <param name="current">The current.</param>
         /// <param name="index">The index.</param>
         /// <param name="series"></param>
         /// <param name="chart">The chart.</param>
-        void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart);
+        void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart);
 
         /// <summary>
         /// Erases the point from the view.
@@ -49,14 +56,12 @@ namespace LiveCharts.Definitions.Points
         /// <summary>
         /// Called when the point is hovered.
         /// </summary>
-        /// <param name="point">The point.</param>
-        void OnHover(ChartPoint point);
+        void OnHover();
 
         /// <summary>
         /// Called when the point hover leaves.
         /// </summary>
-        /// <param name="point">The point.</param>
-        void OnHoverLeave(ChartPoint point);
+        void OnHoverLeave();
 
         /// <summary>
         /// Called when the point is selected.

@@ -4,7 +4,7 @@ using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.PointShapeLine
+namespace Samples.Wpf.CartesianChart.PointShapeLine
 {
     public partial class PointShapeLineExample : UserControl
     {

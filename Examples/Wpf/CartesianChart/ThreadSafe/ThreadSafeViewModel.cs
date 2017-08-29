@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LiveCharts;
 
-namespace Wpf.CartesianChart.ThreadSafe
+namespace Samples.Wpf.CartesianChart.ThreadSafe
 {
     public class ThreadSafeViewModel
     {

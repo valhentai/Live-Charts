@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Chart_to_Image
+namespace Samples.Wpf.CartesianChart.Chart_to_Image
 {
     /// <summary>
     /// Interaction logic for ChartToImageSample.xaml

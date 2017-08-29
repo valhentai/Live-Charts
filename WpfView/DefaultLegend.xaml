@@ -29,12 +29,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LiveCharts.Wpf"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf"
+             xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance local:DefaultLegend}"
+             d:DataContext="{d:DesignInstance wpf:DefaultLegend}"
              Name="This">
     <UserControl.Resources>
-            <local:OrientationConverter x:Key="OrientationConverter"></local:OrientationConverter>
+        <converters:SeriesFillConverter x:Key="SeriesFillConverter"></converters:SeriesFillConverter>
+        <converters:GeometryOrDefautConverter x:Key="GeometryOrDefautConverter"></converters:GeometryOrDefautConverter>
     </UserControl.Resources>
     <UserControl.Template>
         <ControlTemplate>
@@ -43,28 +45,25 @@
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel MaxWidth="{Binding MaxWidth, ElementName=This}"
-                                       MaxHeight="{Binding MaxHeight, ElementName=This}">
-                                <WrapPanel.Orientation>
-                                    <MultiBinding Converter="{StaticResource OrientationConverter}">
-                                        <Binding Path="Orientation"/>
-                                        <Binding Path="InternalOrientation"/>
-                                    </MultiBinding>
-                                </WrapPanel.Orientation>
+                                       MaxHeight="{Binding MaxHeight, ElementName=This}"
+                                       Orientation="{Binding ActualOrientation, ElementName=This}">
                             </WrapPanel>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:SeriesViewModel}">
+                        <DataTemplate>
                             <Grid Margin="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Path Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
-                                         Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
-                                         StrokeThickness="{Binding StrokeThickness}" 
-                                         Stroke="{Binding Stroke}" Fill="{Binding Fill}"
-                                         Stretch="Fill" Data="{Binding PointGeometry}"/>
+                                      Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+                                      StrokeThickness="{Binding (wpf:Series.StrokeThickness)}" 
+                                      Stroke="{Binding (wpf:Series.Stroke)}" 
+                                      Fill="{Binding Converter={StaticResource SeriesFillConverter}}"
+                                      Data="{Binding Path=(wpf:Series.PointGeometry), Converter={StaticResource GeometryOrDefautConverter}}"
+                                      Stretch="Fill" />
                                 <TextBlock Grid.Column="1" Margin="4 0" Text="{Binding Title}" VerticalAlignment="Center" />
                             </Grid>
                         </DataTemplate>

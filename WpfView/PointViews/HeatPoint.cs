@@ -29,7 +29,7 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts.Wpf.PointViews
 {
     internal class HeatPoint : PointView, IHeatPointView
     {
@@ -38,24 +38,24 @@ namespace LiveCharts.Wpf.Points
         public double Width { get; set; }
         public double Height { get; set; }
 
-        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
-            Canvas.SetTop(Rectangle, current.ChartLocation.Y);
-            Canvas.SetLeft(Rectangle, current.ChartLocation.X);
+            Canvas.SetTop(Rectangle, ChartPoint.ChartLocation.Y);
+            Canvas.SetLeft(Rectangle, ChartPoint.ChartLocation.X);
 
             Rectangle.Width = Width;
             Rectangle.Height = Height;
 
-            if (IsNew)
+            //if (IsNew)
             {
                 Rectangle.Fill = new SolidColorBrush(Colors.Transparent);
             }
 
-            if (DataLabel != null)
+            if (Label != null)
             {
-                DataLabel.UpdateLayout();
-                Canvas.SetTop(DataLabel, current.ChartLocation.Y + (Height/2) - DataLabel.ActualHeight*.5);
-                Canvas.SetLeft(DataLabel, current.ChartLocation.X + (Width/2) - DataLabel.ActualWidth*.5);
+                Label.UpdateLayout();
+                Canvas.SetTop(Label, ChartPoint.ChartLocation.Y + (Height/2) - Label.ActualHeight*.5);
+                Canvas.SetLeft(Label, ChartPoint.ChartLocation.X + (Width/2) - Label.ActualWidth*.5);
             }
 
             var targetColor = new Color
@@ -81,17 +81,17 @@ namespace LiveCharts.Wpf.Points
         public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(Rectangle);
-            chart.View.RemoveFromDrawMargin(DataLabel);
+            chart.View.RemoveFromDrawMargin(Label);
         }
 
-        public override void OnHover(ChartPoint point)
+        public override void OnHover()
         {
             Rectangle.StrokeThickness++;
         }
 
-        public override void OnHoverLeave(ChartPoint point)
+        public override void OnHoverLeave()
         {
-            Rectangle.StrokeThickness = ((Series) point.SeriesView).StrokeThickness;
+            Rectangle.StrokeThickness = ((Series) ChartPoint.SeriesView).StrokeThickness;
         }
     }
 }

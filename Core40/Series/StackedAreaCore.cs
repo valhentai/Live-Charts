@@ -164,7 +164,7 @@ namespace LiveCharts.Series
                             Point3 = new CorePoint(p2.X, p2.Y)
                         };
 
-                    chartPoint.View.Draw(previousDrawn, chartPoint, segmentPosition, View, Chart);
+                    chartPoint.View.Draw(previousDrawn, segmentPosition, View, Chart);
                     segmentPosition++;
 
                     previousDrawn = chartPoint;

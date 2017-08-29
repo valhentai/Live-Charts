@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.IO;
 
-namespace Wpf.CartesianChart.Linq
+namespace Samples.Wpf.CartesianChart.Linq
 {
     public static class DataBase
     {

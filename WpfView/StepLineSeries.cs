@@ -31,6 +31,7 @@ using LiveCharts.Definitions.Series;
 using LiveCharts.Series;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
@@ -148,7 +149,6 @@ namespace LiveCharts.Wpf
             {
                 pbv = new StepLinePointView
                 {
-                    IsNew = true,
                     Line2 = new Line(),
                     Line1 = new Line()
                 };
@@ -157,13 +157,11 @@ namespace LiveCharts.Wpf
                 Core.Chart.View.AddToDrawMargin(pbv.Line1);
                 Core.Chart.View.AddToDrawMargin(pbv.Shape);
             }
-            else
-            {
-                pbv.IsNew = false;
+            else { 
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Label);
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Line2);
                 point.SeriesView.Core.Chart.View
@@ -228,17 +226,17 @@ namespace LiveCharts.Wpf
 
             if (DataLabels)
             {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                pbv.Label = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Point = point
-                }, pbv.DataLabel);
+                }, pbv.Label);
             }
 
-            if (!DataLabels && pbv.DataLabel != null)
+            if (!DataLabels && pbv.Label != null)
             {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.DataLabel);
-                pbv.DataLabel = null;
+                Core.Chart.View.RemoveFromDrawMargin(pbv.Label);
+                pbv.Label = null;
             }
 
             return pbv;
@@ -261,7 +259,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        double IAreaPointView.PointMaxRadius { get { return PointGeometrySize / 2; } }
+        double IAreaPointView.PointMaxRadius => PointGeometrySize / 2;
 
         #region Private Methods
 

@@ -86,7 +86,7 @@ namespace LiveCharts
         public CorePoint Center { get; set; }
 
         /// <inheritdoc cref="ResponsiveArea.IsInside"/>
-        public override bool IsInside(CorePoint point)
+        public override bool IsInside(params double[] values)
         {
             throw new System.NotImplementedException();
         }

@@ -7,7 +7,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.FullyResponsive
+namespace Samples.Wpf.CartesianChart.FullyResponsive
 {
     public partial class FullyResponsiveExample : UserControl
     {

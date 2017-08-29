@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wpf.CartesianChart.Scatter_With_Pies
+namespace Samples.Wpf.CartesianChart.Scatter_With_Pies
 {
     /// <summary>
     /// Interaction logic for Scatter_With_Pies.xaml

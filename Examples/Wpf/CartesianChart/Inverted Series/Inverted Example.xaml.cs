@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using LiveCharts;
 
-namespace Wpf.CartesianChart.Inverted_Series
+namespace Samples.Wpf.CartesianChart.Inverted_Series
 {
     public partial class InvertedExample : UserControl
     {

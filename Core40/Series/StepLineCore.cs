@@ -70,7 +70,7 @@ namespace LiveCharts.Series
                     stepView.DeltaY = current.ChartLocation.Y - previous.ChartLocation.Y;
                 }
 
-                current.View.Draw(previous, current, i, View, Chart);
+                current.View.Draw(previous, i, View, Chart);
 
                 i++;
                 previous = current;

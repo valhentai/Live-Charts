@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Basic_Stacked_Bar
+namespace Samples.Wpf.CartesianChart.Basic_Stacked_Bar
 {
     /// <summary>
     /// Interaction logic for BasicStackedRowPercentageExample.xaml

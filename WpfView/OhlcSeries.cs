@@ -30,8 +30,8 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Helpers;
 using LiveCharts.Series;
-using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
@@ -137,7 +137,6 @@ namespace LiveCharts.Wpf
             {
                 pbv = new OhlcPointView
                 {
-                    IsNew = true,
                     HighToLowLine = new Line(),
                     OpenLine = new Line(),
                     CloseLine = new Line()
@@ -149,7 +148,6 @@ namespace LiveCharts.Wpf
             }
             else
             {
-                pbv.IsNew = false;
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HighToLowLine);
                 point.SeriesView.Core.Chart.View
@@ -157,7 +155,7 @@ namespace LiveCharts.Wpf
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.CloseLine);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Label);
             }
 
             pbv.HighToLowLine.StrokeThickness = StrokeThickness;
@@ -194,17 +192,17 @@ namespace LiveCharts.Wpf
 
             if (DataLabels)
             {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                pbv.Label = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Point = point
-                }, pbv.DataLabel);
+                }, pbv.Label);
             }
 
-            if (!DataLabels && pbv.DataLabel != null)
+            if (!DataLabels && pbv.Label != null)
             {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.DataLabel);
-                pbv.DataLabel = null;
+                Core.Chart.View.RemoveFromDrawMargin(pbv.Label);
+                pbv.Label = null;
             }
 
             if (point.Open < point.Close)

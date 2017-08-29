@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Configurations;
 
-namespace Wpf.CartesianChart.ConstantChanges
+namespace Samples.Wpf.CartesianChart.ConstantChanges
 {
     public partial class ConstantChangesChart : UserControl, INotifyPropertyChanged
     {

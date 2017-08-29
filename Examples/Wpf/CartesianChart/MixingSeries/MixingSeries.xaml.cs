@@ -9,7 +9,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.MixingSeries
+namespace Samples.Wpf.CartesianChart.MixingSeries
 {
     /// <summary>
     /// Interaction logic for MixingSeries.xaml

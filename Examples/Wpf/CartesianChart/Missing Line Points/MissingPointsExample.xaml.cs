@@ -2,7 +2,7 @@
 using LiveCharts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Missing_Line_Points
+namespace Samples.Wpf.CartesianChart.Missing_Line_Points
 {
     public partial class MissingPointsExample : UserControl
     {

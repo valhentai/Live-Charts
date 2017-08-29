@@ -57,7 +57,7 @@ namespace LiveCharts.Configurations
         {
             point.X = _firstDimension(value, key);
             point.Y = _secondDimension(value, key);
-            point.Selected = _selected(value, key);
+            point.IsSelected = _selected(value, key);
 
             //ToDo: Remove the next 2 lines, they are obsolete, and were replaced with the Selected state.
             if (_stroke != null) point.Stroke = _stroke(value, key);

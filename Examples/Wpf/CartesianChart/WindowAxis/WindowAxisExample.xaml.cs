@@ -18,7 +18,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.WindowAxis
+namespace Samples.Wpf.CartesianChart.WindowAxis
 {
 
     public class OtherWindow : AxisWindow

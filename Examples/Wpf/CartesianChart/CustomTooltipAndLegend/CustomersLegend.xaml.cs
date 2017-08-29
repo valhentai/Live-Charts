@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.CustomTooltipAndLegend
+namespace Samples.Wpf.CartesianChart.CustomTooltipAndLegend
 {
     public partial class CustomersLegend : UserControl, IChartLegend
     {

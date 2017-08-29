@@ -5,7 +5,7 @@ using LiveCharts;
 using LiveCharts.Events;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Events
+namespace Samples.Wpf.CartesianChart.Events
 {
     public partial class EventsExample : UserControl
     {

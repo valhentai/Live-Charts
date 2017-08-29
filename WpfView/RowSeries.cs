@@ -30,8 +30,8 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Series;
-using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
@@ -147,7 +147,7 @@ namespace LiveCharts.Wpf
             {
                 pbv = new RowPointView
                 {
-                    IsNew = true,
+                    //IsNew = true,
                     Rectangle = new Rectangle(),
                     Data = new CoreRectangle()
                 };
@@ -156,11 +156,11 @@ namespace LiveCharts.Wpf
             }
             else
             {
-                pbv.IsNew = false;
+                //pbv.IsNew = false;
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Label);
             }
 
             pbv.Rectangle.Fill = Fill;
@@ -187,17 +187,17 @@ namespace LiveCharts.Wpf
 
             if (DataLabels)
             {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                pbv.Label = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Point = point
-                }, pbv.DataLabel);
+                }, pbv.Label);
             }
 
-            if (!DataLabels && pbv.DataLabel != null)
+            if (!DataLabels && pbv.Label != null)
             {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.DataLabel);
-                pbv.DataLabel = null;
+                Core.Chart.View.RemoveFromDrawMargin(pbv.Label);
+                pbv.Label = null;
             }
 
             if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush)point.Stroke;

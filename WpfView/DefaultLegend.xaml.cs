@@ -20,23 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
+using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.Wpf
 {
     /// <summary>
     /// The default legend control, by default a new instance of this control is created for every chart that requires a legend.
     /// </summary>
-    public partial class DefaultLegend : IChartLegend
+    public partial class DefaultLegend : IChartLegend, INotifyPropertyChanged
     {
-        private List<SeriesViewModel> _series;
-
+        private ISeriesView[] _series;
+         
         /// <summary>
         /// Initializes a new instance of DefaultLegend class
         /// </summary>
@@ -55,7 +52,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Gets the series displayed in the legend.
         /// </summary>
-        public List<SeriesViewModel> Series
+        public ISeriesView[] Series
         {
             get { return _series; }
             set
@@ -75,27 +72,26 @@ namespace LiveCharts.Wpf
         /// </summary>
         public Orientation? Orientation
         {
-            get { return (Orientation) GetValue(OrientationProperty); }
+            get { return (Orientation?) GetValue(OrientationProperty); }
             set { SetValue(OrientationProperty, value); }
         }
 
         /// <summary>
-        /// The internal orientation property
+        /// The actual orientation property
         /// </summary>
-        public static readonly DependencyProperty InternalOrientationProperty = DependencyProperty.Register(
-            "InternalOrientation", typeof (Orientation), typeof (DefaultLegend), 
-            new PropertyMetadata(default(Orientation)));
+        public static readonly DependencyProperty ActualOrientationProperty = DependencyProperty.Register(
+            "ActualOrientation", typeof(Orientation), typeof(DefaultLegend), new PropertyMetadata(default(Orientation)));
 
         /// <summary>
-        /// Gets or sets the internal orientation.
+        /// Gets the actual orientation.
         /// </summary>
         /// <value>
-        /// The internal orientation.
+        /// The actual orientation.
         /// </value>
-        public Orientation InternalOrientation
+        public Orientation ActualOrientation
         {
-            get { return (Orientation) GetValue(InternalOrientationProperty); }
-            set { SetValue(InternalOrientationProperty, value); }
+            get { return (Orientation) GetValue(ActualOrientationProperty); }
+            internal set { SetValue(ActualOrientationProperty, value); }
         }
 
         /// <summary>
@@ -113,52 +109,12 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Called when [property changed].
+        /// Notifies the UI that a property changed.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <seealso cref="System.Windows.Data.IMultiValueConverter" />
-    public class OrientationConverter : IMultiValueConverter
-    {
-        /// <summary>
-        /// Converts source values to a value for the binding target. The data binding engine calls this method when it propagates the values from source bindings to the binding target.
-        /// </summary>
-        /// <param name="values">The array of values that the source bindings in the <see cref="T:System.Windows.Data.MultiBinding" /> produces. The value <see cref="F:System.Windows.DependencyProperty.UnsetValue" /> indicates that the source binding has no value to provide for conversion.</param>
-        /// <param name="targetType">The type of the binding target property.</param>
-        /// <param name="parameter">The converter parameter to use.</param>
-        /// <param name="culture">The culture to use in the converter.</param>
-        /// <returns>
-        /// A converted value.If the method returns null, the valid null value is used.A return value of <see cref="T:System.Windows.DependencyProperty" />.<see cref="F:System.Windows.DependencyProperty.UnsetValue" /> indicates that the converter did not produce a value, and that the binding will use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> if it is available, or else will use the default value.A return value of <see cref="T:System.Windows.Data.Binding" />.<see cref="F:System.Windows.Data.Binding.DoNothing" /> indicates that the binding does not transfer the value or use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> or the default value.
-        /// </returns>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (values[0] == DependencyProperty.UnsetValue) return null;
-
-            return (Orientation?) values[0] ?? (Orientation) values[1];
-        }
-
-        /// <summary>
-        /// Converts a binding target value to the source binding values.
-        /// </summary>
-        /// <param name="value">The value that the binding target produces.</param>
-        /// <param name="targetTypes">The array of types to convert to. The array length indicates the number and types of values that are suggested for the method to return.</param>
-        /// <param name="parameter">The converter parameter to use.</param>
-        /// <param name="culture">The culture to use in the converter.</param>
-        /// <returns>
-        /// An array of values that have been converted from the target value back to the source values.
-        /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

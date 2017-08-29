@@ -30,8 +30,8 @@ using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Series;
-using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
@@ -119,7 +119,6 @@ namespace LiveCharts.Wpf
             {
                 pbv = new ScatterPointView
                 {
-                    IsNew = true,
                     Shape = new Path
                     {
                         Stretch = Stretch.Fill,
@@ -131,11 +130,10 @@ namespace LiveCharts.Wpf
             }
             else
             {
-                pbv.IsNew = false;
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Shape);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Label);
             }
 
             var p = (Path) pbv.Shape;
@@ -164,17 +162,17 @@ namespace LiveCharts.Wpf
 
             if (DataLabels)
             {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                pbv.Label = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Point = point
-                }, pbv.DataLabel);
+                }, pbv.Label);
             }
 
-            if (!DataLabels && pbv.DataLabel != null)
+            if (!DataLabels && pbv.Label != null)
             {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.DataLabel);
-                pbv.DataLabel = null;
+                Core.Chart.View.RemoveFromDrawMargin(pbv.Label);
+                pbv.Label = null;
             }
 
             if (point.Stroke != null) pbv.Shape.Stroke = (Brush)point.Stroke;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wpf.CartesianChart.ConstantChanges
+namespace Samples.Wpf.CartesianChart.ConstantChanges
 {
     public class MeasureModel
     {

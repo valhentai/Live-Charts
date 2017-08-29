@@ -6,7 +6,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.UIElements
+namespace Samples.Wpf.CartesianChart.UIElements
 {
     public class UiElementsViewModel
     {

@@ -28,7 +28,7 @@ using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts.Wpf.PointViews
 {
     internal class StepLinePointView : PointView, IStepPointView
     {
@@ -38,90 +38,90 @@ namespace LiveCharts.Wpf.Points
         public Line Line2 { get; set; }
         public Path Shape { get; set; }
 
-        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
-            var invertedMode = ((StepLineSeries) current.SeriesView).InvertedMode;
+            var invertedMode = ((StepLineSeries) ChartPoint.SeriesView).InvertedMode;
 
-            if (IsNew)
+            //if (IsNew)
             {
                 if (invertedMode)
                 {
-                    Line1.X1 = current.ChartLocation.X;
-                    Line1.X2 = current.ChartLocation.X - DeltaX;
+                    Line1.X1 = ChartPoint.ChartLocation.X;
+                    Line1.X2 = ChartPoint.ChartLocation.X - DeltaX;
                     Line1.Y1 = chart.View.DrawMarginHeight;
                     Line1.Y2 = chart.View.DrawMarginHeight;
 
-                    Line2.X1 = current.ChartLocation.X - DeltaX;
-                    Line2.X2 = current.ChartLocation.X - DeltaX;
+                    Line2.X1 = ChartPoint.ChartLocation.X - DeltaX;
+                    Line2.X2 = ChartPoint.ChartLocation.X - DeltaX;
                     Line2.Y1 = chart.View.DrawMarginHeight;
                     Line2.Y2 = chart.View.DrawMarginHeight;
                 }
                 else
                 {
-                    Line1.X1 = current.ChartLocation.X;
-                    Line1.X2 = current.ChartLocation.X;
+                    Line1.X1 = ChartPoint.ChartLocation.X;
+                    Line1.X2 = ChartPoint.ChartLocation.X;
                     Line1.Y1 = chart.View.DrawMarginHeight;
                     Line1.Y2 = chart.View.DrawMarginHeight;
 
-                    Line2.X1 = current.ChartLocation.X - DeltaX;
-                    Line2.X2 = current.ChartLocation.X;
+                    Line2.X1 = ChartPoint.ChartLocation.X - DeltaX;
+                    Line2.X2 = ChartPoint.ChartLocation.X;
                     Line2.Y1 = chart.View.DrawMarginHeight;
                     Line2.Y2 = chart.View.DrawMarginHeight;
                 }
 
                 if (Shape != null)
                 {
-                    Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Width/2);
+                    Canvas.SetLeft(Shape, ChartPoint.ChartLocation.X - Shape.Width/2);
                     Canvas.SetTop(Shape, chart.View.DrawMarginHeight);
                 }
             }
 
-            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            if (Label != null && double.IsNaN(Canvas.GetLeft(Label)))
             {
-                Canvas.SetTop(DataLabel, chart.View.DrawMarginHeight);
-                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
+                Canvas.SetTop(Label, chart.View.DrawMarginHeight);
+                Canvas.SetLeft(Label, ChartPoint.ChartLocation.X);
             }
 
             if (chart.View.DisableAnimations)
             {
                 if (invertedMode)
                 {
-                    Line1.X1 = current.ChartLocation.X;
-                    Line1.X2 = current.ChartLocation.X - DeltaX;
-                    Line1.Y1 = current.ChartLocation.Y;
-                    Line1.Y2 = current.ChartLocation.Y;
+                    Line1.X1 = ChartPoint.ChartLocation.X;
+                    Line1.X2 = ChartPoint.ChartLocation.X - DeltaX;
+                    Line1.Y1 = ChartPoint.ChartLocation.Y;
+                    Line1.Y2 = ChartPoint.ChartLocation.Y;
 
-                    Line2.X1 = current.ChartLocation.X - DeltaX;
-                    Line2.X2 = current.ChartLocation.X - DeltaX;
-                    Line2.Y1 = current.ChartLocation.Y;
-                    Line2.Y2 = current.ChartLocation.Y - DeltaY;
+                    Line2.X1 = ChartPoint.ChartLocation.X - DeltaX;
+                    Line2.X2 = ChartPoint.ChartLocation.X - DeltaX;
+                    Line2.Y1 = ChartPoint.ChartLocation.Y;
+                    Line2.Y2 = ChartPoint.ChartLocation.Y - DeltaY;
                 }
                 else
                 {
-                    Line1.X1 = current.ChartLocation.X;
-                    Line1.X2 = current.ChartLocation.X;
-                    Line1.Y1 = current.ChartLocation.Y;
-                    Line1.Y2 = current.ChartLocation.Y - DeltaY;
+                    Line1.X1 = ChartPoint.ChartLocation.X;
+                    Line1.X2 = ChartPoint.ChartLocation.X;
+                    Line1.Y1 = ChartPoint.ChartLocation.Y;
+                    Line1.Y2 = ChartPoint.ChartLocation.Y - DeltaY;
 
-                    Line2.X1 = current.ChartLocation.X - DeltaX;
-                    Line2.X2 = current.ChartLocation.X;
-                    Line2.Y1 = current.ChartLocation.Y - DeltaY;
-                    Line2.Y2 = current.ChartLocation.Y - DeltaY;
+                    Line2.X1 = ChartPoint.ChartLocation.X - DeltaX;
+                    Line2.X2 = ChartPoint.ChartLocation.X;
+                    Line2.Y1 = ChartPoint.ChartLocation.Y - DeltaY;
+                    Line2.Y2 = ChartPoint.ChartLocation.Y - DeltaY;
                 }
 
                 if (Shape != null)
                 {
-                    Canvas.SetLeft(Shape, current.ChartLocation.X - Shape.Width/2);
-                    Canvas.SetTop(Shape, current.ChartLocation.Y - Shape.Height/2);
+                    Canvas.SetLeft(Shape, ChartPoint.ChartLocation.X - Shape.Width/2);
+                    Canvas.SetTop(Shape, ChartPoint.ChartLocation.Y - Shape.Height/2);
                 }
 
-                if (DataLabel != null)
+                if (Label != null)
                 {
-                    DataLabel.UpdateLayout();
-                    var xl = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
-                    var yl = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
-                    Canvas.SetLeft(DataLabel, xl);
-                    Canvas.SetTop(DataLabel, yl);
+                    Label.UpdateLayout();
+                    var xl = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualWidth * .5, chart);
+                    var yl = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualHeight * .5, chart);
+                    Canvas.SetLeft(Label, xl);
+                    Canvas.SetTop(Label, yl);
                 }
 
                 return;
@@ -132,59 +132,59 @@ namespace LiveCharts.Wpf.Points
             if (invertedMode)
             {
                 Line1.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(current.ChartLocation.X, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X, animSpeed));
                 Line1.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X - DeltaX, animSpeed));
                 Line1.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y, animSpeed));
                 Line1.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y, animSpeed));
 
                 Line2.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X - DeltaX, animSpeed));
                 Line2.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X - DeltaX, animSpeed));
                 Line2.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y, animSpeed));
                 Line2.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y - DeltaY, animSpeed));
             }
             else
             {
                 Line1.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(current.ChartLocation.X, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X, animSpeed));
                 Line1.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X, animSpeed));
                 Line1.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y, animSpeed));
                 Line1.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y - DeltaY, animSpeed));
 
                 Line2.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X - DeltaX, animSpeed));
                 Line2.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X, animSpeed));
                 Line2.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y - DeltaY, animSpeed));
                 Line2.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y - DeltaY, animSpeed));
             }
 
             if (Shape != null)
             {
                 Shape.BeginAnimation(Canvas.LeftProperty,
-                    new DoubleAnimation(current.ChartLocation.X - Shape.Width/2, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.X - Shape.Width/2, animSpeed));
                 Shape.BeginAnimation(Canvas.TopProperty,
-                    new DoubleAnimation(current.ChartLocation.Y - Shape.Height/2, animSpeed));
+                    new DoubleAnimation(ChartPoint.ChartLocation.Y - Shape.Height/2, animSpeed));
             }
 
-            if (DataLabel != null)
+            if (Label != null)
             {
-                DataLabel.UpdateLayout();
-                var xl = CorrectXLabel(current.ChartLocation.X - DataLabel.ActualWidth * .5, chart);
-                var yl = CorrectYLabel(current.ChartLocation.Y - DataLabel.ActualHeight * .5, chart);
-                Canvas.SetLeft(DataLabel, xl);
-                Canvas.SetTop(DataLabel, yl);
+                Label.UpdateLayout();
+                var xl = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualWidth * .5, chart);
+                var yl = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualHeight * .5, chart);
+                Canvas.SetLeft(Label, xl);
+                Canvas.SetTop(Label, yl);
             }
 
         }
@@ -192,34 +192,34 @@ namespace LiveCharts.Wpf.Points
         public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(Shape);
-            chart.View.RemoveFromDrawMargin(DataLabel);
+            chart.View.RemoveFromDrawMargin(Label);
             chart.View.RemoveFromDrawMargin(Line1);
             chart.View.RemoveFromDrawMargin(Line2);
         }
 
-        public override void OnHover(ChartPoint point)
+        public override void OnHover()
         {
-            var lineSeries = (StepLineSeries) point.SeriesView;
+            var lineSeries = (StepLineSeries) ChartPoint.SeriesView;
             if (Shape != null) Shape.Fill = Shape.Stroke;
             lineSeries.StrokeThickness = lineSeries.StrokeThickness + 1;
         }
 
-        public override void OnHoverLeave(ChartPoint point)
+        public override void OnHoverLeave()
         {
-            var lineSeries = (StepLineSeries) point.SeriesView;
+            var lineSeries = (StepLineSeries) ChartPoint.SeriesView;
             if (Shape != null)
-                Shape.Fill = point.Fill == null
+                Shape.Fill = ChartPoint.Fill == null
                     ? lineSeries.PointForeground
-                    : (Brush) point.Fill;
+                    : (Brush) ChartPoint.Fill;
             lineSeries.StrokeThickness = lineSeries.StrokeThickness - 1;
         }
 
         protected double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
-            if (desiredPosition + DataLabel.ActualWidth * .5 < -0.1) return -DataLabel.ActualWidth;
+            if (desiredPosition + Label.ActualWidth * .5 < -0.1) return -Label.ActualWidth;
 
-            if (desiredPosition + DataLabel.ActualWidth > chart.View.DrawMarginWidth)
-                desiredPosition -= desiredPosition + DataLabel.ActualWidth - chart.View.DrawMarginWidth + 2;
+            if (desiredPosition + Label.ActualWidth > chart.View.DrawMarginWidth)
+                desiredPosition -= desiredPosition + Label.ActualWidth - chart.View.DrawMarginWidth + 2;
 
             if (desiredPosition < 0) desiredPosition = 0;
 
@@ -228,10 +228,10 @@ namespace LiveCharts.Wpf.Points
 
         protected double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
-            desiredPosition -= (Shape == null ? 0 : Shape.ActualHeight * .5) + DataLabel.ActualHeight * .5 + 2;
+            desiredPosition -= (Shape?.ActualHeight * .5 ?? 0) + Label.ActualHeight * .5 + 2;
 
-            if (desiredPosition + DataLabel.ActualHeight > chart.View.DrawMarginHeight)
-                desiredPosition -= desiredPosition + DataLabel.ActualHeight - chart.View.DrawMarginHeight + 2;
+            if (desiredPosition + Label.ActualHeight > chart.View.DrawMarginHeight)
+                desiredPosition -= desiredPosition + Label.ActualHeight - chart.View.DrawMarginHeight + 2;
 
             if (desiredPosition < 0) desiredPosition = 0;
 

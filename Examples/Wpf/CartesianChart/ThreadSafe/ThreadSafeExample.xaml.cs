@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Wpf.CartesianChart.ThreadSafe
+namespace Samples.Wpf.CartesianChart.ThreadSafe
 {
     /// <summary>
     /// Interaction logic for TreadSafeExample.xaml

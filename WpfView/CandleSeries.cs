@@ -30,10 +30,9 @@ using System.Windows.Shapes;
 using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Helpers;
 using LiveCharts.Series;
-using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
@@ -156,7 +155,6 @@ namespace LiveCharts.Wpf
             {
                 pbv = new CandlePointView
                 {
-                    IsNew = true,
                     HighToLowLine = new Line(),
                     OpenToCloseRectangle = new Rectangle()
                 };
@@ -166,13 +164,12 @@ namespace LiveCharts.Wpf
             }
             else
             {
-                pbv.IsNew = false;
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.HighToLowLine);
                 point.SeriesView.Core.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.OpenToCloseRectangle);
                 point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.DataLabel);
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Label);
             }
 
             var i = Panel.GetZIndex(this);
@@ -206,17 +203,17 @@ namespace LiveCharts.Wpf
 
             if (DataLabels)
             {
-                pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
+                pbv.Label = UpdateLabelContent(new DataLabelViewModel
                 {
                     FormattedText = label,
                     Point = point
-                }, pbv.DataLabel);
+                }, pbv.Label);
             }
 
-            if (!DataLabels && pbv.DataLabel != null)
+            if (!DataLabels && pbv.Label != null)
             {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.DataLabel);
-                pbv.DataLabel = null;
+                Core.Chart.View.RemoveFromDrawMargin(pbv.Label);
+                pbv.Label = null;
             }
 
             return pbv;

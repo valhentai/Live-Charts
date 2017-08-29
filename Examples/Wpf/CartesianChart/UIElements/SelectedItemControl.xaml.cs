@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wpf.CartesianChart.UIElements
+namespace Samples.Wpf.CartesianChart.UIElements
 {
     /// <summary>
     /// Interaction logic for SelectedItemControl.xaml

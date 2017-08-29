@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wpf.CartesianChart.DataLabelTemplate
+namespace Samples.Wpf.CartesianChart.DataLabelTemplate
 {
     /// <summary>
     /// Interaction logic for DataLabelTemplateSample.xaml

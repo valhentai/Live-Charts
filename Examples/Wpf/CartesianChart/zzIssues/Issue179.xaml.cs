@@ -7,7 +7,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.zzIssues
+namespace Samples.Wpf.CartesianChart.zzIssues
 {
     /// <summary>
     /// Interaction logic for Welcome.xaml

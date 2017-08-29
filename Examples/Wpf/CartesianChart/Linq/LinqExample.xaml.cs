@@ -6,7 +6,7 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Helpers;
 
-namespace Wpf.CartesianChart.Linq
+namespace Samples.Wpf.CartesianChart.Linq
 {
 
     public partial class LinqExample : UserControl

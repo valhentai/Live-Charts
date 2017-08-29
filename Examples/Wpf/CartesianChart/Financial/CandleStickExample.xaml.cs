@@ -8,7 +8,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Financial
+namespace Samples.Wpf.CartesianChart.Financial
 {
     /// <summary>
     /// Interaction logic for CandleStickExample.xaml

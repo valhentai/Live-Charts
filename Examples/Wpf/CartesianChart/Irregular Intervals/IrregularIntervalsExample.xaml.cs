@@ -3,7 +3,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-namespace Wpf.CartesianChart.Irregular_Intervals
+namespace Samples.Wpf.CartesianChart.Irregular_Intervals
 {
 
     public partial class IrregularIntervalsExample : UserControl

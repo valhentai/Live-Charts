@@ -7,8 +7,8 @@
     <ProjectGuid>{537FF5D4-19FB-415E-B3D2-B83CB93E968B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wpf</RootNamespace>
-    <AssemblyName>Wpf</AssemblyName>
+    <RootNamespace>Samples.Wpf</RootNamespace>
+    <AssemblyName>Samples.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -317,10 +317,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="CartesianChart\SolidColorChart\SolidColorExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -502,9 +498,6 @@
     <Compile Include="CartesianChart\SectionsDragable\DragableSections.xaml.cs">
       <DependentUpon>DragableSections.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CartesianChart\SharedTooltip\SharedTooltipExample.xaml.cs">
-      <DependentUpon>SharedTooltipExample.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CartesianChart\SolidColorChart\SolidColorExample.xaml.cs">
       <DependentUpon>SolidColorExample.xaml</DependentUpon>
     </Compile>
@@ -664,13 +657,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core40\Core40.csproj">
+    <ProjectReference Include="..\..\Core40\LiveCharts.csproj">
       <Project>{f261c3d7-6194-4625-9516-044081b06028}</Project>
-      <Name>Core40</Name>
+      <Name>LiveCharts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\WpfView\WpfView.csproj">
+    <ProjectReference Include="..\..\WpfView\LiveCharts.Wpf.csproj">
       <Project>{4d253423-ae05-47f6-a59d-9162ec0bb1f2}</Project>
-      <Name>WpfView</Name>
+      <Name>LiveCharts.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -28,8 +28,9 @@ using System.Windows.Media.Animation;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
+using LiveCharts.Wpf.Points;
 
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts.Wpf.PointViews
 {
     internal class PiePointView : PointView, IPieSlicePointView
     {
@@ -40,9 +41,9 @@ namespace LiveCharts.Wpf.Points
         public PieSlice Slice { get; set; }
         public double OriginalPushOut { get; set; }
 
-        public override void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
-            if (IsNew)
+            //if (IsNew)
             {
                 Canvas.SetTop(Slice, chart.View.DrawMarginHeight/2);
                 Canvas.SetLeft(Slice, chart.View.DrawMarginWidth/2);
@@ -51,23 +52,23 @@ namespace LiveCharts.Wpf.Points
                 Slice.RotationAngle = 0;
             }
 
-            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            if (Label != null && double.IsNaN(Canvas.GetLeft(Label)))
             {
-                Canvas.SetTop(DataLabel, chart.View.DrawMarginHeight/2);
-                Canvas.SetLeft(DataLabel, chart.View.DrawMarginWidth/2);
+                Canvas.SetTop(Label, chart.View.DrawMarginHeight/2);
+                Canvas.SetLeft(Label, chart.View.DrawMarginWidth/2);
             }
 
             var lh = 0d;
-            if (DataLabel != null)
+            if (Label != null)
             {
-                DataLabel.UpdateLayout();
-                lh = DataLabel.ActualHeight;
+                Label.UpdateLayout();
+                lh = Label.ActualHeight;
             }
 
-            var hypo = ((PieSeries) current.SeriesView).LabelPosition == PieLabelPosition.InsideSlice
+            var hypo = ((PieSeries) ChartPoint.SeriesView).LabelPosition == PieLabelPosition.InsideSlice
                 ? (Radius + InnerRadius)*(Math.Abs(InnerRadius) < 0.01 ? .65 : .5)
                 : Radius+lh;
-            var gamma = current.Participation*360/2 + Rotation;
+            var gamma = ChartPoint.Participation*360/2 + Rotation;
             var cp = new Point(hypo * Math.Sin(gamma * (Math.PI / 180)), hypo * Math.Cos(gamma * (Math.PI / 180)));
 
             if (chart.View.DisableAnimations)
@@ -79,13 +80,13 @@ namespace LiveCharts.Wpf.Points
                 Canvas.SetTop(Slice, chart.View.DrawMarginHeight / 2);
                 Canvas.SetLeft(Slice, chart.View.DrawMarginWidth / 2);
 
-                if (DataLabel != null)
+                if (Label != null)
                 {
-                    var lx = cp.X + chart.View.DrawMarginWidth/2 - DataLabel.ActualWidth * .5;
-                    var ly = chart.View.DrawMarginHeight/2 - cp.Y - DataLabel.ActualHeight*.5;
+                    var lx = cp.X + chart.View.DrawMarginWidth/2 - Label.ActualWidth * .5;
+                    var ly = chart.View.DrawMarginHeight/2 - cp.Y - Label.ActualHeight*.5;
 
-                    Canvas.SetLeft(DataLabel, lx);
-                    Canvas.SetTop(DataLabel, ly);
+                    Canvas.SetLeft(Label, lx);
+                    Canvas.SetTop(Label, ly);
                 }
 
                 return;
@@ -93,15 +94,15 @@ namespace LiveCharts.Wpf.Points
 
             var animSpeed = chart.View.AnimationsSpeed;
 
-            if (DataLabel != null)
+            if (Label != null)
             {
-                DataLabel.UpdateLayout();
+                Label.UpdateLayout();
 
-                var lx = cp.X + chart.View.DrawMarginWidth/2 - DataLabel.ActualWidth * .5;
-                var ly = chart.View.DrawMarginHeight/2 - cp.Y - DataLabel.ActualHeight * .5;
+                var lx = cp.X + chart.View.DrawMarginWidth/2 - Label.ActualWidth * .5;
+                var ly = chart.View.DrawMarginHeight/2 - cp.Y - Label.ActualHeight * .5;
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(lx, animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(ly, animSpeed));
+                Label.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(lx, animSpeed));
+                Label.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(ly, animSpeed));
             }
 
             Slice.BeginAnimation(Canvas.LeftProperty, 
@@ -117,34 +118,34 @@ namespace LiveCharts.Wpf.Points
         public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(Slice);
-            chart.View.RemoveFromDrawMargin(DataLabel);
+            chart.View.RemoveFromDrawMargin(Label);
         }
 
-        public override void OnHover(ChartPoint point)
+        public override void OnHover()
         {
             var copy = Slice.Fill.Clone();
             copy.Opacity -= .15;
             Slice.Fill = copy;
 
-            var pieChart = (PieChart) point.SeriesView.Core.Chart.View;
+            var pieChart = (PieChart) ChartPoint.SeriesView.Core.Chart.View;
 
             Slice.BeginAnimation(PieSlice.PushOutProperty,
                 new DoubleAnimation(Slice.PushOut, OriginalPushOut + pieChart.HoverPushOut,
-                    point.SeriesView.Core.Chart.View.AnimationsSpeed));
+                    ChartPoint.SeriesView.Core.Chart.View.AnimationsSpeed));
         }
 
-        public override void OnHoverLeave(ChartPoint point)
+        public override void OnHoverLeave()
         {
-            if (point.Fill != null)
+            if (ChartPoint.Fill != null)
             {
-                Slice.Fill = (Brush)point.Fill;
+                Slice.Fill = (Brush)ChartPoint.Fill;
             }
             else
             {
-                Slice.Fill = ((Series) point.SeriesView).Fill;
+                Slice.Fill = ((Series) ChartPoint.SeriesView).Fill;
             }
             Slice.BeginAnimation(PieSlice.PushOutProperty,
-                new DoubleAnimation(OriginalPushOut, point.SeriesView.Core.Chart.View.AnimationsSpeed));
+                new DoubleAnimation(OriginalPushOut, ChartPoint.SeriesView.Core.Chart.View.AnimationsSpeed));
         }
     }
 }

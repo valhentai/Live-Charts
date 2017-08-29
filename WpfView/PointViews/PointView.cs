@@ -18,48 +18,64 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Windows.Controls;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts.Wpf.PointViews
 {
-    public class PointView : IChartPointView
+    /// <summary>
+    /// The Windows Presentation Foundation base point view.
+    /// </summary>
+    /// <seealso cref="IChartPointView" />
+    public abstract class PointView : IChartPointView
     {
-        public ContentControl DataLabel { get; set; }
-        public bool IsNew { get; set; }
+        /// <summary>
+        /// Gets the label.
+        /// </summary>
+        /// <value>
+        /// The label.
+        /// </value>
+        public ContentControl Label { get; set; }
 
-        public virtual void Draw(ChartPoint previousDrawn, ChartPoint current, int index, ISeriesView series, ChartCore chart)
+        /// <inheritdoc cref="IChartPointView.ChartPoint"/>
+        public ChartPoint ChartPoint { get; internal set; }
+
+        /// <inheritdoc cref="IChartPointView.Draw"/>
+        public virtual void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc cref="IChartPointView.Erase"/>
         public virtual void Erase(ChartCore chart)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
-        public virtual void OnHover(ChartPoint point)
+        /// <inheritdoc cref="IChartPointView.OnHover"/>
+        public virtual void OnHover()
         {
-            
+            throw new System.NotImplementedException();
         }
 
-        public virtual void OnHoverLeave(ChartPoint point)
+        /// <inheritdoc cref="IChartPointView.OnHoverLeave"/>
+        public virtual void OnHoverLeave()
         {
-            
+            throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc cref="IChartPointView.OnSelection"/>
         public virtual void OnSelection()
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc cref="IChartPointView.OnSelectionLeave"/>
         public void OnSelectionLeave()
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }

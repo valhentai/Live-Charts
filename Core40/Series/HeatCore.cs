@@ -105,7 +105,7 @@ namespace LiveCharts.Series
                 heatView.Width = w;
                 heatView.Height = h;
 
-                chartPoint.View.Draw(null, chartPoint, 0, View, Chart);
+                chartPoint.View.Draw(null, 0, View, Chart);
             }
         }
 

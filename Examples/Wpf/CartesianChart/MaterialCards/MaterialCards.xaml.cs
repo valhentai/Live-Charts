@@ -21,7 +21,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Wpf.Annotations;
 
-namespace Wpf.CartesianChart.MaterialCards
+namespace Samples.Wpf.CartesianChart.MaterialCards
 {
     /// <summary>
     /// Interaction logic for MaterialCards.xaml

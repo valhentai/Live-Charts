@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
 
-namespace Wpf.CartesianChart.DynamicVisibility
+namespace Samples.Wpf.CartesianChart.DynamicVisibility
 {
     public partial class DynamicVisibilityExample : UserControl, INotifyPropertyChanged
     {

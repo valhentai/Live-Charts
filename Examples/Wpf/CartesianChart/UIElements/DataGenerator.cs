@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LiveCharts.Defaults;
 
-namespace Wpf.CartesianChart.UIElements
+namespace Samples.Wpf.CartesianChart.UIElements
 {
     public static class DataProvider
     {
