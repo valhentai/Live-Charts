@@ -20,7 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts
 {
@@ -45,7 +45,7 @@ namespace LiveCharts
         /// <param name="alphaI">The alpha i.</param>
         /// <param name="alphaJ">The alpha j.</param>
         /// <param name="center">The center.</param>
-        public ResponsivePolarArea(double radius, double alphaI, double alphaJ, CorePoint center)
+        public ResponsivePolarArea(double radius, double alphaI, double alphaJ, PointData center)
         {
             Radius = radius;
             AlphaI = alphaI;
@@ -83,7 +83,7 @@ namespace LiveCharts
         /// <value>
         /// The center.
         /// </value>
-        public CorePoint Center { get; set; }
+        public PointData Center { get; set; }
 
         /// <inheritdoc cref="ResponsiveArea.IsInside"/>
         public override bool IsInside(params double[] values)

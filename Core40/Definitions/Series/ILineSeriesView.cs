@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System;
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts.Definitions.Series
 {
@@ -53,7 +53,7 @@ namespace LiveCharts.Definitions.Series
         /// <param name="location">The location.</param>
         /// <param name="areaLimit">The animations speed.</param>
         /// <param name="animationsSpeed"></param>
-        void StartSegment(CorePoint location, double areaLimit, TimeSpan animationsSpeed);
+        void StartSegment(PointData location, double areaLimit, TimeSpan animationsSpeed);
 
         /// <summary>
         /// Ends the segment.
@@ -62,6 +62,6 @@ namespace LiveCharts.Definitions.Series
         /// <param name="location">The location.</param>
         /// <param name="areaLimit"></param>
         /// <param name="animationsSpeed"></param>
-        void EndSegment(int atIndex, CorePoint location, double areaLimit, TimeSpan animationsSpeed);
+        void EndSegment(int atIndex, PointData location, double areaLimit, TimeSpan animationsSpeed);
     }
 }

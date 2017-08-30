@@ -30,9 +30,9 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Configurations;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 using LiveCharts.Series;
 using LiveCharts.Wpf.PointViews;
@@ -107,14 +107,14 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// Gets the gradient stops, this property is normally used internally to communicate with the core of the library.
         /// </summary>
-        public IList<CoreGradientStop> Stops
+        public IList<GradientStopData> Stops
         {
             get
             {
-                return GradientStopCollection.Select(x => new CoreGradientStop
+                return GradientStopCollection.Select(x => new GradientStopData
                 {
                     Offset = x.Offset,
-                    Color = new CoreColor(x.Color.A, x.Color.R, x.Color.G, x.Color.B)
+                    Color = new ColorData(x.Color.A, x.Color.R, x.Color.G, x.Color.B)
                 }).ToArray();
             }
         }

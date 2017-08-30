@@ -1,6 +1,6 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodr�guez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,59 +20,83 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Dtos
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// Describes a bezier.
+    /// Defines a rectangle data object.
     /// </summary>
-    public class BezierData
+    public class RectangleData
     {
+        private double _width;
+        private double _height;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="BezierData"/> class.
+        /// Initializes a new instance of the <see cref="RectangleData"/> class.
         /// </summary>
-        public BezierData()
+        public RectangleData()
         {
+
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BezierData"/> class.
+        /// Initializes a new instance of the <see cref="RectangleData"/> class.
         /// </summary>
-        /// <param name="point">The point.</param>
-        public BezierData(CorePoint point)
+        /// <param name="left">The left.</param>
+        /// <param name="top">The top.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public RectangleData(double left, double top, double width, double height) : this()
         {
-            Point1 = point;
-            Point2 = point;
-            Point3 = point;
+            Left = left;
+            Top = top;
+            Width = width;
+            Height = height;
         }
 
         /// <summary>
-        /// Gets or sets the point1.
+        /// Gets or sets the left.
         /// </summary>
         /// <value>
-        /// The point1.
+        /// The left.
         /// </value>
-        public CorePoint Point1 { get; set; }
+        public double Left { get; set; }
 
         /// <summary>
-        /// Gets or sets the point2.
+        /// Gets or sets the top.
         /// </summary>
         /// <value>
-        /// The point2.
+        /// The top.
         /// </value>
-        public CorePoint Point2 { get; set; }
+        public double Top { get; set; }
+
         /// <summary>
-        /// Gets or sets the point3.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>
-        /// The point3.
+        /// The width.
         /// </value>
-        public CorePoint Point3 { get; set; }
+        public double Width
+        {
+            get { return _width; }
+            set
+            {
+                _width = value < 0 ? 0 : value;
+            }
+        }
+
         /// <summary>
-        /// Gets or sets the start point.
+        /// Gets or sets the height.
         /// </summary>
         /// <value>
-        /// The start point.
+        /// The height.
         /// </value>
-        public CorePoint StartPoint { get; set; }
+        public double Height
+        {
+            get { return _height; }
+            set
+            {
+                _height = value < 0 ? 0 : value;
+            }
+        }
     }
 }

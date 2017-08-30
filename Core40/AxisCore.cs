@@ -25,8 +25,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
@@ -118,7 +118,7 @@ namespace LiveCharts
         internal Dictionary<double, SeparatorElementCore> Cache { get; set; }
         internal double? LastAxisMax { get; set; }
         internal double? LastAxisMin { get; set; }
-        internal CoreRectangle LastPlotArea { get; set; }
+        internal RectangleData LastPlotArea { get; set; }
         internal int GarbageCollectorIndex { get; set; }
         internal double PreviousTop { get; set; }
         internal double PreviousBot { get; set; }
@@ -190,15 +190,15 @@ namespace LiveCharts
             if (View.Labels != null) S = S < 1 ? 1 : S;
         }
 
-        internal virtual CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
+        internal virtual MarginData PrepareChart(AxisOrientation source, ChartCore chart)
         {
-            if (!(Math.Abs(TopLimit - BotLimit) > S * .01) || !View.ShowLabels) return new CoreMargin();
+            if (!(Math.Abs(TopLimit - BotLimit) > S * .01) || !View.ShowLabels) return new MarginData();
 
             CalculateSeparator(chart, source);
 
             var f = GetFormatter();
 
-            var currentMargin = new CoreMargin();
+            var currentMargin = new MarginData();
             var tolerance = S / 10;
 
             InitializeGarbageCollector();
@@ -319,7 +319,7 @@ namespace LiveCharts
 
             LastAxisMax = TopLimit;
             LastAxisMin = BotLimit;
-            LastPlotArea = new CoreRectangle(chart.View.DrawMarginLeft, chart.View.DrawMarginTop,
+            LastPlotArea = new RectangleData(chart.View.DrawMarginLeft, chart.View.DrawMarginTop,
                 chart.View.DrawMarginWidth, chart.View.DrawMarginHeight);
         }
 
@@ -327,8 +327,8 @@ namespace LiveCharts
         {
             if (LastAxisMax == null) return 0;
 
-            var p1 = new CorePoint();
-            var p2 = new CorePoint();
+            var p1 = new PointData();
+            var p2 = new PointData();
 
             if (source == AxisOrientation.Y)
             {
@@ -379,7 +379,7 @@ namespace LiveCharts
 
         #region Private Methods
 
-        private void DrawSeparator(double i, double tolerance, CoreMargin currentMargin, Func<double, string> f, AxisOrientation source)
+        private void DrawSeparator(double i, double tolerance, MarginData currentMargin, Func<double, string> f, AxisOrientation source)
         {
             if (i < BotLimit) return;
            

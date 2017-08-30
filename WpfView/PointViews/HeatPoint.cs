@@ -25,9 +25,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.PointViews
 {
@@ -52,7 +52,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The color components.
         /// </value>
-        public CoreColor ColorComponents { get; set; }
+        public ColorData ColorComponents { get; set; }
 
         /// <summary>
         /// Gets or sets the width.

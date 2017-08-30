@@ -23,7 +23,7 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts.Wpf
 {
@@ -37,7 +37,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="location">The location.</param>
         /// <param name="startsY">The starts y.</param>
-        public LineSeriesPathHelper(CorePoint location, double startsY)
+        public LineSeriesPathHelper(PointData location, double startsY)
         {
             var p = new Point(location.X, startsY);
             Bottom = new LineSegment {Point = p};

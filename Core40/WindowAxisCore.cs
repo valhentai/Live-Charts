@@ -24,8 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 
 namespace LiveCharts
 {
@@ -63,11 +63,11 @@ namespace LiveCharts
         /// <summary>
         /// 
         /// </summary>
-        internal override CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
+        internal override MarginData PrepareChart(AxisOrientation source, ChartCore chart)
         {
-            if (!(Math.Abs(TopLimit - BotLimit) > S * .01) || !View.ShowLabels) return new CoreMargin();
+            if (!(Math.Abs(TopLimit - BotLimit) > S * .01) || !View.ShowLabels) return new MarginData();
 
-            var currentMargin = new CoreMargin();
+            var currentMargin = new MarginData();
             var tolerance = S / 10;
 
             InitializeGarbageCollector();
@@ -139,7 +139,7 @@ namespace LiveCharts
             return separatorIndices;
         }
 
-        private void DrawSeparator(double x, double tolerance, CoreMargin currentMargin, AxisOrientation source)
+        private void DrawSeparator(double x, double tolerance, MarginData currentMargin, AxisOrientation source)
         {
             SeparatorElementCore elementCore;
 

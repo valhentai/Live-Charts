@@ -20,8 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Data;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Series
 {
@@ -49,14 +49,14 @@ namespace LiveCharts.Series
         /// </summary>
         /// <param name="chartPoint">The chart point.</param>
         /// <returns></returns>
-        protected override CorePoint GetStackedPoint(ChartPoint chartPoint)
+        protected override PointData GetStackedPoint(ChartPoint chartPoint)
         {
             if (_stackModelable.StackMode == StackMode.Values)
-                return new CorePoint(
+                return new PointData(
                     ChartFunctions.ToDrawMargin(chartPoint.To, AxisOrientation.X, Chart, View.ScalesXAt),
                     ChartFunctions.ToDrawMargin(chartPoint.Y, AxisOrientation.Y, Chart, View.ScalesYAt));
 
-            return new CorePoint(
+            return new PointData(
                 ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisOrientation.X, Chart, View.ScalesXAt),
                 ChartFunctions.ToDrawMargin(chartPoint.Y, AxisOrientation.Y, Chart, View.ScalesYAt));
         }

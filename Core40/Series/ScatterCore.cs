@@ -20,10 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Series
 {
@@ -50,8 +50,8 @@ namespace LiveCharts.Series
         {
             var bubbleSeries = (IScatterSeriesView) View;
 
-            var p1 = new CorePoint();
-            var p2 = new CorePoint();
+            var p1 = new PointData();
+            var p2 = new PointData();
 
             p1.X = Chart.WLimit.Max;
             p1.Y = bubbleSeries.MaxPointShapeDiameter;
@@ -63,7 +63,7 @@ namespace LiveCharts.Series
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             var m = (p2.Y - p1.Y) / (deltaX == 0 ? double.MinValue : deltaX);
 
-            var uw = new CorePoint(
+            var uw = new PointData(
                     CurrentXAxis.EvaluatesUnitWidth
                         ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2
                         : 0,

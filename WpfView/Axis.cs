@@ -29,8 +29,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 using LiveCharts.Events;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Converters;
@@ -549,7 +549,7 @@ namespace LiveCharts.Wpf
         /// <param name="chart">The chart.</param>
         /// <param name="rotationAngle">The rotation angle.</param>
         /// <returns></returns>
-        public CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0)
+        public SizeData UpdateTitle(ChartCore chart, double rotationAngle = 0)
         {
             if (TitleBlock.Parent == null)
             {
@@ -567,8 +567,8 @@ namespace LiveCharts.Wpf
                  TitleBlock.FontSize, Brushes.Black);
 
             return string.IsNullOrWhiteSpace(Title)
-                ? new CoreSize()
-                : new CoreSize(TitleBlock.Width, FormattedTitle.Height);
+                ? new SizeData()
+                : new SizeData(TitleBlock.Width, FormattedTitle.Height);
         }
 
         /// <summary>
@@ -611,9 +611,9 @@ namespace LiveCharts.Wpf
         /// Gets the size of the label.
         /// </summary>
         /// <returns></returns>
-        public CoreSize GetLabelSize()
+        public SizeData GetLabelSize()
         {
-            return new CoreSize(FormattedTitle.Width, FormattedTitle.Height);
+            return new SizeData(FormattedTitle.Width, FormattedTitle.Height);
         }
 
         /// <summary>

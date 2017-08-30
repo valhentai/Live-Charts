@@ -20,10 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Series
 {
@@ -60,7 +60,7 @@ namespace LiveCharts.Series
 
                 var stepView = (IStepPointView) current.View;
 
-                current.ChartLocation = new CorePoint(
+                current.ChartLocation = new PointData(
                     ChartFunctions.ToDrawMargin(current.X, AxisOrientation.X, Chart, View.ScalesXAt),
                     ChartFunctions.ToDrawMargin(current.Y, AxisOrientation.Y, Chart, View.ScalesYAt));
 

@@ -23,9 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Charts
@@ -126,21 +126,21 @@ namespace LiveCharts.Charts
         /// <value>
         /// The x limit.
         /// </value>
-        public CoreLimit XLimit { get; set; }
+        public LimitData XLimit { get; set; }
         /// <summary>
         /// Gets or sets the y limit.
         /// </summary>
         /// <value>
         /// The y limit.
         /// </value>
-        public CoreLimit YLimit { get; set; }
+        public LimitData YLimit { get; set; }
         /// <summary>
         /// Gets or sets the w limit.
         /// </summary>
         /// <value>
         /// The w limit.
         /// </value>
-        public CoreLimit WLimit { get; set; }
+        public LimitData WLimit { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the current color.
@@ -156,7 +156,7 @@ namespace LiveCharts.Charts
         /// <value>
         /// The pan origin.
         /// </value>
-        public CorePoint PanOrigin { get; set; }
+        public PointData PanOrigin { get; set; }
 
         #endregion
 
@@ -196,7 +196,7 @@ namespace LiveCharts.Charts
         {
             var controlSize = View.ControlSize;
 
-            var curSize = new CoreRectangle(0, 0, View.ControlSize.Width, controlSize.Height);
+            var curSize = new RectangleData(0, 0, View.ControlSize.Width, controlSize.Height);
 
             curSize = PlaceLegend(curSize);
 
@@ -378,7 +378,7 @@ namespace LiveCharts.Charts
         /// <param name="drawMargin">The draw margin.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-        public CoreRectangle PlaceLegend(CoreRectangle drawMargin)
+        public RectangleData PlaceLegend(RectangleData drawMargin)
         {
             var legendSize = View.LoadLegend();
             var controlSize = View.ControlSize;
@@ -393,21 +393,21 @@ namespace LiveCharts.Charts
                 case LegendLocation.Top:
                     drawMargin.Top += legendSize.Height;
                     drawMargin.Height -= legendSize.Height;
-                    View.ShowLegend(new CorePoint(controlSize.Width * .5 - legendSize.Width * .5, 0));
+                    View.ShowLegend(new PointData(controlSize.Width * .5 - legendSize.Width * .5, 0));
                     break;
                 case LegendLocation.Bottom:
-                    var bot = new CorePoint(controlSize.Width*.5 - legendSize.Width*.5,
+                    var bot = new PointData(controlSize.Width*.5 - legendSize.Width*.5,
                         controlSize.Height - legendSize.Height);
                     drawMargin.Height -= legendSize.Height;
-                    View.ShowLegend(new CorePoint(bot.X, controlSize.Height - legendSize.Height));
+                    View.ShowLegend(new PointData(bot.X, controlSize.Height - legendSize.Height));
                     break;
                 case LegendLocation.Left:
                     drawMargin.Left = drawMargin.Left + legendSize.Width;
-                    View.ShowLegend(new CorePoint(0, controlSize.Height*.5 - legendSize.Height*.5));
+                    View.ShowLegend(new PointData(0, controlSize.Height*.5 - legendSize.Height*.5));
                     break;
                 case LegendLocation.Right:
                     drawMargin.Width -= legendSize.Width + padding;
-                    View.ShowLegend(new CorePoint(controlSize.Width - legendSize.Width,
+                    View.ShowLegend(new PointData(controlSize.Width - legendSize.Width,
                         controlSize.Height*.5 - legendSize.Height*.5));
                     break;
                 default:
@@ -421,7 +421,7 @@ namespace LiveCharts.Charts
         /// Zooms a unit in.
         /// </summary>
         /// <param name="pivot">The pivot.</param>
-        public void ZoomIn(CorePoint pivot)
+        public void ZoomIn(PointData pivot)
         {
             var xAxis = View.FirstDimension;
             var yAxis = View.SecondDimension;
@@ -482,7 +482,7 @@ namespace LiveCharts.Charts
         /// Zooms a unit out.
         /// </summary>
         /// <param name="pivot">The pivot.</param>
-        public void ZoomOut(CorePoint pivot)
+        public void ZoomOut(PointData pivot)
         {
             View.HideTooltip();
 
@@ -549,7 +549,7 @@ namespace LiveCharts.Charts
         /// Drags the specified delta.
         /// </summary>
         /// <param name="delta">The delta.</param>
-        public void Drag(CorePoint delta)
+        public void Drag(PointData delta)
         {
             if (View.Pan == PanningOptions.Unset && View.Zoom == ZoomingOptions.None ||
                 View.Pan == PanningOptions.None) return;
@@ -816,7 +816,7 @@ namespace LiveCharts.Charts
 
         private static void SetAxisLimits(AxisCore ax, IList<ISeriesView> series, AxisOrientation orientation)
         {
-            var first = new CoreLimit();
+            var first = new LimitData();
             var firstR = 0d;
 
             if (series.Count > 0)

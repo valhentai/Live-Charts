@@ -22,22 +22,22 @@
 
 using System;
 
-namespace LiveCharts.Dtos
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// 
+    /// Describes a label data object.
     /// </summary>
-    public struct LabelEvaluation
+    public struct LabelEvaluationData
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LabelEvaluation"/> struct.
+        /// Initializes a new instance of the <see cref="LabelEvaluationData"/> struct.
         /// </summary>
         /// <param name="angle">The angle.</param>
         /// <param name="w">The w.</param>
         /// <param name="h">The h.</param>
         /// <param name="axis">The axis.</param>
         /// <param name="source">The source.</param>
-        public LabelEvaluation(double angle, double w, double h, AxisCore axis, AxisOrientation source) : this()
+        public LabelEvaluationData(double angle, double w, double h, AxisCore axis, AxisOrientation source) : this()
         {
             const double padding = 4;
 

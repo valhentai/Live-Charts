@@ -22,9 +22,9 @@
 
 using System;
 using System.Linq;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Charts
@@ -97,7 +97,7 @@ namespace LiveCharts.Charts
 
             var cs = View.ControlSize;
 
-            var curSize = new CoreRectangle(0, 0, cs.Width, cs.Height);
+            var curSize = new RectangleData(0, 0, cs.Width, cs.Height);
 
             curSize = PlaceLegend(curSize);
 

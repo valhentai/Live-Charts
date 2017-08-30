@@ -22,10 +22,10 @@
 
 using System;
 using System.Linq;
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Series
@@ -80,7 +80,7 @@ namespace LiveCharts.Series
                     : lineView.AreaLimit, AxisOrientation.X, Chart, View.ScalesXAt);
             }
 
-            var uw = new CorePoint(
+            var uw = new PointData(
                 CurrentXAxis.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2
                     : 0,
@@ -94,7 +94,7 @@ namespace LiveCharts.Series
             {
                 var p0 = segment.Count > 0
                     ? GetStackedPoint(segment[0])
-                    : new CorePoint(0, 0);
+                    : new PointData(0, 0);
                 var p1 = segment.Count > 0
                     ? GetStackedPoint(segment[0])
                     : p0;
@@ -156,12 +156,12 @@ namespace LiveCharts.Series
                     if (bezierView == null) continue;
 
                     bezierView.Data = index == segment.Count - 1
-                        ? new BezierData(new CorePoint(p1.X, p1.Y))
+                        ? new BezierData(new PointData(p1.X, p1.Y))
                         : new BezierData
                         {
-                            Point1 = index == 0 ? new CorePoint(p1.X, p1.Y) : new CorePoint(c1X, c1Y),
-                            Point2 = new CorePoint(c2X, c2Y),
-                            Point3 = new CorePoint(p2.X, p2.Y)
+                            Point1 = index == 0 ? new PointData(p1.X, p1.Y) : new PointData(c1X, c1Y),
+                            Point2 = new PointData(c2X, c2Y),
+                            Point3 = new PointData(p2.X, p2.Y)
                         };
 
                     chartPoint.View.Draw(previousDrawn, segmentPosition, View, Chart);
@@ -169,9 +169,9 @@ namespace LiveCharts.Series
 
                     previousDrawn = chartPoint;
 
-                    p0 = new CorePoint(p1);
-                    p1 = new CorePoint(p2);
-                    p2 = new CorePoint(p3);
+                    p0 = new PointData(p1);
+                    p1 = new PointData(p2);
+                    p2 = new PointData(p3);
                     p3 = segment.Count > index + 3
                         ? GetStackedPoint(segment[index + 3])
                         : p2;
@@ -179,7 +179,7 @@ namespace LiveCharts.Series
                     p3 += uw;
                 }
                 lineView.EndSegment(segmentPosition,
-                    SeriesOrientation == SeriesOrientation.Horizontal ? p1 : new CorePoint(p1.X, p1.Y + uw.Y),
+                    SeriesOrientation == SeriesOrientation.Horizontal ? p1 : new PointData(p1.X, p1.Y + uw.Y),
                     areaLimit, animationsSpeed);
                 segmentPosition++;
             }
@@ -190,13 +190,13 @@ namespace LiveCharts.Series
         /// </summary>
         /// <param name="chartPoint">The chart point.</param>
         /// <returns></returns>
-        protected virtual CorePoint GetStackedPoint(ChartPoint chartPoint)
+        protected virtual PointData GetStackedPoint(ChartPoint chartPoint)
         {
             if (_stackModelable.StackMode == StackMode.Values)
-                return new CorePoint(
+                return new PointData(
                     ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt),
                     ChartFunctions.ToDrawMargin(chartPoint.To, AxisOrientation.Y, Chart, View.ScalesYAt));
-            return new CorePoint(
+            return new PointData(
                 ChartFunctions.ToDrawMargin(chartPoint.X, AxisOrientation.X, Chart, View.ScalesXAt),
                 ChartFunctions.ToDrawMargin(chartPoint.StackedParticipation, AxisOrientation.Y, Chart, View.ScalesYAt));
         }

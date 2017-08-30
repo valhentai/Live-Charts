@@ -21,15 +21,13 @@
 //SOFTWARE.
 
 using System.ComponentModel;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.PointViews
 {
@@ -88,8 +86,6 @@ namespace LiveCharts.Wpf.PointViews
             // Initializing shapes
             // --------------------
 
-            #region Point shape
-
             // Initialize the path, if it is required by the series and it is null.
             if (lineSeries.PointGeometry != null && PointShapePath == null)
             {
@@ -127,10 +123,6 @@ namespace LiveCharts.Wpf.PointViews
                 PointShapePath = null;
             }
 
-            #endregion
-
-            #region Label
-
             // initialize or update the label.
             if (lineSeries.DataLabels)
             {
@@ -152,13 +144,9 @@ namespace LiveCharts.Wpf.PointViews
                 Label = null;
             }
 
-            #endregion
-
             // --------------------
             // Placing shapes
             // --------------------
-
-            #region Responsive area in chart
 
             // register the area where the point interacts with the user (hover and click).
             var minDimension = lineSeries.PointGeometrySize < 12 ? 12 : lineSeries.PointGeometrySize;
@@ -167,8 +155,6 @@ namespace LiveCharts.Wpf.PointViews
                 ChartPoint.ChartLocation.Y - minDimension / 2,
                 minDimension,
                 minDimension);
-
-            #endregion
         }
 
         /// <inheritdoc cref="ChartPointView.Erase"/>

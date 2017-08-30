@@ -20,22 +20,59 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Data;
-
-namespace LiveCharts.Definitions.Points
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// Represents a bezier point view.
+    /// Describes a bezier data object.
     /// </summary>
-    /// <seealso cref="ChartPointView" />
-    public interface IBezierPointView
+    public class BezierData
     {
         /// <summary>
-        /// Gets or sets the data.
+        /// Initializes a new instance of the <see cref="BezierData"/> class.
+        /// </summary>
+        public BezierData()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BezierData"/> class.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        public BezierData(PointData point)
+        {
+            Point1 = point;
+            Point2 = point;
+            Point3 = point;
+        }
+
+        /// <summary>
+        /// Gets or sets the point1.
         /// </summary>
         /// <value>
-        /// The data.
+        /// The point1.
         /// </value>
-        BezierData Data { set; }
+        public PointData Point1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the point2.
+        /// </summary>
+        /// <value>
+        /// The point2.
+        /// </value>
+        public PointData Point2 { get; set; }
+        /// <summary>
+        /// Gets or sets the point3.
+        /// </summary>
+        /// <value>
+        /// The point3.
+        /// </value>
+        public PointData Point3 { get; set; }
+        /// <summary>
+        /// Gets or sets the start point.
+        /// </summary>
+        /// <value>
+        /// The start point.
+        /// </value>
+        public PointData StartPoint { get; set; }
     }
 }

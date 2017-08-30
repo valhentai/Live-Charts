@@ -20,37 +20,44 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Dtos
+
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// 
+    /// Describes color data object.
     /// </summary>
-    public struct CoreSize
+    public struct ColorData
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreSize"/> struct.
+        /// Initializes a new instance of CoreColor
         /// </summary>
-        /// <param name="width">The width.</param>
-        /// <param name="heigth">The heigth.</param>
-        public CoreSize(double width, double heigth) : this()
+        /// <param name="a">alpha component</param>
+        /// <param name="r">red component</param>
+        /// <param name="g">green component</param>
+        /// <param name="b">blue component</param>
+        public ColorData(byte a, byte r, byte g, byte b) : this()
         {
-            Width = width;
-            Height = heigth;
+            A = a;
+            R = r;
+            G = g;
+            B = b;
         }
 
         /// <summary>
-        /// Gets or sets the width.
+        /// Alpha component
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public double Width { get; set; }
+        public byte A { get; set; }
         /// <summary>
-        /// Gets or sets the height.
+        /// Red component
         /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        public double Height { get; set; }
+        public byte R { get; set; }
+        /// <summary>
+        /// Green component
+        /// </summary>
+        public byte G { get; set; }
+        /// <summary>
+        /// Red component
+        /// </summary>
+        public byte B { get; set; }
     }
 }

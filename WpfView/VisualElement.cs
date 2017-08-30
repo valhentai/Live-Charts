@@ -25,8 +25,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf
 {
@@ -98,12 +98,12 @@ namespace LiveCharts.Wpf
                 Panel.SetZIndex(UIElement, 1000);
             }
 
-            var coordinate = new CorePoint(ChartFunctions.ToDrawMargin(X, AxisOrientation.X, chart, AxisX),
+            var coordinate = new PointData(ChartFunctions.ToDrawMargin(X, AxisOrientation.X, chart, AxisX),
                 ChartFunctions.ToDrawMargin(Y, AxisOrientation.Y, chart.View.Core, AxisY));
 
             var wpfChart = (CartesianChart) chart.View;
 
-            var uw = new CorePoint(
+            var uw = new PointData(
                 wpfChart.XAxis[AxisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart, AxisX)/2
                     : 0,
@@ -118,13 +118,13 @@ namespace LiveCharts.Wpf
             switch (VerticalAlignment)
             {
                 case VerticalAlignment.Top:
-                    coordinate = new CorePoint(coordinate.X, coordinate.Y - UIElement.ActualHeight);
+                    coordinate = new PointData(coordinate.X, coordinate.Y - UIElement.ActualHeight);
                     break;
                 case VerticalAlignment.Center:
-                    coordinate = new CorePoint(coordinate.X, coordinate.Y - UIElement.ActualHeight / 2);
+                    coordinate = new PointData(coordinate.X, coordinate.Y - UIElement.ActualHeight / 2);
                     break;
                 case VerticalAlignment.Bottom:
-                    coordinate = new CorePoint(coordinate.X, coordinate.Y);
+                    coordinate = new PointData(coordinate.X, coordinate.Y);
                     break;
                 case VerticalAlignment.Stretch:
                     break;
@@ -135,13 +135,13 @@ namespace LiveCharts.Wpf
             switch (HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
-                    coordinate = new CorePoint(coordinate.X - UIElement.ActualWidth, coordinate.Y);
+                    coordinate = new PointData(coordinate.X - UIElement.ActualWidth, coordinate.Y);
                     break;
                 case HorizontalAlignment.Center:
-                    coordinate = new CorePoint(coordinate.X - UIElement.ActualWidth / 2, coordinate.Y);
+                    coordinate = new PointData(coordinate.X - UIElement.ActualWidth / 2, coordinate.Y);
                     break;
                 case HorizontalAlignment.Right:
-                    coordinate = new CorePoint(coordinate.X, coordinate.Y);
+                    coordinate = new PointData(coordinate.X, coordinate.Y);
                     break;
                 case HorizontalAlignment.Stretch:
                     break;

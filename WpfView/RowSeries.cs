@@ -26,9 +26,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Configurations;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Series;
 using LiveCharts.Wpf.PointViews;
 
@@ -148,7 +148,7 @@ namespace LiveCharts.Wpf
                 {
                     //IsNew = true,
                     Rectangle = new Rectangle(),
-                    Data = new CoreRectangle()
+                    Data = new RectangleData()
                 };
 
                 Core.Chart.View.AddToDrawMargin(pbv.Rectangle);

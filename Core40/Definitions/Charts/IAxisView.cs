@@ -23,7 +23,7 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Charts;
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts.Definitions.Charts
 {
@@ -174,7 +174,7 @@ namespace LiveCharts.Definitions.Charts
         /// <param name="chart">The chart.</param>
         /// <param name="rotationAngle">The rotation angle.</param>
         /// <returns></returns>
-        CoreSize UpdateTitle(ChartCore chart, double rotationAngle = 0);
+        SizeData UpdateTitle(ChartCore chart, double rotationAngle = 0);
         /// <summary>
         /// Sets the title top.
         /// </summary>
@@ -199,7 +199,7 @@ namespace LiveCharts.Definitions.Charts
         /// Gets the size of the label.
         /// </summary>
         /// <returns></returns>
-        CoreSize GetLabelSize();
+        SizeData GetLabelSize();
         /// <summary>
         /// Renders the separator.
         /// </summary>

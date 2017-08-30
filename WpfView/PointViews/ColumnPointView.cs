@@ -27,22 +27,61 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.PointViews
 {
-    internal class ColumnPointView : PointView, IRectanglePointView
+    /// <summary>
+    /// Column point view class.
+    /// </summary>
+    /// <seealso cref="LiveCharts.Wpf.PointViews.PointView" />
+    /// <seealso cref="LiveCharts.Definitions.Points.IRectanglePointView" />
+    public class ColumnPointView : PointView, IRectanglePointView
     {
-        public Rectangle Rectangle { get; set; }
-        public CoreRectangle Data { get; set; }
-        public double ZeroReference  { get; set; }
-        public BarLabelPosition LabelPosition { get; set; }
-        private RotateTransform Transform { get; set; }
+        public RectangleData Data { set => throw new NotImplementedException(); }
+        public double ZeroReference { set => throw new NotImplementedException(); }
 
         public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
+            var candleSeries = (CandleSeries)series;
+
+            // map the series properties to the drawn point.
+            CandleVisualShape.Stroke = candleSeries.Stroke;
+            CandleVisualShape.StrokeThickness = candleSeries.StrokeThickness;
+            CandleVisualShape.Visibility = candleSeries.Visibility;
+            Panel.SetZIndex(CandleVisualShape, Panel.GetZIndex(candleSeries));
+
+            // initialize or update the label.
+            if (candleSeries.DataLabels)
+            {
+                Label = candleSeries.UpdateLabelContent(
+                    new DataLabelViewModel
+                    {
+                        FormattedText = DesignerProperties.GetIsInDesignMode(candleSeries)
+                            ? "'label'"
+                            : candleSeries.LabelPoint(ChartPoint),
+                        Point = ChartPoint
+                    }, Label);
+            }
+
+            // erase data label if it is not required anymore.
+            if (!candleSeries.DataLabels && Label != null)
+            {
+                // notice UpdateLabelContent() added the label to the UI, we need to remove it.
+                chart.View.RemoveFromDrawMargin(Label);
+                Label = null;
+            }
+
+
+            // register the area where the point interacts with the user (hover and click).
+            ChartPoint.ResponsiveArea =
+                new ResponsiveRectangle(
+                    High, Left,
+                    Width, Math.Abs(Low - High));
+
+
             //if (IsNew)
             {
                 Canvas.SetTop(Rectangle, ZeroReference);

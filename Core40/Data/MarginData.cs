@@ -21,12 +21,12 @@
 //SOFTWARE.
 
 
-namespace LiveCharts.Dtos
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// Defines a portable margin
+    /// Defines a margin data object.
     /// </summary>
-    public class CoreMargin
+    public class MarginData
     {
         /// <summary>
         /// Distance to top

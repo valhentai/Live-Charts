@@ -28,8 +28,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.Components
 {
@@ -58,7 +58,7 @@ namespace LiveCharts.Wpf.Components
         /// <value>
         /// The label model.
         /// </value>
-        public LabelEvaluation LabelModel { get; private set; }
+        public LabelEvaluationData LabelModel { get; private set; }
 
         /// <summary>
         /// Gets the model.
@@ -78,7 +78,7 @@ namespace LiveCharts.Wpf.Components
         /// <param name="axis">The axis.</param>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisOrientation source)
+        public LabelEvaluationData UpdateLabel(string text, AxisCore axis, AxisOrientation source)
         {
             TextBlock.Text = text;
 
@@ -89,7 +89,7 @@ namespace LiveCharts.Wpf.Components
                   new Typeface(TextBlock.FontFamily, TextBlock.FontStyle, TextBlock.FontWeight, TextBlock.FontStretch),
                   TextBlock.FontSize, Brushes.Black);
 
-            var transform = new LabelEvaluation(axis.View.LabelsRotation,
+            var transform = new LabelEvaluationData(axis.View.LabelsRotation,
                 formattedText.Width, formattedText.Height, axis, source);
 
             TextBlock.RenderTransform = Math.Abs(transform.LabelAngle) > 1

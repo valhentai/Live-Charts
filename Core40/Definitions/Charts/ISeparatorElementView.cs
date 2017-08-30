@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using LiveCharts.Charts;
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts.Definitions.Charts
 {
@@ -43,7 +43,7 @@ namespace LiveCharts.Definitions.Charts
         /// <value>
         /// The label model.
         /// </value>
-        LabelEvaluation LabelModel { get; }
+        LabelEvaluationData LabelModel { get; }
 
         /// <summary>
         /// Updates the label.
@@ -52,7 +52,7 @@ namespace LiveCharts.Definitions.Charts
         /// <param name="axis">The axis.</param>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        LabelEvaluation UpdateLabel(string text, AxisCore axis, AxisOrientation source);
+        LabelEvaluationData UpdateLabel(string text, AxisCore axis, AxisOrientation source);
 
         /// <summary>
         /// Clears the specified chart.

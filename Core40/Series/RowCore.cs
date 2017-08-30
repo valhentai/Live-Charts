@@ -22,10 +22,10 @@
 
 using System;
 using System.Linq;
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Series
 {
@@ -113,7 +113,7 @@ namespace LiveCharts.Series
 
                 rectangleView.ZeroReference = zero;
 
-                chartPoint.ChartLocation = new CorePoint(rectangleView.Data.Left + rectangleView.Data.Width,
+                chartPoint.ChartLocation = new PointData(rectangleView.Data.Left + rectangleView.Data.Width,
                     rectangleView.Data.Top);
 
                 chartPoint.View.Draw(null, 0, View, Chart);

@@ -27,16 +27,16 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.PointViews
 {
     internal class RowPointView : PointView, IRectanglePointView
     {
         public Rectangle Rectangle { get; set; }
-        public CoreRectangle Data { get; set; }
+        public RectangleData Data { get; set; }
         public double ZeroReference  { get; set; }
         public BarLabelPosition LabelPosition { get; set; }
         private RotateTransform Transform { get; set; }

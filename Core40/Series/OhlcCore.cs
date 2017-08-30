@@ -20,10 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Series
 {
@@ -87,7 +87,7 @@ namespace LiveCharts.Series
                 ohclView.Left = x + exceed/2 + padding;
                 ohclView.StartReference = (ohclView.High + ohclView.Low)/2;
 
-                chartPoint.ChartLocation = new CorePoint(x + exceed/2, (ohclView.High + ohclView.Low)/2);
+                chartPoint.ChartLocation = new PointData(x + exceed/2, (ohclView.High + ohclView.Low)/2);
 
                 chartPoint.View.Draw(null, 0, View, Chart);
             }

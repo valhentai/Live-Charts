@@ -20,19 +20,19 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Dtos
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// 
+    /// Defines a point data object.
     /// </summary>
-    public struct CorePoint
+    public struct PointData
     {
         /// <summary>
         /// Initializes a new instance of CorePoint
         /// </summary>
         /// <param name="x">x coordinate</param>
         /// <param name="y">y coordinate</param>
-        public CorePoint(double x, double y) : this()
+        public PointData(double x, double y) : this()
         {
             X = x;
             Y = y;
@@ -42,7 +42,7 @@ namespace LiveCharts.Dtos
         /// Initializes a new instance of CorePoint
         /// </summary>
         /// <param name="point">source pont</param>
-        public CorePoint(CorePoint point) : this()
+        public PointData(PointData point) : this()
         {
             X = point.X;
             Y = point.Y;
@@ -63,9 +63,9 @@ namespace LiveCharts.Dtos
         /// <param name="p1">point 1</param>
         /// <param name="p2">point 2</param>
         /// <returns></returns>
-        public static CorePoint operator +(CorePoint p1, CorePoint p2)
+        public static PointData operator +(PointData p1, PointData p2)
         {
-            return new CorePoint(p1.X + p2.X, p1.Y + p2.Y);
+            return new PointData(p1.X + p2.X, p1.Y + p2.Y);
         }
 
         /// <summary>
@@ -74,9 +74,9 @@ namespace LiveCharts.Dtos
         /// <param name="p1">point 1</param>
         /// <param name="p2">point 2</param>
         /// <returns></returns>
-        public static CorePoint operator -(CorePoint p1, CorePoint p2)
+        public static PointData operator -(PointData p1, PointData p2)
         {
-            return new CorePoint(p1.X - p2.X, p1.Y - p2.Y);
+            return new PointData(p1.X - p2.X, p1.Y - p2.Y);
         }
     }
 }

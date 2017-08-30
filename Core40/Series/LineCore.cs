@@ -22,10 +22,10 @@
 
 using System;
 using System.Linq;
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Series
@@ -76,7 +76,7 @@ namespace LiveCharts.Series
                     : lineView.AreaLimit, AxisOrientation.X, Chart, View.ScalesXAt);
             }
 
-            var uw = new CorePoint(
+            var uw = new PointData(
                 CurrentXAxis.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2
                     : 0,
@@ -90,7 +90,7 @@ namespace LiveCharts.Series
             {
                 var p0 = segment.Count > 0
                     ? ChartFunctions.ToDrawMargin(segment[0], View.ScalesXAt, View.ScalesYAt, Chart)
-                    : new CorePoint(0, 0);
+                    : new PointData(0, 0);
                 var p1 = segment.Count > 0
                     ? ChartFunctions.ToDrawMargin(segment[0], View.ScalesXAt, View.ScalesYAt, Chart)
                     : p0;
@@ -110,10 +110,10 @@ namespace LiveCharts.Series
                 }
                 else
                 {
-                    p0 = new CorePoint(p0.X + uw.X, p0.Y - uw.Y);
-                    p1 = new CorePoint(p1.X + uw.X, p1.Y - uw.Y);
-                    p2 = new CorePoint(p2.X + uw.X, p2.Y - uw.Y);
-                    p3 = new CorePoint(p3.X + uw.X, p3.Y - uw.Y);
+                    p0 = new PointData(p0.X + uw.X, p0.Y - uw.Y);
+                    p1 = new PointData(p1.X + uw.X, p1.Y - uw.Y);
+                    p2 = new PointData(p2.X + uw.X, p2.Y - uw.Y);
+                    p3 = new PointData(p3.X + uw.X, p3.Y - uw.Y);
                 }
 
                 ChartPoint previousDrawn = null;
@@ -174,12 +174,12 @@ namespace LiveCharts.Series
                     }
 
                     bezierView.Data = index == segment.Count - 1
-                        ? new BezierData(new CorePoint(p1.X, p1.Y))
+                        ? new BezierData(new PointData(p1.X, p1.Y))
                         : new BezierData
                         {
-                            Point1 = index == 0 ? new CorePoint(p1.X, p1.Y) : new CorePoint(c1X, c1Y),
-                            Point2 = new CorePoint(c2X, c2Y),
-                            Point3 = new CorePoint(p2.X, p2.Y)
+                            Point1 = index == 0 ? new PointData(p1.X, p1.Y) : new PointData(c1X, c1Y),
+                            Point2 = new PointData(c2X, c2Y),
+                            Point3 = new PointData(p2.X, p2.Y)
                         };
 
                     chartPoint.View.Draw(previousDrawn, segmentPosition, View, Chart);
@@ -187,9 +187,9 @@ namespace LiveCharts.Series
 
                     previousDrawn = chartPoint;
 
-                    p0 = new CorePoint(p1);
-                    p1 = new CorePoint(p2);
-                    p2 = new CorePoint(p3);
+                    p0 = new PointData(p1);
+                    p1 = new PointData(p2);
+                    p2 = new PointData(p3);
                     p3 = segment.Count > index + 3
                         ? ChartFunctions.ToDrawMargin(segment[index + 3], View.ScalesXAt, View.ScalesYAt, Chart)
                         : p2;
@@ -200,7 +200,7 @@ namespace LiveCharts.Series
                     }
                     else
                     {
-                        p3 = new CorePoint(p3.X + uw.X, p3.Y - uw.Y);
+                        p3 = new PointData(p3.X + uw.X, p3.Y - uw.Y);
                     }
 
                     isOpen = true;
@@ -208,7 +208,7 @@ namespace LiveCharts.Series
                 if (!isOpen) continue;
 
                 lineView.EndSegment(segmentPosition,
-                    SeriesOrientation == SeriesOrientation.Horizontal ? p1 : new CorePoint(p1.X, p1.Y + uw.Y),
+                    SeriesOrientation == SeriesOrientation.Horizontal ? p1 : new PointData(p1.X, p1.Y + uw.Y),
                     areaLimit, animationsSpeed);
                 segmentPosition++;
             }

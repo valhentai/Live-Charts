@@ -22,8 +22,8 @@
 
 using System;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts
@@ -51,7 +51,7 @@ namespace LiveCharts
             return FormatLabel;
         }
 
-        internal override CoreMargin PrepareChart(AxisOrientation source, ChartCore chart)
+        internal override MarginData PrepareChart(AxisOrientation source, ChartCore chart)
         {
             // Get the current configued values from the view
             _initialDateTime = ((IDateAxisView) View).InitialDateTime;

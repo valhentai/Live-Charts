@@ -35,10 +35,10 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Events;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf.Components;
@@ -736,7 +736,7 @@ namespace LiveCharts.Wpf
 
             var p = e.GetPosition(this);
 
-            var corePoint = new CorePoint(p.X, p.Y);
+            var corePoint = new PointData(p.X, p.Y);
 
             e.Handled = true;
 
@@ -767,7 +767,7 @@ namespace LiveCharts.Wpf
 
             var end = e.GetPosition(this);
 
-            Core.Drag(new CorePoint(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
+            Core.Drag(new PointData(DragOrigin.X - end.X, DragOrigin.Y - end.Y));
             DragOrigin = end;
         }
 
@@ -1010,7 +1010,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public ChartCore Core { get; }
 
-        CoreSize IChart2DView.ControlSize => new CoreSize(ActualWidth, ActualHeight);
+        SizeData IChart2DView.ControlSize => new SizeData(ActualWidth, ActualHeight);
 
         double IChart2DView.DrawMarginTop
         {
@@ -1184,7 +1184,7 @@ namespace LiveCharts.Wpf
             _tooltipContainer.IsOpen = false;
         }
 
-        void IChart2DView.ShowLegend(CorePoint at)
+        void IChart2DView.ShowLegend(PointData at)
         {
             if (ChartLegend == null) return;
 
@@ -1207,11 +1207,11 @@ namespace LiveCharts.Wpf
                 ChartLegend.Visibility = Visibility.Hidden;
         }
 
-        CoreSize IChart2DView.LoadLegend()
+        SizeData IChart2DView.LoadLegend()
         {
             if (ChartLegend == null || LegendLocation == LegendLocation.None)
             {
-                return new CoreSize();
+                return new SizeData();
             }
 
             if (ChartLegend.Parent == null)
@@ -1254,7 +1254,7 @@ namespace LiveCharts.Wpf
             ChartLegend.UpdateLayout();
             ChartLegend.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            return new CoreSize(ChartLegend.DesiredSize.Width,
+            return new SizeData(ChartLegend.DesiredSize.Width,
                 ChartLegend.DesiredSize.Height);
         }
 

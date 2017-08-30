@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts.Definitions.Series
 {
@@ -37,7 +37,7 @@ namespace LiveCharts.Definitions.Series
         /// <value>
         /// The stops.
         /// </value>
-        IList<CoreGradientStop> Stops { get; }
+        IList<GradientStopData> Stops { get; }
         /// <summary>
         /// Gets a value indicating whether [draws heat range].
         /// </summary>

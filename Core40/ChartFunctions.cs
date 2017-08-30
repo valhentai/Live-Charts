@@ -24,8 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Charts;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 
 namespace LiveCharts
 {
@@ -58,8 +58,8 @@ namespace LiveCharts
         /// <returns></returns>
         public static double ToPlotArea(double value, AxisOrientation source, ChartCore chart, AxisCore axis)
         {
-            var p1 = new CorePoint();
-            var p2 = new CorePoint();
+            var p1 = new PointData();
+            var p2 = new PointData();
 
             if (source == AxisOrientation.Y)
             {
@@ -94,8 +94,8 @@ namespace LiveCharts
         /// <returns></returns>
         public static double FromPlotArea(double value, AxisOrientation source, ChartCore chart, int axis = 0)
         {
-            var p1 = new CorePoint();
-            var p2 = new CorePoint();
+            var p1 = new PointData();
+            var p2 = new PointData();
             
             if (source == AxisOrientation.Y)
             {
@@ -162,9 +162,9 @@ namespace LiveCharts
         /// <param name="axisYIndex">axis instance to scale the value at</param>
         /// <param name="chart">chart model to scale the value at</param>
         /// <returns></returns>
-        public static CorePoint ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, ChartCore chart)
+        public static PointData ToDrawMargin(ChartPoint point, int axisXIndex, int axisYIndex, ChartCore chart)
         {
-            return new CorePoint(
+            return new PointData(
                 ToDrawMargin(point.X, AxisOrientation.X, chart, axisXIndex),
                 ToDrawMargin(point.Y, AxisOrientation.Y, chart, axisYIndex));
         }

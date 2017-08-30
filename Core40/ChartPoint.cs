@@ -20,10 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts
 {
@@ -56,7 +56,7 @@ namespace LiveCharts
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
-        public CorePoint ChartLocation { get; internal set; }
+        public PointData ChartLocation { get; internal set; }
 
         /// <summary>
         /// Gets or sets the area where the point is in the UI.

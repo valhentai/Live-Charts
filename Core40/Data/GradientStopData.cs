@@ -21,12 +21,12 @@
 //SOFTWARE.
 
 
-namespace LiveCharts.Dtos
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// Portable color gradient stop
+    /// Describes a gradient stop data object.
     /// </summary>
-    public struct CoreGradientStop
+    public struct GradientStopData
     {
         /// <summary>
         /// Offset, goes from 0 to 1
@@ -35,6 +35,6 @@ namespace LiveCharts.Dtos
         /// <summary>
         /// Color at Offset
         /// </summary>
-        public CoreColor Color { get; set; }
+        public ColorData Color { get; set; }
     }
 }

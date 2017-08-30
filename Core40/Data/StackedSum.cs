@@ -20,44 +20,23 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
-namespace LiveCharts.Dtos
+namespace LiveCharts.Data
 {
-    /// <summary>
-    /// Defines a portable color
-    /// </summary>
-    public struct CoreColor
+    internal struct StackedSum
     {
-        /// <summary>
-        /// Initializes a new instance of CoreColor
-        /// </summary>
-        /// <param name="a">alpha component</param>
-        /// <param name="r">red component</param>
-        /// <param name="g">green component</param>
-        /// <param name="b">blue component</param>
-        public CoreColor(byte a, byte r, byte g, byte b) : this()
+        public StackedSum(double value) : this()
         {
-            A = a;
-            R = r;
-            G = g;
-            B = b;
+            if (value < 0)
+            {
+                Left = value;
+            }
+            else
+            {
+                Right = value;
+            }
         }
 
-        /// <summary>
-        /// Alpha component
-        /// </summary>
-        public byte A { get; set; }
-        /// <summary>
-        /// Red component
-        /// </summary>
-        public byte R { get; set; }
-        /// <summary>
-        /// Green component
-        /// </summary>
-        public byte G { get; set; }
-        /// <summary>
-        /// Red component
-        /// </summary>
-        public byte B { get; set; }
+        public double Left { get; set; }
+        public double Right { get; set; }
     }
 }

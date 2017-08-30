@@ -28,10 +28,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Configurations;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Series;
 using LiveCharts.Wpf.PointViews;
 
@@ -73,7 +73,7 @@ namespace LiveCharts.Wpf
 
         #region Series View Implementation
 
-        void ILineSeriesView.StartSegment(CorePoint location, double areaLimit, TimeSpan animationsSpeed)
+        void ILineSeriesView.StartSegment(PointData location, double areaLimit, TimeSpan animationsSpeed)
         {
             InitializeNewPath(location, areaLimit);
 
@@ -108,7 +108,7 @@ namespace LiveCharts.Wpf
             }
         }
 
-        void ILineSeriesView.EndSegment(int atIndex, CorePoint location, double areaLimit, TimeSpan animationsSpeed)
+        void ILineSeriesView.EndSegment(int atIndex, PointData location, double areaLimit, TimeSpan animationsSpeed)
         {
             var splitter = PathCollection[_activeSplitterCount];
 
@@ -149,7 +149,7 @@ namespace LiveCharts.Wpf
 
         #region Private Methods
 
-        private void InitializeNewPath(CorePoint location, double areaLimit)
+        private void InitializeNewPath(PointData location, double areaLimit)
         {
             if (PathCollection.Count > _activeSplitterCount) return;
 

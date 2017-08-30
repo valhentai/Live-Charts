@@ -24,9 +24,9 @@ using System;
 using System.Collections.Generic;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Events;
 using System.Collections;
+using LiveCharts.Data;
 
 namespace LiveCharts.Definitions.Charts
 {
@@ -49,7 +49,7 @@ namespace LiveCharts.Definitions.Charts
         /// <value>
         /// The size of the control.
         /// </value>
-        CoreSize ControlSize { get; }
+        SizeData ControlSize { get; }
 
         /// <summary>
         /// Gets or sets the height of the draw margin.
@@ -303,7 +303,7 @@ namespace LiveCharts.Definitions.Charts
         /// Shows the legend.
         /// </summary>
         /// <param name="at">At.</param>
-        void ShowLegend(CorePoint at);
+        void ShowLegend(PointData at);
 
         /// <summary>
         /// Hides the legend.
@@ -314,6 +314,6 @@ namespace LiveCharts.Definitions.Charts
         /// Loads the legend.
         /// </summary>
         /// <returns></returns>
-        CoreSize LoadLegend();
+        SizeData LoadLegend();
     }
 }

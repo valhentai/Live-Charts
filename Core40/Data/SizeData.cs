@@ -1,6 +1,6 @@
-﻿//The MIT License(MIT)
+//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodr�guez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,43 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-
-namespace LiveCharts.Dtos
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// 
+    /// Defines a size data object.
     /// </summary>
-    public struct TooltipDataViewModel
+    public struct SizeData
     {
         /// <summary>
-        /// Gets or sets the points.
+        /// Initializes a new instance of the <see cref="SizeData"/> struct.
         /// </summary>
-        /// <value>
-        /// The points.
-        /// </value>
-        public IEnumerable<ChartPoint> Points { get; set; }
+        /// <param name="width">The width.</param>
+        /// <param name="heigth">The heigth.</param>
+        public SizeData(double width, double heigth) : this()
+        {
+            Width = width;
+            Height = heigth;
+        }
+
         /// <summary>
-        /// Gets or sets the shares.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>
-        /// The shares.
+        /// The width.
         /// </value>
-        public double? Shares { get; set; }
+        public double Width { get; set; }
         /// <summary>
-        /// Gets or sets the x formatter.
+        /// Gets or sets the height.
         /// </summary>
         /// <value>
-        /// The x formatter.
+        /// The height.
         /// </value>
-        public Func<double, string> XFormatter { get; set; }
-        /// <summary>
-        /// Gets or sets the y formatter.
-        /// </summary>
-        /// <value>
-        /// The y formatter.
-        /// </value>
-        public Func<double, string> YFormatter { get; set; }
+        public double Height { get; set; }
     }
 }

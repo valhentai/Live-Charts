@@ -1,6 +1,6 @@
-//The MIT License(MIT)
+﻿//The MIT License(MIT)
 
-//Copyright(c) 2016 Alberto Rodr�guez Orozco & LiveCharts Contributors
+//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,35 +20,43 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace LiveCharts.Dtos
+using System;
+using System.Collections.Generic;
+
+namespace LiveCharts.Data
 {
     /// <summary>
-    /// Defines a portable limit
+    /// 
     /// </summary>
-    public struct CoreLimit
+    public struct TooltipDataViewModel
     {
         /// <summary>
-        /// Initializes a new instance of CoreLimit
+        /// Gets or sets the points.
         /// </summary>
-        /// <param name="min">minimum value</param>
-        /// <param name="max">maximum value</param>
-        public CoreLimit(double min, double max) : this()
-        {
-            Max = max;
-            Min = min;
-        }
-
+        /// <value>
+        /// The points.
+        /// </value>
+        public IEnumerable<ChartPoint> Points { get; set; }
         /// <summary>
-        /// Gets or sets the maximum value
+        /// Gets or sets the shares.
         /// </summary>
-        public double Max { get; set; }
+        /// <value>
+        /// The shares.
+        /// </value>
+        public double? Shares { get; set; }
         /// <summary>
-        /// Gets or sets the minimum value
+        /// Gets or sets the x formatter.
         /// </summary>
-        public double Min { get; set; }
+        /// <value>
+        /// The x formatter.
+        /// </value>
+        public Func<double, string> XFormatter { get; set; }
         /// <summary>
-        /// Gets the range between max and min values
+        /// Gets or sets the y formatter.
         /// </summary>
-        public double Range { get { return Max - Min; } }
+        /// <value>
+        /// The y formatter.
+        /// </value>
+        public Func<double, string> YFormatter { get; set; }
     }
 }

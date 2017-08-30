@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts
 {
@@ -45,21 +45,21 @@ namespace LiveCharts
         /// <value>
         /// The x limit.
         /// </value>
-        public CoreLimit XLimit { get; internal set; }
+        public LimitData XLimit { get; internal set; }
         /// <summary>
         /// Gets the y limit.
         /// </summary>
         /// <value>
         /// The y limit.
         /// </value>
-        public CoreLimit YLimit { get; internal set; }
+        public LimitData YLimit { get; internal set; }
         /// <summary>
         /// Gets the w limit.
         /// </summary>
         /// <value>
         /// The w limit.
         /// </value>
-        public CoreLimit WLimit { get; internal set; }
+        public LimitData WLimit { get; internal set; }
         /// <summary>
         /// Gets the gci.
         /// </summary>

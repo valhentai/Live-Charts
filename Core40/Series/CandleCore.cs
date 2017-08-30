@@ -20,10 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 
 namespace LiveCharts.Series
 {
@@ -86,7 +86,7 @@ namespace LiveCharts.Series
                 candeView.Width = candleWidth - padding > 0 ? candleWidth - padding : 0;
                 candeView.Left = x + exceed/2 + padding;
 
-                chartPoint.ChartLocation = new CorePoint(x + exceed/2, (candeView.High + candeView.Low)/2);
+                chartPoint.ChartLocation = new PointData(x + exceed/2, (candeView.High + candeView.Low)/2);
 
                 chartPoint.View.Draw(null, 0, View, Chart);
             }

@@ -22,10 +22,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Data;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Series
@@ -54,7 +54,7 @@ namespace LiveCharts.Series
         {
             var heatSeries = (IHeatSeriesView)View;
 
-            var uw = new CorePoint(
+            var uw = new PointData(
                 0 * ChartFunctions.GetUnitWidth(AxisOrientation.X, Chart, View.ScalesXAt) / 2,
                 -ChartFunctions.GetUnitWidth(AxisOrientation.Y, Chart, View.ScalesYAt));
 
@@ -76,7 +76,7 @@ namespace LiveCharts.Series
                 throw new LiveChartsException(ExceptionReason.HeatGradientRequired);
             }
 
-            var correctedGradients = heatSeries.Stops.Select(x => new CoreGradientStop
+            var correctedGradients = heatSeries.Stops.Select(x => new GradientStopData
             {
                 Color = x.Color,
                 Offset = x.Offset < 0 ? 0 : (x.Offset > 1 ? 1 : x.Offset)
@@ -149,9 +149,9 @@ namespace LiveCharts.Series
             return AxisLimits.StretchMax(axis) + 1;
         }
 
-        private static CoreColor ColorInterpolation(IList<CoreGradientStop> gradients, double weight)
+        private static ColorData ColorInterpolation(IList<GradientStopData> gradients, double weight)
         {
-            CoreColor from = new CoreColor(0, 0, 0, 0), to = new CoreColor(0, 0, 0, 0);
+            ColorData from = new ColorData(0, 0, 0, 0), to = new ColorData(0, 0, 0, 0);
             double fromOffset = 0, toOffset = 0;
 
             for (var i = 0; i < gradients.Count; i++)
@@ -169,7 +169,7 @@ namespace LiveCharts.Series
                 }
             }
 
-            return new CoreColor(
+            return new ColorData(
                 InterpolateColorComponent(from.A, to.A, fromOffset, toOffset, weight),
                 InterpolateColorComponent(from.R, to.R, fromOffset, toOffset, weight),
                 InterpolateColorComponent(from.G, to.G, fromOffset, toOffset, weight),

@@ -22,15 +22,9 @@
 
 using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using LiveCharts.Configurations;
-using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Series;
-using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
@@ -125,75 +119,6 @@ namespace LiveCharts.Wpf
         }
 
         #endregion
-
-        /// <inheritdoc cref="ISeriesView.GetPointView"/>
-        protected override ChartPointView GetPointView(ChartPoint point, string label)
-        {
-            var pbv = (ColumnPointView) point.View;
-
-            if (pbv == null)
-            {
-                pbv = new ColumnPointView
-                {
-                    Rectangle = new Rectangle(),
-                    Data = new CoreRectangle()
-                };
-
-                Core.Chart.View.AddToDrawMargin(pbv.Rectangle);
-            }
-            else
-            {
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Rectangle);
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Label);
-            }
-
-            pbv.Rectangle.Fill = Fill;
-            pbv.Rectangle.StrokeThickness = StrokeThickness;
-            pbv.Rectangle.Stroke = Stroke;
-            pbv.Rectangle.StrokeDashArray = StrokeDashArray;
-
-            pbv.Rectangle.Visibility = Visibility;
-            Panel.SetZIndex(pbv.Rectangle, Panel.GetZIndex(this));
-
-            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
-            //{
-            //    pbv.HoverShape = new Rectangle
-            //    {
-            //        Fill = Brushes.Transparent,
-            //        StrokeThickness = 0
-            //    };
-
-            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            //}
-
-            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
-
-            if (DataLabels)
-            {
-                pbv.Label = UpdateLabelContent(new DataLabelViewModel
-                {
-                    FormattedText = label,
-                    Point = point
-                }, pbv.Label);
-            }
-
-            if (!DataLabels && pbv.Label != null)
-            {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.Label);
-                pbv.Label = null;
-            }
-
-            if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush)point.Stroke;
-            if (point.Fill != null) pbv.Rectangle.Fill = (Brush)point.Fill;
-
-            pbv.LabelPosition = LabelsPosition;
-
-            return pbv;
-        }
 
         private void InitializeDefuaults()
         {

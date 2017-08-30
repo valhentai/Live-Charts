@@ -20,7 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts.Definitions.Points
 {
@@ -36,7 +36,7 @@ namespace LiveCharts.Definitions.Points
         /// <value>
         /// The data.
         /// </value>
-        CoreRectangle Data { set; }
+        RectangleData Data { set; }
         /// <summary>
         /// Gets or sets the zero reference.
         /// </summary>

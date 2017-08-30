@@ -23,9 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Charts
@@ -186,14 +186,14 @@ namespace LiveCharts.Charts
 
         private static void SetAxisLimits(AxisCore ax, IList<ICartesianSeries> series, AxisOrientation orientation)
         {
-            var first = new CoreLimit();
+            var first = new LimitData();
             var firstR = 0d;
 
             if (series.Count > 0)
             {
                 first = orientation == AxisOrientation.X
-                    ? new CoreLimit(series[0].GetMinX(ax), series[0].GetMaxX(ax))
-                    : new CoreLimit(series[0].GetMinY(ax), series[0].GetMaxY(ax));
+                    ? new LimitData(series[0].GetMinX(ax), series[0].GetMaxX(ax))
+                    : new LimitData(series[0].GetMinY(ax), series[0].GetMaxY(ax));
                 var view = series[0].View as IAreaPointView;
                 firstR = view?.PointMaxRadius ?? 0;
             }
@@ -205,8 +205,8 @@ namespace LiveCharts.Charts
             {
                 var cartesianSeries = series[index];
                 var limit = orientation == AxisOrientation.X
-                    ? new CoreLimit(cartesianSeries.GetMinX(ax), cartesianSeries.GetMaxX(ax))
-                    : new CoreLimit(cartesianSeries.GetMinY(ax), cartesianSeries.GetMaxY(ax));
+                    ? new LimitData(cartesianSeries.GetMinX(ax), cartesianSeries.GetMaxX(ax))
+                    : new LimitData(cartesianSeries.GetMinY(ax), cartesianSeries.GetMaxY(ax));
                 var view = cartesianSeries.View as IAreaPointView;
                 var radius = view?.PointMaxRadius ?? 0;
 
@@ -240,8 +240,8 @@ namespace LiveCharts.Charts
 
             var vs = View.ActualSeries
                 .Select(x => x.ActualValues.GetTracker(x).WLimit)
-                .DefaultIfEmpty(new CoreLimit()).ToArray();
-            WLimit = new CoreLimit(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
+                .DefaultIfEmpty(new LimitData()).ToArray();
+            WLimit = new LimitData(vs.Select(x => x.Min).DefaultIfEmpty(0).Min(),
                 vs.Select(x => x.Max).DefaultIfEmpty(0).Max());
         }
 

@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Windows;
-using LiveCharts.Dtos;
+using LiveCharts.Data;
 
 namespace LiveCharts.Wpf
 {
@@ -21,7 +21,7 @@ namespace LiveCharts.Wpf
         {
             if (chart.Core == null || chart.FirstDimension == null || chart.FirstDimension.Any(x => x.Core == null)) return new Point();
 
-            var uw = new CorePoint(
+            var uw = new PointData(
                 chart.FirstDimension[axisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart.Core, axisX) / 2
                     : 0,
@@ -46,7 +46,7 @@ namespace LiveCharts.Wpf
         {
             if (chart.Core == null || chart.FirstDimension.Any(x => x.Core == null)) return new Point();
 
-            var uw = new CorePoint(
+            var uw = new PointData(
                 chart.FirstDimension[axisX].Core.EvaluatesUnitWidth
                     ? ChartFunctions.GetUnitWidth(AxisOrientation.X, chart.Core, axisX) / 2
                     : 0,
@@ -74,7 +74,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="point">point to convert</param>
         /// <returns></returns>
-        internal static Point AsPoint(this CorePoint point)
+        internal static Point AsPoint(this PointData point)
         {
             return new Point(point.X, point.Y);
         }

@@ -26,8 +26,8 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Data;
 using LiveCharts.Definitions.Charts;
-using LiveCharts.Dtos;
 using LiveCharts.Helpers;
 
 namespace LiveCharts.Wpf
@@ -428,7 +428,7 @@ namespace LiveCharts.Wpf
                 new Typeface(_label.FontFamily, _label.FontStyle, _label.FontWeight, _label.FontStretch),
                 _label.FontSize, Brushes.Black);
 
-            var transform = new LabelEvaluation(axis.View.LabelsRotation,
+            var transform = new LabelEvaluationData(axis.View.LabelsRotation,
                 formattedText.Width + 10, formattedText.Height, axis, source);
 
             _label.RenderTransform = Math.Abs(transform.LabelAngle) > 1
