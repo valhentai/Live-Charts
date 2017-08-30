@@ -31,13 +31,46 @@ using LiveCharts.Dtos;
 
 namespace LiveCharts.Wpf.PointViews
 {
+    /// <summary>
+    /// Defines a heat point.
+    /// </summary>
+    /// <seealso cref="PointView" />
+    /// <seealso cref="LiveCharts.Definitions.Points.IHeatPointView" />
     internal class HeatPoint : PointView, IHeatPointView
     {
+        /// <summary>
+        /// Gets or sets the rectangle.
+        /// </summary>
+        /// <value>
+        /// The rectangle.
+        /// </value>
         public Rectangle Rectangle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color components.
+        /// </summary>
+        /// <value>
+        /// The color components.
+        /// </value>
         public CoreColor ColorComponents { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
         public double Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
         public double Height { get; set; }
 
+        /// <inheritdoc cref=""/>
         public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
             Canvas.SetTop(Rectangle, ChartPoint.ChartLocation.Y);
@@ -92,6 +125,16 @@ namespace LiveCharts.Wpf.PointViews
         public override void OnHoverLeave()
         {
             Rectangle.StrokeThickness = ((Series) ChartPoint.SeriesView).StrokeThickness;
+        }
+
+        public override void OnSelection()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void OnSelectionLeave()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

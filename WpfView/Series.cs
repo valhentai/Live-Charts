@@ -77,23 +77,16 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Protected Properties
+        #region Properties
 
         internal double DefaultFillOpacity { get; set; }
 
         internal SeriesCore Core { get; set; }
 
-        #endregion
-
-        #region Properties
-        
         /// <summary>
         /// Gets the current chart points in the series
         /// </summary>
-        public IEnumerable<ChartPoint> ChartPoints
-        {
-            get { return ((ISeriesView) this).ActualValues.GetPoints(this); }
-        }
+        public IEnumerable<ChartPoint> ChartPoints => ((ISeriesView) this).ActualValues.GetPoints(this);
 
         /// <summary>
         /// The values property
@@ -449,18 +442,13 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Protected Methods
-
-        protected virtual IChartPointView GetPointView(ChartPoint point, string label)
-        {
-            throw new NotImplementedException();
-        }
+        #region virtual Methods
 
         /// <inheritdoc cref="ISeriesView.InitializePointView"/>
-        protected virtual IChartPointView InitializePointView(IChart2DView chartView)
+        protected virtual ChartPointView InitializePointView(IChart2DView chartView)
         {
             throw new NotImplementedException(
-                "The series has not a a InitializePointView method defined, consider overriding Series.InitializePointView() method.");
+                "The series has not defined the 'InitializePointView()' method, consider overriding Series.InitializePointView().");
         }
 
         /// <inheritdoc cref="ISeriesView.OnSeriesUpdateStart"/>
@@ -557,7 +545,7 @@ namespace LiveCharts.Wpf
 
         double ISeriesView.DefaultFillOpacity => .35d;
 
-        IChartPointView ISeriesView.InitializePointView(IChart2DView view)
+        ChartPointView ISeriesView.InitializePointView(IChart2DView view)
         {
             return InitializePointView(view);
         }

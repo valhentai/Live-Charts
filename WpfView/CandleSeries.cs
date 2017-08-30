@@ -24,24 +24,20 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using LiveCharts.Configurations;
-using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Series;
-using LiveCharts.Wpf.Points;
-using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
 {
     /// <summary>
-    /// The Candle series defines a financial series, add this series to a cartesian chart
+    /// The Candle series defines a financial series, add this series to a cartesian chart.
     /// </summary>
     public class CandleSeries : Series, IFinancialSeriesView
     {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of OhclSeries class
         /// </summary>
@@ -61,10 +57,6 @@ namespace LiveCharts.Wpf
             Configuration = configuration;
             InitializeDefuaults();
         }
-
-        #endregion
-
-        #region Private Properties
 
         #endregion
 
@@ -131,98 +123,6 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Overridden Methods
-
-        /// <summary>
-        /// This method runs when the update starts
-        /// </summary>
-        protected override void OnSeriesUpdateStart()
-        {
-            //do nothing on updateStart
-        }
-
-        /// <summary>
-        /// Gets the point view.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="label">The label.</param>
-        /// <returns></returns>
-        protected override IChartPointView GetPointView(ChartPoint point, string label)
-        {
-            var pbv = (CandlePointView)point.View;
-
-            if (pbv == null)
-            {
-                pbv = new CandlePointView
-                {
-                    HighToLowLine = new Line(),
-                    OpenToCloseRectangle = new Rectangle()
-                };
-
-                Core.Chart.View.AddToDrawMargin(pbv.HighToLowLine);
-                Core.Chart.View.AddToDrawMargin(pbv.OpenToCloseRectangle);
-            }
-            else
-            {
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.HighToLowLine);
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.OpenToCloseRectangle);
-                point.SeriesView.Core.Chart.View
-                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Label);
-            }
-
-            var i = Panel.GetZIndex(this);
-
-            pbv.HighToLowLine.StrokeThickness = StrokeThickness;
-            pbv.HighToLowLine.StrokeDashArray = StrokeDashArray;
-            pbv.HighToLowLine.Visibility = Visibility;
-            Panel.SetZIndex(pbv.HighToLowLine, i);
-
-            pbv.OpenToCloseRectangle.Fill = Fill;
-            pbv.OpenToCloseRectangle.StrokeThickness = StrokeThickness;
-            pbv.OpenToCloseRectangle.Stroke = Stroke;
-            pbv.OpenToCloseRectangle.StrokeDashArray = StrokeDashArray;
-            pbv.OpenToCloseRectangle.Visibility = Visibility;
-            Panel.SetZIndex(pbv.HighToLowLine, i);
-
-            //if (Core.Chart.View.RequiresHoverShape && pbv.HoverShape == null)
-            //{
-            //    pbv.HoverShape = new Rectangle
-            //    {
-            //        Fill = Brushes.Transparent,
-            //        StrokeThickness = 0
-            //    };
-
-            //    Panel.SetZIndex(pbv.HoverShape, int.MaxValue);
-            //    Core.Chart.View.EnableHoveringFor(pbv.HoverShape);
-            //    Core.Chart.View.AddToDrawMargin(pbv.HoverShape);
-            //}
-
-            //if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
-
-            if (DataLabels)
-            {
-                pbv.Label = UpdateLabelContent(new DataLabelViewModel
-                {
-                    FormattedText = label,
-                    Point = point
-                }, pbv.Label);
-            }
-
-            if (!DataLabels && pbv.Label != null)
-            {
-                Core.Chart.View.RemoveFromDrawMargin(pbv.Label);
-                pbv.Label = null;
-            }
-
-            return pbv;
-        }
-
-        #endregion
-
-        #region Private Methods
-
         private void InitializeDefuaults()
         {
             SetCurrentValue(StrokeThicknessProperty, 1d);
@@ -235,7 +135,5 @@ namespace LiveCharts.Wpf
 
             DefaultFillOpacity = 1;
         }
-
-        #endregion
     }
 }

@@ -28,8 +28,8 @@ using LiveCharts.Configurations;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Series;
-using LiveCharts.Wpf.Points;
 using LiveCharts.Wpf.PointViews;
+using LiveCharts.Wpf.Shapes;
 
 namespace LiveCharts.Wpf
 {
@@ -109,7 +109,7 @@ namespace LiveCharts.Wpf
         /// <param name="point"></param>
         /// <param name="label"></param>
         /// <returns></returns>
-        protected override IChartPointView GetPointView(ChartPoint point, string label)
+        protected override ChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (PiePointView) point.View;
 

@@ -76,7 +76,7 @@ namespace LiveCharts.Series
 
                 chartPoint.SeriesView = View;
 
-                var ohclView = (IOhlcPointView) chartPoint.View;
+                var ohclView = (IFinancialPointView) chartPoint.View;
 
                 ohclView.Open = ChartFunctions.ToDrawMargin(chartPoint.Open, AxisOrientation.Y, Chart, View.ScalesYAt);
                 ohclView.Close = ChartFunctions.ToDrawMargin(chartPoint.Close, AxisOrientation.Y, Chart, View.ScalesYAt);

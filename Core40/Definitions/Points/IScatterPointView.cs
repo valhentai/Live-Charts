@@ -23,10 +23,10 @@
 namespace LiveCharts.Definitions.Points
 {
     /// <summary>
-    /// 
+    /// Represents a scatter point view.
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
-    public interface IScatterPointView : IChartPointView
+    /// <seealso cref="ChartPointView" />
+    public interface IScatterPointView
     {
         /// <summary>
         /// Gets or sets the diameter.
@@ -34,6 +34,6 @@ namespace LiveCharts.Definitions.Points
         /// <value>
         /// The diameter.
         /// </value>
-        double Diameter { get; set; }
+        double Diameter { set; }
     }
 }

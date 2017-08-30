@@ -76,7 +76,7 @@ namespace LiveCharts.Series
 
                 chartPoint.SeriesView = View;
 
-                var candeView = (IOhlcPointView) chartPoint.View;
+                var candeView = (IFinancialPointView) chartPoint.View;
 
                 candeView.Open = ChartFunctions.ToDrawMargin(chartPoint.Open, AxisOrientation.Y, Chart, View.ScalesYAt);
                 candeView.Close = ChartFunctions.ToDrawMargin(chartPoint.Close, AxisOrientation.Y, Chart, View.ScalesYAt);
@@ -85,7 +85,6 @@ namespace LiveCharts.Series
 
                 candeView.Width = candleWidth - padding > 0 ? candleWidth - padding : 0;
                 candeView.Left = x + exceed/2 + padding;
-                candeView.StartReference = (candeView.High + candeView.Low)/2;
 
                 chartPoint.ChartLocation = new CorePoint(x + exceed/2, (candeView.High + candeView.Low)/2);
 

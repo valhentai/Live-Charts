@@ -20,86 +20,173 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using LiveCharts.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
+using LiveCharts.Wpf.Shapes;
 
 namespace LiveCharts.Wpf.PointViews
 {
-    internal class OhlcPointView : PointView, IOhlcPointView
+    /// <summary>
+    /// Candle point view class.
+    /// </summary>
+    /// <seealso cref="LiveCharts.Wpf.PointViews.PointView" />
+    /// <seealso cref="LiveCharts.Definitions.Points.IFinancialPointView" />
+    public class OhclPointView : PointView, IFinancialPointView
     {
-        public Line HighToLowLine { get; set; }
-        public Line OpenLine { get; set; }
-        public Line CloseLine { get; set; }
-        public double Open { get; set; }
-        public double High { get; set; }
-        public double Close { get; set; }
-        public double Low { get; set; }
-        public double Width { get; set; }
-        public double Left { get; set; }
-        public double StartReference { get; set; }
+        /// <summary>
+        /// Sets the Open value in the chart, measured from the top of the drawing area in the chart.
+        /// </summary>
+        /// <value>
+        /// The open.
+        /// </value>
+        public double Open { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets the High value in the chart, measured from the top of the drawing area in the chart.
+        /// </summary>
+        /// <value>
+        /// The high.
+        /// </value>
+        public double High { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the Low value in the chart, measured from the top of the drawing area in the chart.
+        /// </summary>
+        /// <value>
+        /// The low.
+        /// </value>
+        public double Low { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the Close value in the chart, measured from the top of the drawing area in the chart.
+        /// </summary>
+        /// <value>
+        /// The close.
+        /// </value>
+        public double Close { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the Width of the point in the drawing area of the chart.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
+        public double Width { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the Open value in the chart, measured from the top of the drawing area in the chart.
+        /// </summary>
+        /// <value>
+        /// The left.
+        /// </value>
+        public double Left { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the candle element view.
+        /// </summary>
+        /// <value>
+        /// The candle.
+        /// </value>
+        public OhlcShape OhclVisualShape { get; protected set; }
+
+        /// <inheritdoc cref="PointView.Draw"/>
         public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
-            var center = Left + Width / 2;
+            var candleSeries = (CandleSeries)series;
 
-            //if (IsNew)
+            // map the series properties to the drawn point.
+            OhclVisualShape.Stroke = candleSeries.Stroke;
+            OhclVisualShape.StrokeThickness = candleSeries.StrokeThickness;
+            OhclVisualShape.Visibility = candleSeries.Visibility;
+            Panel.SetZIndex(OhclVisualShape, Panel.GetZIndex(candleSeries));
+
+            // initialize or update the label.
+            if (candleSeries.DataLabels)
             {
-                HighToLowLine.X1 = center;
-                HighToLowLine.X2 = center;
-                HighToLowLine.Y1 = StartReference;
-                HighToLowLine.Y2 = StartReference;
+                Label = candleSeries.UpdateLabelContent(
+                    new DataLabelViewModel
+                    {
+                        FormattedText = DesignerProperties.GetIsInDesignMode(candleSeries)
+                            ? "'label'"
+                            : candleSeries.LabelPoint(ChartPoint),
+                        Point = ChartPoint
+                    }, Label);
+            }
 
-                OpenLine.X1 = Left;
-                OpenLine.X2 = center;
-                OpenLine.Y1 = StartReference;
-                OpenLine.Y2 = StartReference;
+            // erase data label if it is not required anymore.
+            if (!candleSeries.DataLabels && Label != null)
+            {
+                // notice UpdateLabelContent() added the label to the UI, we need to remove it.
+                chart.View.RemoveFromDrawMargin(Label);
+                Label = null;
+            }
 
-                CloseLine.X1 = center;
-                CloseLine.X2 = Left + Width;
-                CloseLine.Y1 = StartReference;
-                CloseLine.Y2 = StartReference;
 
-                if (Label != null)
+            // register the area where the point interacts with the user (hover and click).
+            ChartPoint.ResponsiveArea =
+                new ResponsiveRectangle(
+                    High, Left,
+                    Width, Math.Abs(Low - High));
+
+            // a special case for financial series
+            // allows to customize the colors using ColoringRules property
+            if (candleSeries.ColoringRules == null)
+            {
+                if (ChartPoint.Open <= ChartPoint.Close)
                 {
-                    Canvas.SetTop(Label, ChartPoint.ChartLocation.Y);
-                    Canvas.SetLeft(Label, ChartPoint.ChartLocation.X);
+                    OhclVisualShape.Stroke = candleSeries.IncreaseBrush;
+                    OhclVisualShape.Fill = candleSeries.IncreaseBrush;
+                }
+                else
+                {
+                    OhclVisualShape.Stroke = candleSeries.DecreaseBrush;
+                    OhclVisualShape.Fill = candleSeries.DecreaseBrush;
+                }
+            }
+            else
+            {
+                foreach (var rule in candleSeries.ColoringRules)
+                {
+                    if (!rule.Condition(ChartPoint, previousDrawn)) continue;
+
+                    OhclVisualShape.Stroke = rule.Stroke;
+                    OhclVisualShape.Fill = rule.Fill;
+
+                    break;
                 }
             }
 
-            if (Label != null && double.IsNaN(Canvas.GetLeft(Label)))
-            {
-                Canvas.SetTop(Label, ChartPoint.ChartLocation.Y);
-                Canvas.SetLeft(Label, ChartPoint.ChartLocation.X);
-            }
+            var height = Low - High;
 
+            // not animated draw.
             if (chart.View.DisableAnimations)
             {
-                HighToLowLine.Y1 = High;
-                HighToLowLine.Y2 = Low;
-                HighToLowLine.X1 = center;
-                HighToLowLine.X2 = center;
+                if (OhclVisualShape == null)
+                {
+                    OhclVisualShape = new OhlcShape();
+                    chart.View.AddToDrawMargin(OhclVisualShape);
+                }
 
-                OpenLine.Y1 = Open;
-                OpenLine.Y2 = Open;
-                OpenLine.X1 = Left;
-                OpenLine.X2 = center;
-
-                CloseLine.Y1 = Close;
-                CloseLine.Y2 = Close;
-                CloseLine.X1 = center;
-                CloseLine.X2 = Left;
+                OhclVisualShape.Width = Width;
+                OhclVisualShape.Height = height;
+                OhclVisualShape.Open = Open;
+                OhclVisualShape.Close = Close;
+                Canvas.SetTop(OhclVisualShape, High);
+                Canvas.SetLeft(OhclVisualShape, Left);
 
                 if (Label != null)
                 {
                     Label.UpdateLayout();
 
-                    var cx = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualHeight*.5, chart);
-                    var cy = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualWidth*.5, chart);
-                    
+                    var cx = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualWidth * .5, chart);
+                    var cy = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualHeight * .5, chart);
+
                     Canvas.SetTop(Label, cy);
                     Canvas.SetLeft(Label, cx);
                 }
@@ -107,43 +194,71 @@ namespace LiveCharts.Wpf.PointViews
                 return;
             }
 
+            // running animations...
             var animSpeed = chart.View.AnimationsSpeed;
+
+            var middlePoint = (High + Low) / 2;
+
+            if (OhclVisualShape == null)
+            {
+                OhclVisualShape = new OhlcShape
+                {
+                    Width = Width,
+                    Height = 0,
+                    Open = middlePoint,
+                    Close = middlePoint
+                };
+                chart.View.AddToDrawMargin(OhclVisualShape);
+            }
+
+            OhclVisualShape.Width = Width;
+            OhclVisualShape.BeginAnimation(FrameworkElement.HeightProperty, new DoubleAnimation(height, animSpeed));
+            OhclVisualShape.BeginAnimation(FinancialShape.OpenProperty, new DoubleAnimation(Open - High, animSpeed));
+            OhclVisualShape.BeginAnimation(FinancialShape.CloseProperty, new DoubleAnimation(Low - Close, animSpeed));
+
+            OhclVisualShape.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(Left, animSpeed));
+            OhclVisualShape.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(High, animSpeed));
 
             if (Label != null)
             {
-                Label.UpdateLayout();
-
-                var cx = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualWidth*.5, chart);
-                var cy = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualHeight*.5, chart);
+                var cx = CorrectXLabel(ChartPoint.ChartLocation.X - Label.ActualWidth * .5, chart);
+                var cy = CorrectYLabel(ChartPoint.ChartLocation.Y - Label.ActualHeight * .5, chart);
 
                 Label.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(cx, animSpeed));
                 Label.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(cy, animSpeed));
             }
-
-            HighToLowLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
-            HighToLowLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
-            OpenLine.BeginAnimation(Line.X1Property, new DoubleAnimation(Left, animSpeed));
-            OpenLine.BeginAnimation(Line.X2Property, new DoubleAnimation(center, animSpeed));
-            CloseLine.BeginAnimation(Line.X1Property, new DoubleAnimation(center, animSpeed));
-            CloseLine.BeginAnimation(Line.X2Property, new DoubleAnimation(Left + Width, animSpeed));
-
-            HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
-            HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
-            OpenLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(Open, animSpeed));
-            OpenLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Open, animSpeed));
-            CloseLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(Close, animSpeed));
-            CloseLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Close, animSpeed));
         }
 
+        /// <inheritdoc cref="PointView.Erase"/>
         public override void Erase(ChartCore chart)
         {
-            chart.View.RemoveFromDrawMargin(OpenLine);
-            chart.View.RemoveFromDrawMargin(CloseLine);
-            chart.View.RemoveFromDrawMargin(HighToLowLine);
+            chart.View.RemoveFromDrawMargin(OhclVisualShape);
             chart.View.RemoveFromDrawMargin(Label);
         }
 
-        protected double CorrectXLabel(double desiredPosition, ChartCore chart)
+        /// <inheritdoc cref="PointView.OnHover"/>
+        public override void OnHover()
+        {
+            OhclVisualShape.Opacity = .8;
+        }
+
+        /// <inheritdoc cref="PointView.OnHoverLeave"/>
+        public override void OnHoverLeave()
+        {
+            OhclVisualShape.Opacity = 1;
+        }
+
+        /// <inheritdoc cref="PointView.OnSelection"/>
+        public override void OnSelection()
+        {
+        }
+
+        /// <inheritdoc cref="PointView.OnSelectionLeave"/>
+        public override void OnSelectionLeave()
+        {
+        }
+
+        private double CorrectXLabel(double desiredPosition, ChartCore chart)
         {
             if (desiredPosition + Label.ActualWidth * .5 < -0.1) return -Label.ActualWidth;
 
@@ -155,8 +270,10 @@ namespace LiveCharts.Wpf.PointViews
             return desiredPosition;
         }
 
-        protected double CorrectYLabel(double desiredPosition, ChartCore chart)
+        private double CorrectYLabel(double desiredPosition, ChartCore chart)
         {
+            //desiredPosition -= Ellipse.ActualHeight * .5 + DataLabel.ActualHeight * .5 + 2;
+
             if (desiredPosition + Label.ActualHeight > chart.View.DrawMarginHeight)
                 desiredPosition -= desiredPosition + Label.ActualHeight - chart.View.DrawMarginHeight + 2;
 
@@ -164,6 +281,17 @@ namespace LiveCharts.Wpf.PointViews
 
             return desiredPosition;
         }
-        
+
+        #region IFinancialPointViewImplementation
+
+        double IFinancialPointView.Open { set { Open = value; } }
+        double IFinancialPointView.High { set { High = value; } }
+        double IFinancialPointView.Low { set { Low = value; } }
+        double IFinancialPointView.Close { set { Close = value; } }
+        double IFinancialPointView.Left { set { Left = value; } }
+        double IFinancialPointView.Width { set { Width = value; } }
+
+        #endregion
+
     }
 }

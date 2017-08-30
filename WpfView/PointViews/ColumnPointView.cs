@@ -185,5 +185,15 @@ namespace LiveCharts.Wpf.PointViews
                 Rectangle.Fill = ((Series) ChartPoint.SeriesView).Fill;
             }
         }
+
+        public override void OnSelection()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OnSelectionLeave()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

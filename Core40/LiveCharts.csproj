@@ -109,9 +109,9 @@
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
     <Compile Include="Definitions\Charts\ISeparatorView.cs" />
     <Compile Include="Definitions\Points\IBezierPointView.cs" />
-    <Compile Include="Definitions\Points\IChartPointView.cs" />
+    <Compile Include="Definitions\Points\ChartPointView.cs" />
     <Compile Include="Definitions\Points\IHeatPointView.cs" />
-    <Compile Include="Definitions\Points\IOhlcPointView.cs" />
+    <Compile Include="Definitions\Points\IFinancialPointView.cs" />
     <Compile Include="Definitions\Points\IPieSlicePointView.cs" />
     <Compile Include="Definitions\Points\IRectanglePointView.cs" />
     <Compile Include="Definitions\Points\IScatterPointView.cs" />

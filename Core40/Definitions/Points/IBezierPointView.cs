@@ -25,10 +25,10 @@ using LiveCharts.Dtos;
 namespace LiveCharts.Definitions.Points
 {
     /// <summary>
-    /// 
+    /// Represents a bezier point view.
     /// </summary>
-    /// <seealso cref="IChartPointView" />
-    public interface IBezierPointView : IChartPointView
+    /// <seealso cref="ChartPointView" />
+    public interface IBezierPointView
     {
         /// <summary>
         /// Gets or sets the data.
@@ -36,6 +36,6 @@ namespace LiveCharts.Definitions.Points
         /// <value>
         /// The data.
         /// </value>
-        BezierData Data { get; set; }
+        BezierData Data { set; }
     }
 }

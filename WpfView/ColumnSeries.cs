@@ -30,7 +30,6 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
 using LiveCharts.Series;
-using LiveCharts.Wpf.Points;
 using LiveCharts.Wpf.PointViews;
 
 namespace LiveCharts.Wpf
@@ -127,10 +126,8 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region Overridden Methods
-
         /// <inheritdoc cref="ISeriesView.GetPointView"/>
-        protected override IChartPointView GetPointView(ChartPoint point, string label)
+        protected override ChartPointView GetPointView(ChartPoint point, string label)
         {
             var pbv = (ColumnPointView) point.View;
 
@@ -198,10 +195,6 @@ namespace LiveCharts.Wpf
             return pbv;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void InitializeDefuaults()
         {
             SetCurrentValue(StrokeThicknessProperty, 0d);
@@ -214,7 +207,5 @@ namespace LiveCharts.Wpf
 
             DefaultFillOpacity = 1;
         }
-
-        #endregion
     }
 }

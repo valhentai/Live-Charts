@@ -25,10 +25,10 @@ using LiveCharts.Dtos;
 namespace LiveCharts.Definitions.Points
 {
     /// <summary>
-    /// 
+    /// Represents a rectangle point view.
     /// </summary>
-    /// <seealso cref="IChartPointView" />
-    public interface IRectanglePointView : IChartPointView
+    /// <seealso cref="ChartPointView" />
+    public interface IRectanglePointView
     {
         /// <summary>
         /// Gets or sets the data.
@@ -36,13 +36,13 @@ namespace LiveCharts.Definitions.Points
         /// <value>
         /// The data.
         /// </value>
-        CoreRectangle Data { get; set; }
+        CoreRectangle Data { set; }
         /// <summary>
         /// Gets or sets the zero reference.
         /// </summary>
         /// <value>
         /// The zero reference.
         /// </value>
-        double ZeroReference { get; set; }
+        double ZeroReference { set; }
     }
 }

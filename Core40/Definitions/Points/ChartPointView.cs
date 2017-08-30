@@ -20,36 +20,58 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Dtos;
+using LiveCharts.Charts;
+using LiveCharts.Definitions.Series;
 
 namespace LiveCharts.Definitions.Points
 {
     /// <summary>
-    /// Represents a heat point view.
+    /// Specifies the drawing logic for a point in the chart (ChartPoint).
     /// </summary>
-    /// <seealso cref="ChartPointView" />
-    public interface IHeatPointView
+    public abstract class ChartPointView
     {
         /// <summary>
-        /// Gets or sets the color components.
+        /// Gets the ChartPoint that owns the view.
         /// </summary>
         /// <value>
-        /// The color components.
+        /// The point.
         /// </value>
-        CoreColor ColorComponents { set; }
+        public ChartPoint ChartPoint { get; internal set; }
+
         /// <summary>
-        /// Gets or sets the width.
+        /// Draws the point.
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        double Width { set; }
+        /// <param name="previousDrawn">The previous drawn.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="series"></param>
+        /// <param name="chart">The chart.</param>
+        public abstract void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart);
+
         /// <summary>
-        /// Gets or sets the height.
+        /// Erases the point from the view.
         /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        double Height { set; }
+        /// <param name="chart">The chart.</param>
+        public abstract void Erase(ChartCore chart);
+
+        /// <summary>
+        /// Called when the point is hovered.
+        /// </summary>
+        public abstract void OnHover();
+
+        /// <summary>
+        /// Called when the point hover leaves.
+        /// </summary>
+        public abstract void OnHoverLeave();
+
+        /// <summary>
+        /// Called when the point is selected.
+        /// </summary>
+        public abstract void OnSelection();
+
+        /// <summary>
+        /// Called when the point selection state changes from true to false.
+        /// </summary>
+        public abstract void OnSelectionLeave();
     }
+
 }

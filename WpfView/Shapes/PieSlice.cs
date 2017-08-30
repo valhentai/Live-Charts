@@ -3,13 +3,13 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace LiveCharts.Wpf.Points
+namespace LiveCharts.Wpf.Shapes
 {
     //special thanks to Colin Eberhardt for the article.
     //http://www.codeproject.com/Articles/28098/A-WPF-Pie-Chart-with-Data-Binding-Support
 
     /// <summary>
-    /// 
+    /// A pie shape.
     /// </summary>
     /// <seealso cref="System.Windows.Shapes.Shape" />
     public class PieSlice : Shape
@@ -147,22 +147,6 @@ namespace LiveCharts.Wpf.Points
             private set { SetValue(PercentageProperty, value); }
         }
 
-        /// <summary>
-        /// The piece value property
-        /// </summary>
-        public static readonly DependencyProperty PieceValueProperty =
-            DependencyProperty.Register("PieceValueProperty", typeof(double), typeof(PieSlice),
-            new FrameworkPropertyMetadata(0.0));
-
-        /// <summary>
-        /// The value that this pie piece represents.
-        /// </summary>
-        public double PieceValue
-        {
-            get { return (double)GetValue(PieceValueProperty); }
-            set { SetValue(PieceValueProperty, value); }
-        }
-
 
         #endregion
 
@@ -193,17 +177,17 @@ namespace LiveCharts.Wpf.Points
         /// </summary>
         private void DrawGeometry(StreamGeometryContext context)
         {
-            var innerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
+            var innerArcStartPoint = ComputeCartesianCoordinate(RotationAngle, InnerRadius);
             innerArcStartPoint.Offset(CentreX, CentreY);
-            var innerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
+            var innerArcEndPoint = ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
             innerArcEndPoint.Offset(CentreX, CentreY);
-            var outerArcStartPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle, Radius);
+            var outerArcStartPoint = ComputeCartesianCoordinate(RotationAngle, Radius);
             outerArcStartPoint.Offset(CentreX, CentreY);
-            var outerArcEndPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
+            var outerArcEndPoint = ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
             outerArcEndPoint.Offset(CentreX, CentreY);
-            var innerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius);
+            var innerArcMidPoint = ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, InnerRadius);
             innerArcMidPoint.Offset(CentreX, CentreY);
-            var outerArcMidPoint = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius);
+            var outerArcMidPoint = ComputeCartesianCoordinate(RotationAngle + WedgeAngle * .5, Radius);
             outerArcMidPoint.Offset(CentreX, CentreY);
 
             var largeArc = WedgeAngle > 180.0d;
@@ -211,7 +195,7 @@ namespace LiveCharts.Wpf.Points
 
             if (PushOut > 0 && !requiresMidPoint)
             {
-                var offset = PieUtils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
+                var offset = ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
                 innerArcStartPoint.Offset(offset.X, offset.Y);
                 innerArcEndPoint.Offset(offset.X, offset.Y);
                 outerArcStartPoint.Offset(offset.X, offset.Y);
@@ -239,20 +223,8 @@ namespace LiveCharts.Wpf.Points
             context.LineTo(innerArcEndPoint, true, true);
             context.ArcTo(innerArcStartPoint, innerArcSize, 0, largeArc, SweepDirection.Counterclockwise, true, true);
         }
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public static class PieUtils
-    {
-        /// <summary>
-        /// Converts a coordinate from the polar coordinate system to the cartesian coordinate system.
-        /// </summary>
-        /// <param name="angle"></param>
-        /// <param name="radius"></param>
-        /// <returns></returns>
-        public static Point ComputeCartesianCoordinate(double angle, double radius)
+        private static Point ComputeCartesianCoordinate(double angle, double radius)
         {
             // convert to radians
             var angleRad = (Math.PI / 180.0) * (angle - 90);

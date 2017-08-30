@@ -22,9 +22,8 @@
 
 namespace LiveCharts.Dtos
 {
-
     /// <summary>
-    /// 
+    /// Describes a bezier.
     /// </summary>
     public class BezierData
     {

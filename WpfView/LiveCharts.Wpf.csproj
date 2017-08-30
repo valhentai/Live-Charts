@@ -115,7 +115,10 @@
     <Compile Include="PointViews\PiePointView.cs" />
     <Compile Include="PointViews\OhlcPointView.cs" />
     <Compile Include="PointViews\ScatterPointView.cs" />
-    <Compile Include="PointViews\PieSlice.cs" />
+    <Compile Include="Shapes\CandleShape.cs" />
+    <Compile Include="Shapes\FinancialShape.cs" />
+    <Compile Include="Shapes\OhlcShape.cs" />
+    <Compile Include="Shapes\PieSlice.cs" />
     <Compile Include="PointViews\RowPointView.cs" />
     <Compile Include="PointViews\ColumnPointView.cs" />
     <Compile Include="PointViews\VerticalBezierPointView.cs" />

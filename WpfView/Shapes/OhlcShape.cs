@@ -1,6 +1,4 @@
-﻿//The MIT License(MIT)
-
-//Copyright(c) 2016 Alberto Rodríguez Orozco & LiveCharts Contributors
+﻿//copyright(c) 2016 Alberto Rodriguez
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,36 +18,29 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using LiveCharts.Dtos;
+using System.Windows;
+using System.Windows.Media;
 
-namespace LiveCharts.Definitions.Points
+namespace LiveCharts.Wpf.Shapes
 {
     /// <summary>
-    /// Represents a heat point view.
+    /// Represents an point with Open, High, Low and Close values.
     /// </summary>
-    /// <seealso cref="ChartPointView" />
-    public interface IHeatPointView
+    /// <seealso cref="LiveCharts.Wpf.Shapes.FinancialShape" />
+    public class OhlcShape : FinancialShape
     {
-        /// <summary>
-        /// Gets or sets the color components.
-        /// </summary>
-        /// <value>
-        /// The color components.
-        /// </value>
-        CoreColor ColorComponents { set; }
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        double Width { set; }
-        /// <summary>
-        /// Gets or sets the height.
-        /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        double Height { set; }
+        /// <inheritdoc cref="FinancialShape.DrawGeometry"/>
+        protected override void DrawGeometry(StreamGeometryContext context)
+        {
+            var middle = ActualWidth / 2;
+
+            context.BeginFigure(new Point(0, Open), true, true);
+            context.LineTo(new Point(middle, 0), true, true);
+            context.LineTo(new Point(0, -Open), true, true);
+            context.LineTo(new Point(0, Close), true, true);
+            context.LineTo(new Point(middle, 0), true, true);
+            context.LineTo(new Point(-middle, 0), true, true);
+            context.LineTo(new Point(ActualHeight - Close, 0), true, true);
+        }
     }
 }

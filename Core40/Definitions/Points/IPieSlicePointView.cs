@@ -23,10 +23,10 @@
 namespace LiveCharts.Definitions.Points
 {
     /// <summary>
-    /// 
+    /// Represents a pie slice point view.
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
-    public interface IPieSlicePointView : IChartPointView
+    /// <seealso cref="ChartPointView" />
+    public interface IPieSlicePointView
     {
         /// <summary>
         /// Gets or sets the rotation.
@@ -34,27 +34,27 @@ namespace LiveCharts.Definitions.Points
         /// <value>
         /// The rotation.
         /// </value>
-        double Rotation { get; set; }
+        double Rotation { set; }
         /// <summary>
         /// Gets or sets the wedge.
         /// </summary>
         /// <value>
         /// The wedge.
         /// </value>
-        double Wedge { get; set; }
+        double Wedge { set; }
         /// <summary>
         /// Gets or sets the inner radius.
         /// </summary>
         /// <value>
         /// The inner radius.
         /// </value>
-        double InnerRadius { get; set; }
+        double InnerRadius { set; }
         /// <summary>
         /// Gets or sets the radius.
         /// </summary>
         /// <value>
         /// The radius.
         /// </value>
-        double Radius { get; set; }
+        double Radius { set; }
     }
 }

@@ -79,7 +79,7 @@ namespace LiveCharts
         /// <summary >
         /// Gets or sets the view of this chart point
         /// </summary>
-        public IChartPointView View { get; internal set; }
+        public ChartPointView View { get; internal set; }
 
         /// <summary>
         /// Gets the series where the point belongs to

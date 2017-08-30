@@ -28,7 +28,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using LiveCharts.Wpf.Points;
+using LiveCharts.Wpf.Shapes;
 
 namespace LiveCharts.Wpf
 {

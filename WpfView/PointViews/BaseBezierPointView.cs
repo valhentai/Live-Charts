@@ -21,6 +21,8 @@
 //SOFTWARE.
 
 using System.ComponentModel;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -43,7 +45,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The point shape path.
         /// </value>
-        public Path PointShapePath { get; set; }
+        public Path PointShapePath { get; protected set; }
 
         /// <summary>
         /// Gets or sets the bezier.
@@ -51,15 +53,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The bezier.
         /// </value>
-        public BezierSegment Bezier { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label.
-        /// </summary>
-        /// <value>
-        /// The label.
-        /// </value>
-        public ContentControl Label { get; set; }
+        public BezierSegment Bezier { get; protected set; }
 
         /// <summary>
         /// Gets or sets the data to draw.
@@ -67,7 +61,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The data.
         /// </value>
-        public BezierData Data { get; set; }
+        public BezierData Data { get; protected set; }
 
         /// <summary>
         /// Gets or sets the shadow path.
@@ -75,7 +69,7 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The shadow path.
         /// </value>
-        public PathFigure ShadowPath { get; set; }
+        public PathFigure ShadowPath { get; protected set; }
 
         /// <summary>
         /// Gets or sets the stroke path.
@@ -83,10 +77,10 @@ namespace LiveCharts.Wpf.PointViews
         /// <value>
         /// The stroke path.
         /// </value>
-        public PathFigure StrokePath { get; set; }
+        public PathFigure StrokePath { get; protected set; }
 
-        /// <inheritdoc cref="IChartPointView.Draw"/>
-        public virtual void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
+        /// <inheritdoc cref="ChartPointView.Draw"/>
+        public override void Draw(ChartPoint previousDrawn, int index, ISeriesView series, ChartCore chart)
         {
             var lineSeries = (LineSeries) series;
             
@@ -177,16 +171,16 @@ namespace LiveCharts.Wpf.PointViews
             #endregion
         }
 
-        /// <inheritdoc cref="IChartPointView.Erase"/>
-        public virtual void Erase(ChartCore chart)
+        /// <inheritdoc cref="ChartPointView.Erase"/>
+        public override void Erase(ChartCore chart)
         {
             chart.View.RemoveFromDrawMargin(PointShapePath);
             chart.View.RemoveFromDrawMargin(Label);
             ShadowPath.Segments.Remove(Bezier);
         }
 
-        /// <inheritdoc cref="IChartPointView.OnHover"/>
-        public virtual void OnHover()
+        /// <inheritdoc cref="ChartPointView.OnHover"/>
+        public override void OnHover()
         {
             var lineSeries = (LineSeries)ChartPoint.SeriesView;
             if (PointShapePath != null) PointShapePath.Fill = PointShapePath.Stroke;
@@ -194,8 +188,8 @@ namespace LiveCharts.Wpf.PointViews
             lineSeries.PathCollection.ForEach(s => s.StrokePath.StrokeThickness++);
         }
 
-        /// <inheritdoc cref="IChartPointView.OnHoverLeave"/>
-        public virtual void OnHoverLeave()
+        /// <inheritdoc cref="ChartPointView.OnHoverLeave"/>
+        public override void OnHoverLeave()
         {
             var lineSeries = (LineSeries)ChartPoint.SeriesView;
             if (PointShapePath != null)
@@ -209,14 +203,14 @@ namespace LiveCharts.Wpf.PointViews
             });
         }
 
-        /// <inheritdoc cref="IChartPointView.OnSelection"/>
-        public virtual void OnSelection()
+        /// <inheritdoc cref="ChartPointView.OnSelection"/>
+        public override void OnSelection()
         {
             throw new System.NotImplementedException();
         }
 
-        /// <inheritdoc cref="IChartPointView.OnHoverLeave"/>
-        public virtual void OnSelectionLeave()
+        /// <inheritdoc cref="ChartPointView.OnHoverLeave"/>
+        public override void OnSelectionLeave()
         {
             throw new System.NotImplementedException();
         }
@@ -256,5 +250,12 @@ namespace LiveCharts.Wpf.PointViews
 
             return desiredPosition;
         }
+
+        #region IBezierPointView Implementation
+
+        BezierData IBezierPointView.Data { set { Data = value; } }
+
+        #endregion
+
     }
 }

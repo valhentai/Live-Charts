@@ -163,6 +163,7 @@ namespace LiveCharts.Series
                     if (chartPoint.View == null)
                     {
                         chartPoint.View = View.InitializePointView(Chart.View);
+                        chartPoint.View.ChartPoint = chartPoint;
                     }
 
                     var bezierView = chartPoint.View as IBezierPointView;

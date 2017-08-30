@@ -23,59 +23,58 @@
 namespace LiveCharts.Definitions.Points
 {
     /// <summary>
-    /// 
+    /// Represents a financial point view.
     /// </summary>
-    /// <seealso cref="LiveCharts.Definitions.Points.IChartPointView" />
-    public interface IOhlcPointView : IChartPointView
+    /// <seealso cref="ChartPointView" />
+    public interface IFinancialPointView
     {
         /// <summary>
-        /// Gets or sets the open.
+        /// Sets the Open value in the chart, measured from the top of the drawing area in the chart.
         /// </summary>
         /// <value>
         /// The open.
         /// </value>
-        double Open { get; set; }
+        double Open { set; }
+
         /// <summary>
-        /// Gets or sets the high.
+        /// Sets the High value in the chart, measured from the top of the drawing area in the chart.
         /// </summary>
         /// <value>
         /// The high.
         /// </value>
-        double High { get; set; }
+        double High { set; }
+
         /// <summary>
-        /// Gets or sets the close.
-        /// </summary>
-        /// <value>
-        /// The close.
-        /// </value>
-        double Close { get; set; }
-        /// <summary>
-        /// Gets or sets the low.
+        /// Sets the Low value in the chart, measured from the top of the drawing area in the chart.
         /// </summary>
         /// <value>
         /// The low.
         /// </value>
-        double Low { get; set; }
+        double Low { set; }
+
         /// <summary>
-        /// Gets or sets the width.
+        /// Sets the Close value in the chart, measured from the top of the drawing area in the chart.
+        /// </summary>
+        /// <value>
+        /// The close.
+        /// </value>
+        double Close { set; }
+
+        /// <summary>
+        /// Sets the Width of the point in the drawing area of the chart.
         /// </summary>
         /// <value>
         /// The width.
         /// </value>
-        double Width { get; set; }
+        double Width { set; }
+
         /// <summary>
-        /// Gets or sets the left.
+        /// Sets the Open value in the chart, measured from the top of the drawing area in the chart.
         /// </summary>
         /// <value>
         /// The left.
         /// </value>
-        double Left { get; set; }
-        /// <summary>
-        /// Gets or sets the start reference.
-        /// </summary>
-        /// <value>
-        /// The start reference.
-        /// </value>
-        double StartReference { get; set; }
+        double Left { set; }
+
     }
 }
