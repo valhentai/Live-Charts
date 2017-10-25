@@ -151,14 +151,18 @@ namespace LiveCharts.Wpf.Points
             HighToLowLine.BeginAnimation(Line.Y1Property, new DoubleAnimation(High, animSpeed));
             HighToLowLine.BeginAnimation(Line.Y2Property, new DoubleAnimation(Low, animSpeed));
 
-            OpenToCloseRectangle.BeginAnimation(Canvas.LeftProperty,
-                new DoubleAnimation(Left, animSpeed));
-            OpenToCloseRectangle.BeginAnimation(Canvas.TopProperty,
+            if(current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                OpenToCloseRectangle.BeginAnimation(Canvas.LeftProperty,
+                    new DoubleAnimation(Left, animSpeed));
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                OpenToCloseRectangle.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(Math.Min(Open, Close), animSpeed));
 
-            OpenToCloseRectangle.BeginAnimation(FrameworkElement.WidthProperty,
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                OpenToCloseRectangle.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Width, animSpeed));
-            OpenToCloseRectangle.BeginAnimation(FrameworkElement.HeightProperty,
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                OpenToCloseRectangle.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Math.Max(Math.Abs(Open - Close), OpenToCloseRectangle.StrokeThickness), animSpeed));
 
         }

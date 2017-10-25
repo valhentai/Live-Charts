@@ -159,7 +159,6 @@ namespace LiveCharts.SeriesAlgorithms
                         };
 
                     chartPoint.View.DrawOrMove(previousDrawn, chartPoint, segmentPosition, Chart);
-                    chartPoint.Dirty = ChartPoint.DirtyFlag.None;
                     segmentPosition++;
 
                     previousDrawn = chartPoint.View.IsNew

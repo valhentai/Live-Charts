@@ -86,7 +86,6 @@ namespace LiveCharts.SeriesAlgorithms
                 bubbleView.Diameter = m*(chartPoint.Weight - p1.X) + p1.Y;
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
-                chartPoint.Dirty = ChartPoint.DirtyFlag.None;
             }
         }
 

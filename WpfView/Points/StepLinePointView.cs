@@ -165,9 +165,11 @@ namespace LiveCharts.Wpf.Points
 
             var animSpeed = chart.View.AnimationsSpeed;
 
+            var previousflag = previousDrawn != null ? previousDrawn.Dirty : ChartPoint.DirtyFlag.None;
+
             if (invertedMode)
             {
-                if(current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                if(current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
                 {
                     Line1.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(current.ChartLocation.X, animSpeed));
@@ -183,14 +185,14 @@ namespace LiveCharts.Wpf.Points
                         new DoubleAnimation(current.ChartLocation.Y, animSpeed));
                 }
 
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
                 {
                     Line2.BeginAnimation(Line.X1Property,
                         new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
                     Line2.BeginAnimation(Line.X2Property,
                         new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
                 }
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || previousflag.HasFlag(ChartPoint.DirtyFlag.Y))
                 {
                     Line2.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(current.ChartLocation.Y, animSpeed));
@@ -200,7 +202,7 @@ namespace LiveCharts.Wpf.Points
             }
             else
             {
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) )
                 {
                     Line1.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(current.ChartLocation.X, animSpeed));
@@ -208,7 +210,7 @@ namespace LiveCharts.Wpf.Points
                         new DoubleAnimation(current.ChartLocation.X, animSpeed));
                 }
 
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || previousflag.HasFlag(ChartPoint.DirtyFlag.Y))
                 {
                     Line1.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(current.ChartLocation.Y, animSpeed));
@@ -216,7 +218,7 @@ namespace LiveCharts.Wpf.Points
                         new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
                 }
 
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
                 {
                     Line2.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
@@ -224,7 +226,7 @@ namespace LiveCharts.Wpf.Points
                         new DoubleAnimation(current.ChartLocation.X, animSpeed));
                 }
 
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || previousflag.HasFlag(ChartPoint.DirtyFlag.Y))
                 {
                     Line2.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
@@ -237,7 +239,7 @@ namespace LiveCharts.Wpf.Points
             if (((StepLineSeries)current.SeriesView).ContinueLastLine &&  index == current.SeriesView.Values.Count - 1)
             {
                 Line3.Visibility = System.Windows.Visibility.Visible;
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
                 {
                     Line3.BeginAnimation(Line.X1Property,
                 new DoubleAnimation(current.ChartLocation.X, animSpeed));

@@ -89,7 +89,6 @@ namespace LiveCharts.SeriesAlgorithms
                 pieSlice.Wedge = chartPoint.Participation*360 > 0 ? chartPoint.Participation*360 : 0;
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
-                chartPoint.Dirty = ChartPoint.DirtyFlag.None;
 
                 inner = pieSlice.Radius;
             }
