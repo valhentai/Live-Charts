@@ -40,6 +40,7 @@ namespace LiveCharts.Wpf.Points
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
+          
             var invertedMode = ((StepLineSeries) current.SeriesView).InvertedMode;
 
             if (IsNew)
@@ -89,6 +90,9 @@ namespace LiveCharts.Wpf.Points
                     Canvas.SetTop(Shape, chart.DrawMargin.Height);
                 }
             }
+
+            if (current.Dirty == ChartPoint.DirtyFlag.None && ( previousDrawn == null || previousDrawn.Dirty == ChartPoint.DirtyFlag.None))
+                return;
 
             if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
             {
