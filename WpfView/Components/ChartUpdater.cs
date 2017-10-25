@@ -32,7 +32,7 @@ namespace LiveCharts.Wpf.Components
     {
         public ChartUpdater(TimeSpan frequency)
         {
-            Timer = new DispatcherTimer(DispatcherPriority.Loaded) {Interval = frequency};
+            Timer = new DispatcherTimer(DispatcherPriority.Render) {Interval = frequency};
 
             Timer.Tick += OnTimerOnTick;
             Freq = frequency;
