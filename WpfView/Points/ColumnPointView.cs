@@ -169,10 +169,10 @@ namespace LiveCharts.Wpf.Points
                 Rectangle.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(Data.Top, animSpeed));
 
-            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || Rectangle.Width!= Data.Width)
                 Rectangle.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Data.Width, animSpeed));
-            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || Rectangle.Height != Data.Height)
                 Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Data.Height, animSpeed));
 

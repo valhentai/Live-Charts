@@ -72,7 +72,6 @@ namespace LiveCharts.SeriesAlgorithms
                 }
 
                 current.View.DrawOrMove(previous, current, i, Chart);
-                current.Dirty = ChartPoint.DirtyFlag.None;
 
                 i++;
                 previous = current;

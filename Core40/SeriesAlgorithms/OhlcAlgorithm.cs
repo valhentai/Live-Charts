@@ -91,7 +91,6 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.ChartLocation = new CorePoint(x + exceed/2, (ohclView.High + ohclView.Low)/2);
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
-                chartPoint.Dirty = ChartPoint.DirtyFlag.None;
             }
         }
 
