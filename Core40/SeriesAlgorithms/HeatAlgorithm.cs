@@ -105,6 +105,7 @@ namespace LiveCharts.SeriesAlgorithms
                 heatView.Height = h;
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.Dirty = ChartPoint.DirtyFlag.None;
             }
         }
 

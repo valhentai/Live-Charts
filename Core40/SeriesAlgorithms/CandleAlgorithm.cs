@@ -93,7 +93,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.ChartLocation = new CorePoint(x + exceed/2, (candeView.High + candeView.Low)/2);
 
                 chartPoint.View.DrawOrMove(previousDrawn, chartPoint, 0, Chart);
-
+                chartPoint.Dirty = ChartPoint.DirtyFlag.None;
                 previousDrawn = chartPoint;
             }
         }

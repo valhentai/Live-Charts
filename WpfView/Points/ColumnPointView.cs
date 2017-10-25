@@ -155,14 +155,19 @@ namespace LiveCharts.Wpf.Points
                 DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
             }
 
-            Rectangle.BeginAnimation(Canvas.LeftProperty, 
+
+            if (Canvas.GetLeft(Rectangle) != Data.Left)
+                Rectangle.BeginAnimation(Canvas.LeftProperty, 
                 new DoubleAnimation(Data.Left, animSpeed));
-            Rectangle.BeginAnimation(Canvas.TopProperty,
+            if(Canvas.GetTop(Rectangle) != Data.Top)
+                Rectangle.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(Data.Top, animSpeed));
 
-            Rectangle.BeginAnimation(FrameworkElement.WidthProperty,
+            if(Rectangle.Width != Data.Width)
+                Rectangle.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Data.Width, animSpeed));
-            Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
+            if (Rectangle.Height != Data.Height)
+                Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Data.Height, animSpeed));
 
             if (HoverShape != null)

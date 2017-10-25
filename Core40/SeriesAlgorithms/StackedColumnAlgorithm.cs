@@ -121,6 +121,7 @@ namespace LiveCharts.SeriesAlgorithms
                     t);
 
                 chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.Dirty = ChartPoint.DirtyFlag.None;
             }
         }
 

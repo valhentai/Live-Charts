@@ -24,6 +24,7 @@ using LiveCharts.Definitions.Charts;
 using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Dtos;
+using System;
 
 namespace LiveCharts
 {
@@ -33,12 +34,23 @@ namespace LiveCharts
     public class ChartPoint
     {
 
+        [Flags]
+        public enum DirtyFlag
+        {
+            None = 0x0,
+            X = 0x1,
+            Y = 0x2,
+        }
+
+        public DirtyFlag Dirty { get; internal set; }
+
         #region Cartesian 
 
         /// <summary>
         /// Gets the X point value
         /// </summary>
         public double X { get; internal set; }
+
 
         /// <summary>
         /// Gets the Y point value
@@ -153,7 +165,19 @@ namespace LiveCharts
         /// <summary>
         /// Gets the coordinate where the value is placed at chart
         /// </summary>
-        public CorePoint ChartLocation { get; internal set; }
+        private CorePoint chartLocation;
+
+        public CorePoint ChartLocation
+        {
+            get { return chartLocation; }
+            internal set {
+                if (value.X != chartLocation.X)
+                    Dirty = Dirty | DirtyFlag.X;
+                if (value.Y != chartLocation.Y)
+                    Dirty = Dirty | DirtyFlag.Y;
+                chartLocation = value;              
+            }
+        }
 
         /// <summary>
         /// Gets the index of this point in the chart
