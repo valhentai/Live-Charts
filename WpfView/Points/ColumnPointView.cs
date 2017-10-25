@@ -42,21 +42,7 @@ namespace LiveCharts.Wpf.Points
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
-            if (IsNew)
-            {
-                Canvas.SetTop(Rectangle, ZeroReference);
-                Canvas.SetLeft(Rectangle, Data.Left);
-
-                Rectangle.Width = Data.Width;
-                Rectangle.Height = 0;
-            }
-
-            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
-            {
-                Canvas.SetTop(DataLabel, ZeroReference);
-                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
-            }
-          
+           
             Func<double> getY = () =>
             {
                 double y;
@@ -68,12 +54,12 @@ namespace LiveCharts.Wpf.Points
                     if (Transform == null)
                         Transform = new RotateTransform(270);
 
-                    y = Data.Top + Data.Height/2 + DataLabel.ActualWidth*.5;
+                    y = Data.Top + Data.Height / 2 + DataLabel.ActualWidth * .5;
                     DataLabel.RenderTransform = Transform;
                 }
                 else if (LabelPosition == BarLabelPosition.Perpendicular)
                 {
-                    y = Data.Top + Data.Height/2 - DataLabel.ActualHeight * .5;
+                    y = Data.Top + Data.Height / 2 - DataLabel.ActualHeight * .5;
                 }
                 else
                 {
@@ -100,11 +86,11 @@ namespace LiveCharts.Wpf.Points
                 if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
 #pragma warning restore 618
                 {
-                    x = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
+                    x = Data.Left + Data.Width / 2 - DataLabel.ActualHeight / 2;
                 }
                 else if (LabelPosition == BarLabelPosition.Perpendicular)
                 {
-                    x = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
+                    x = Data.Left + Data.Width / 2 - DataLabel.ActualWidth / 2;
                 }
                 else
                 {
@@ -118,6 +104,39 @@ namespace LiveCharts.Wpf.Points
                 return x;
             };
 
+            if (IsNew)
+            {
+                Canvas.SetTop(Rectangle, ZeroReference);
+                Canvas.SetLeft(Rectangle, Data.Left);
+
+                Rectangle.Width = Data.Width;
+                Rectangle.Height = 0;
+
+                if (DataLabel != null)
+                {
+                    DataLabel.UpdateLayout();
+
+                    Canvas.SetTop(DataLabel, getY());
+                    Canvas.SetLeft(DataLabel, getX());
+                }
+            }
+
+            if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
+            {
+                Canvas.SetTop(DataLabel, ZeroReference);
+                Canvas.SetLeft(DataLabel, current.ChartLocation.X);
+            }
+
+            var dirty = ChartPoint.DirtyFlag.None;
+            if (Canvas.GetLeft(Rectangle) != Data.Left)
+                dirty = dirty | ChartPoint.DirtyFlag.X;
+            if (Canvas.GetTop(Rectangle) != Data.Top)
+                dirty = dirty | ChartPoint.DirtyFlag.Y;
+
+            if (dirty == ChartPoint.DirtyFlag.None && Rectangle.Width == Data.Width && Rectangle.Height == Data.Height)
+                return;
+
+            
             if (chart.View.DisableAnimations)
             {
                 Rectangle.Width = Data.Width;
@@ -128,12 +147,12 @@ namespace LiveCharts.Wpf.Points
 
                 if (DataLabel != null)
                 {
-                    if (current.Dirty != ChartPoint.DirtyFlag.None)
+                    if (dirty != ChartPoint.DirtyFlag.None)
                         DataLabel.UpdateLayout();
 
-                    if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                    if (dirty.HasFlag(ChartPoint.DirtyFlag.X))
                         Canvas.SetTop(DataLabel, getY());
-                    if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                    if (dirty.HasFlag(ChartPoint.DirtyFlag.Y))
                         Canvas.SetLeft(DataLabel, getX());
                 }
 
@@ -152,27 +171,27 @@ namespace LiveCharts.Wpf.Points
 
             if (DataLabel != null)
             {
-                if(current.Dirty != ChartPoint.DirtyFlag.None)
+                if(dirty != ChartPoint.DirtyFlag.None)
                     DataLabel.UpdateLayout();
 
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                if (dirty.HasFlag(ChartPoint.DirtyFlag.X) || Rectangle.Width != Data.Width)
                     DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(getX(), animSpeed));
-                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                if (dirty.HasFlag(ChartPoint.DirtyFlag.Y) || Rectangle.Height != Data.Height)
                     DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
             }
 
 
-            if(current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+            if(dirty.HasFlag(ChartPoint.DirtyFlag.X))
                 Rectangle.BeginAnimation(Canvas.LeftProperty, 
                 new DoubleAnimation(Data.Left, animSpeed));
-            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+            if (dirty.HasFlag(ChartPoint.DirtyFlag.Y))
                 Rectangle.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(Data.Top, animSpeed));
 
-            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || Rectangle.Width!= Data.Width)
+            if (dirty.HasFlag(ChartPoint.DirtyFlag.X) || Rectangle.Width!= Data.Width)
                 Rectangle.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Data.Width, animSpeed));
-            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || Rectangle.Height != Data.Height)
+            if (dirty.HasFlag(ChartPoint.DirtyFlag.Y) || Rectangle.Height != Data.Height)
                 Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Data.Height, animSpeed));
 
