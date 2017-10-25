@@ -128,10 +128,13 @@ namespace LiveCharts.Wpf.Points
 
                 if (DataLabel != null)
                 {
-                    DataLabel.UpdateLayout();
+                    if (current.Dirty != ChartPoint.DirtyFlag.None)
+                        DataLabel.UpdateLayout();
 
-                    Canvas.SetTop(DataLabel, getY());
-                    Canvas.SetLeft(DataLabel, getX());
+                    if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                        Canvas.SetTop(DataLabel, getY());
+                    if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                        Canvas.SetLeft(DataLabel, getX());
                 }
 
                 if (HoverShape != null)
@@ -149,24 +152,27 @@ namespace LiveCharts.Wpf.Points
 
             if (DataLabel != null)
             {
-                DataLabel.UpdateLayout();
+                if(current.Dirty != ChartPoint.DirtyFlag.None)
+                    DataLabel.UpdateLayout();
 
-                DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(getX(), animSpeed));
-                DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
+                    DataLabel.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(getX(), animSpeed));
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                    DataLabel.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(getY(), animSpeed));
             }
 
 
-            if (Canvas.GetLeft(Rectangle) != Data.Left)
+            if(current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
                 Rectangle.BeginAnimation(Canvas.LeftProperty, 
                 new DoubleAnimation(Data.Left, animSpeed));
-            if(Canvas.GetTop(Rectangle) != Data.Top)
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
                 Rectangle.BeginAnimation(Canvas.TopProperty,
                 new DoubleAnimation(Data.Top, animSpeed));
 
-            if(Rectangle.Width != Data.Width)
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X))
                 Rectangle.BeginAnimation(FrameworkElement.WidthProperty,
                 new DoubleAnimation(Data.Width, animSpeed));
-            if (Rectangle.Height != Data.Height)
+            if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
                 Rectangle.BeginAnimation(FrameworkElement.HeightProperty,
                 new DoubleAnimation(Data.Height, animSpeed));
 
