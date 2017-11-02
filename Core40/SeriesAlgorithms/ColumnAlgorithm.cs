@@ -113,7 +113,7 @@ namespace LiveCharts.SeriesAlgorithms
                 chartPoint.ChartLocation = new CorePoint(rectangleView.Data.Left + singleColWidth/2 - padding/2,
                     t);
 
-                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);
+                chartPoint.View.DrawOrMove(null, chartPoint, 0, Chart);             
             }
         }
 

@@ -40,6 +40,7 @@ namespace LiveCharts.Wpf.Points
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
+          
             var invertedMode = ((StepLineSeries) current.SeriesView).InvertedMode;
 
             if (IsNew)
@@ -89,6 +90,9 @@ namespace LiveCharts.Wpf.Points
                     Canvas.SetTop(Shape, chart.DrawMargin.Height);
                 }
             }
+
+            if (current.Dirty == ChartPoint.DirtyFlag.None && ( previousDrawn == null || previousDrawn.Dirty == ChartPoint.DirtyFlag.None))
+                return;
 
             if (DataLabel != null && double.IsNaN(Canvas.GetLeft(DataLabel)))
             {
@@ -165,59 +169,94 @@ namespace LiveCharts.Wpf.Points
 
             var animSpeed = chart.View.AnimationsSpeed;
 
+            var previousflag = previousDrawn != null ? previousDrawn.Dirty : ChartPoint.DirtyFlag.None;
+
             if (invertedMode)
             {
-                Line1.BeginAnimation(Line.X1Property,
+                if(current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
+                {
+                    Line1.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(current.ChartLocation.X, animSpeed));
-                Line1.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
-                Line1.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
-                Line1.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    Line1.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
+                }
 
-                Line2.BeginAnimation(Line.X1Property,
-                    new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
-                Line2.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
-                Line2.BeginAnimation(Line.Y1Property,
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                {
+                    Line1.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(current.ChartLocation.Y, animSpeed));
-                Line2.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                    Line1.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                }
+
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
+                {
+                    Line2.BeginAnimation(Line.X1Property,
+                        new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
+                    Line2.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
+                }
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || previousflag.HasFlag(ChartPoint.DirtyFlag.Y))
+                {
+                    Line2.BeginAnimation(Line.Y1Property,
+                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    Line2.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                }
             }
             else
             {
-                Line1.BeginAnimation(Line.X1Property,
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) )
+                {
+                    Line1.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(current.ChartLocation.X, animSpeed));
-                Line1.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X, animSpeed));
-                Line1.BeginAnimation(Line.Y1Property,
-                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
-                Line1.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                    Line1.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(current.ChartLocation.X, animSpeed));
+                }
 
-                Line2.BeginAnimation(Line.X1Property,
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || previousflag.HasFlag(ChartPoint.DirtyFlag.Y))
+                {
+                    Line1.BeginAnimation(Line.Y1Property,
+                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    Line1.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                }
+
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
+                {
+                    Line2.BeginAnimation(Line.X1Property,
                     new DoubleAnimation(current.ChartLocation.X - DeltaX, animSpeed));
-                Line2.BeginAnimation(Line.X2Property,
-                    new DoubleAnimation(current.ChartLocation.X, animSpeed));
-                Line2.BeginAnimation(Line.Y1Property,
+                    Line2.BeginAnimation(Line.X2Property,
+                        new DoubleAnimation(current.ChartLocation.X, animSpeed));
+                }
+
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y) || previousflag.HasFlag(ChartPoint.DirtyFlag.Y))
+                {
+                    Line2.BeginAnimation(Line.Y1Property,
                     new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
-                Line2.BeginAnimation(Line.Y2Property,
-                    new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                    Line2.BeginAnimation(Line.Y2Property,
+                        new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                }
                 
             }
 
             if (((StepLineSeries)current.SeriesView).ContinueLastLine &&  index == current.SeriesView.Values.Count - 1)
             {
                 Line3.Visibility = System.Windows.Visibility.Visible;
-                Line3.BeginAnimation(Line.X1Property,
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.X) || previousflag.HasFlag(ChartPoint.DirtyFlag.X))
+                {
+                    Line3.BeginAnimation(Line.X1Property,
                 new DoubleAnimation(current.ChartLocation.X, animSpeed));
-                Line3.BeginAnimation(Line.X2Property,
-                new DoubleAnimation(current.ChartLocation.X + DeltaX, animSpeed));
-                Line3.BeginAnimation(Line.Y1Property,
+                    Line3.BeginAnimation(Line.X2Property,
+                    new DoubleAnimation(current.ChartLocation.X + DeltaX, animSpeed));
+                }
+                if (current.Dirty.HasFlag(ChartPoint.DirtyFlag.Y))
+                {
+                    Line3.BeginAnimation(Line.Y1Property,
                 new DoubleAnimation(current.ChartLocation.Y, animSpeed));
-                Line3.BeginAnimation(Line.Y2Property,
-                new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                    Line3.BeginAnimation(Line.Y2Property,
+                    new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                }
 
             }
             else

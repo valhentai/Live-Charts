@@ -479,6 +479,10 @@ namespace LiveCharts.Wpf
         public virtual void OnSeriesUpdatedFinish()
         {
             IsFirstDraw = false;
+            foreach (var chartPoint in Model.View.ActualValues.GetPoints(Model.View))
+            {
+                chartPoint.Dirty = ChartPoint.DirtyFlag.None;
+            }
         }
 
         /// <summary>
