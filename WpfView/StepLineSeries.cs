@@ -164,7 +164,7 @@ namespace LiveCharts.Wpf
                 {
                     IsNew = true,
                     Line2 = new Line() { StrokeLineJoin = PenLineJoin.Miter , StrokeEndLineCap = PenLineCap.Square , StrokeStartLineCap = PenLineCap.Square },
-                    Line1 = new Line() { StrokeLineJoin = PenLineJoin.Miter, StrokeEndLineCap = PenLineCap.Square, StrokeStartLineCap = PenLineCap.Square }
+                    Line1 = new Line() { StrokeLineJoin = PenLineJoin.Miter, StrokeEndLineCap = PenLineCap.Square, StrokeStartLineCap = PenLineCap.Square },
                     Line3 = new Line() { StrokeLineJoin = PenLineJoin.Miter, StrokeEndLineCap = PenLineCap.Square, StrokeStartLineCap = PenLineCap.Square }
                 };
 
